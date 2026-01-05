@@ -2,104 +2,76 @@
 
 @section('title', "{$job->title} | Join Our Team")
 
-
 @section('content')
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<section class="max-w-7xl mx-auto p-6 bg-white rounded-xl shadow-lg space-y-6 mt-10">
 
-    <!-- Card container -->
-    <div class="bg-white shadow-lg rounded-xl p-8 md:p-12 space-y-6">
-
-        <!-- Header: Job & Company -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div class="flex items-center gap-4">
-                @if($job->company_logo)
-                    <img src="{{ $job->company_logo }}" alt="{{ $job->company_name }}"
-                         class="w-16 h-16 rounded-lg object-cover">
-                @else
-                    <div class="w-16 h-16 rounded-lg bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500 font-bold">{{ substr($job->company_name,0,2) }}</span>
-                    </div>
-                @endif
-
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900">{{ $job->title }}</h1>
-                    <p class="text-gray-600 text-sm md:text-base">
-                        {{ $job->company_name }} • {{ $job->location }}
-                    </p>
-                </div>
-            </div>
-
-            <!-- Salary & Type -->
-            <div class="flex flex-col md:items-end gap-2">
-                <span class="text-indigo-600 font-semibold text-lg">
-                    💰 {{ $job->salary ?? 'Negotiable' }}
-                </span>
-                <span class="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-sm font-medium">
-                    {{ ucfirst($job->job_type) }}
-                </span>
+    <!-- Job Header -->
+    <div class="flex items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+            <img src="{{ $job->company_logo ?? 'default.png' }}" alt="{{ $job->company_name }}" class="w-16 h-16 rounded-lg">
+            <div>
+                <h1 class="text-2xl font-bold">{{ $job->title }}</h1>
+                <p class="text-gray-600">{{ $job->company_name }}</p>
+                <p class="text-pink-600 font-medium">Application Deadline: {{ $job->application_deadline->format('d M Y') }}</p>
             </div>
         </div>
 
-        <!-- Description -->
-        <div class="text-gray-700 space-y-4">
-            <h2 class="text-xl font-semibold">Job Description</h2>
-            <p>{{ $job->description }}</p>
-        </div>
-
-        <!-- Experience & Deadline -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
-            <div>
-                <h3 class="font-semibold">Experience Level</h3>
-                <p>{{ ucfirst($job->experience_level) }}</p>
-            </div>
-            <div>
-                <h3 class="font-semibold">Application Deadline</h3>
-                <p>{{ $job->application_deadline->format('d M Y') }}</p>
-            </div>
-        </div>
-
-        <!-- Skills -->
-        @if(!empty($job->skills_required))
-            <div>
-                <h3 class="font-semibold mb-2">Skills Required</h3>
-                <div class="flex flex-wrap gap-2">
-                    @foreach($job->skills_required as $skill)
-                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">{{ $skill }}</span>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <!-- Benefits -->
-        @if(!empty($job->benefits))
-            <div>
-                <h3 class="font-semibold mb-2">Benefits</h3>
-                <div class="flex flex-wrap gap-2">
-                    @foreach($job->benefits as $benefit)
-                        <span class="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">{{ $benefit }}</span>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <!-- Apply CTA -->
-        <div class="pt-6 border-t flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-            @if($job->is_active && $job->status === 'approved')
-                @if($hasApplied)
-                    <span class="text-gray-500 font-semibold">✅ You have already applied</span>
-                @else
-                    <a href="{{ route('jobs.apply', $job->id) }}"
-                       class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-bold text-lg hover:bg-indigo-700 transition">
-                        Apply Now
-                    </a>
-                @endif
-            @else
-                <span class="text-red-500 font-semibold">This job is closed</span>
-            @endif
-
-            <span class="text-gray-400 text-sm">👀 {{ $job->views }} views</span>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('jobs.apply', $job->id) }}" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Apply Now</a>
+            <!-- Add Shortlist / Share buttons here -->
         </div>
     </div>
 
+    <!-- Tabs -->
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+            <button class="tab-button text-indigo-600 border-b-2 border-indigo-600 px-3 py-2 font-medium text-sm">All</button>
+            <button class="tab-button text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium text-sm">Requirements</button>
+            <button class="tab-button text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium text-sm">Responsibilities</button>
+            <button class="tab-button text-gray-500 hover:text-indigo-600 px-3 py-2 font-medium text-sm">Company Info</button>
+        </nav>
+    </div>
+
+    <!-- Tab Panels -->
+    <div class="tab-content space-y-6">
+        <div class="tab-panel">
+            <!-- Summary -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-lg">
+                <div><span class="font-semibold">Vacancy:</span> {{ $job->vacancy ?? 'N/A' }}</div>
+                <div><span class="font-semibold">Age:</span> 25 to 40 years</div>
+                <div><span class="font-semibold">Location:</span> {{ $job->location }}</div>
+                <div><span class="font-semibold">Salary:</span> {{ $job->salary ?? 'Negotiable' }}</div>
+            </div>
+        </div>
+
+        <div class="tab-panel hidden">
+            <!-- Requirements -->
+            <h3 class="font-semibold text-lg">Education</h3>
+            <p>B.Sc / Diploma in Civil Engineering</p>
+
+            <h3 class="font-semibold text-lg mt-4">Experience</h3>
+            <p>5 to 10 years</p>
+
+            <h3 class="font-semibold text-lg mt-4">Additional Requirements</h3>
+            <p>Age 25 to 40 years</p>
+        </div>
+
+        <div class="tab-panel hidden">
+            <!-- Responsibilities -->
+            <ul class="list-disc pl-5 space-y-2">
+                <li>Strong capability of project management & manpower management.</li>
+                <li>Sound knowledge on all kinds of design & drawing.</li>
+                <li>Vast knowledge on construction works including finishing works.</li>
+                <li>Strong interpersonal & communication skills.</li>
+                <li>Excellence time management & leadership skills.</li>
+            </ul>
+        </div>
+
+        <div class="tab-panel hidden">
+            <!-- Company Info -->
+            <p>{{ $job->company_info ?? 'Information not available' }}</p>
+        </div>
+    </div>
 </section>
+
 @endsection
