@@ -102,4 +102,25 @@ class User extends Authenticatable
     {
         return $this->hasOne(JobSeekerProfile::class);
     }
+     // Relationships
+    public function personalInfo()
+    {
+        return $this->hasOne(PersonalInformation::class, 'user_id');
+    }
+
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class, 'user_id');
+    }
+
+    public function profileVisibilitySettings()
+    {
+        return $this->hasOne(ProfileVisibilitySetting::class, 'user_id');
+    }
+
+
+    public function postedJobs()
+    {
+        return $this->hasMany(Job::class, 'user_id');
+    }
 }

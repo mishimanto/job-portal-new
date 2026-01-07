@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Post New Job - Admin Panel')
 @section('page-title', 'Post New Job')

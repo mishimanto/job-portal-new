@@ -75,11 +75,12 @@ Route::middleware(['auth'])->group(function () {
         
         // Jobs
         Route::get('/jobs', [AdminJobController::class, 'index'])->name('jobs.index');
-        Route::get('/jobs/{job}', [AdminJobController::class, 'show'])->name('jobs.show');
         Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
-        Route::post('/jobs', [AdminJobController::class, 'store'])->name('jobs.store'); // Add this
+        Route::post('/jobs', [AdminJobController::class, 'store'])->name('jobs.store');
+        Route::get('/jobs/{job}', [AdminJobController::class, 'show'])->name('jobs.show');
         Route::post('/jobs/{job}/status', [AdminJobController::class, 'updateStatus'])->name('jobs.update-status');
         Route::delete('/jobs/{job}', [AdminJobController::class, 'destroy'])->name('jobs.destroy');
+
         
         // Applications
         Route::get('/applications', [AdminApplicationController::class, 'index'])->name('applications.index');
@@ -91,6 +92,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
         Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
         Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+        // User Management
+        Route::resource('users', AdminUserController::class);
+        Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
         
         // Companies
         Route::get('/companies', [AdminCompanyController::class, 'index'])->name('companies.index');
