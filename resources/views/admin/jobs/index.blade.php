@@ -72,39 +72,39 @@
     <!-- Jobs List -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    All Jobs
-                </h3>
-                <p class="mt-1 text-sm text-gray-500">
-                    Total {{ $jobs->total() }} jobs found
-                </p>
-            </div>
-            <div class="flex items-center space-x-3">
-                <div class="relative">
-                    <input type="text" 
-                           placeholder="Search jobs..." 
-                           class="pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
-                           id="search-input">
-                    <div class="absolute left-3 top-2.5">
-                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        All Jobs
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Total {{ $jobs->total() }} jobs found
+                    </p>
                 </div>
-                
-                <!-- Add Post Job Button Here -->
-                <a href="{{ route('admin.jobs.create') }}" 
-                   class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                    </svg>
-                    Post Job
-                </a>
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <input type="text" 
+                               placeholder="Search jobs..." 
+                               class="pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               id="search-input">
+                        <div class="absolute left-3 top-2.5">
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Add Post Job Button Here -->
+                    <a href="{{ route('admin.jobs.create') }}" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Post Job
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
         
         @if($jobs->count() > 0)
         <div class="overflow-x-auto">
@@ -113,6 +113,9 @@
                     <tr>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Job Title
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Category 
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Company
@@ -144,6 +147,15 @@
                             <div class="text-sm text-gray-500">
                                 {{ $job->location }} • {{ ucfirst($job->job_type) }}
                             </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            @if($job->category)
+                                <span class="text-sm font-medium text-blue-600">
+                                    {{ $job->category->name }}
+                                </span>
+                            @else
+                                <span class="text-sm font-medium text-gray-500">N/A</span>
+                            @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                             {{ $job->company_name }}
@@ -181,10 +193,21 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                     </svg>
                                 </a>
-                                
+                                <a href="{{ route('admin.jobs.edit', $job) }}"
+                                    class="text-blue-600 hover:text-blue-900"
+                                    title="Edit Job">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M18.586 2.586a2 2 0 112.828 2.828L11.828 15
+                                                    H9v-2.828l9.586-9.586z"/>
+                                    </svg>
+                                </a>
+
                                 @if($job->status == 'pending')
                                 <button type="button" 
-                                        onclick="updateJobStatus('{{ $job->id }}', 'approved')"
+                                        onclick="updateJobStatus('{{ $job->id }}', 'approved', 'Approve Job', 'Are you sure you want to approve this job?', 'success')"
                                         class="text-green-600 hover:text-green-900"
                                         title="Approve Job">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +216,7 @@
                                 </button>
                                 
                                 <button type="button" 
-                                        onclick="updateJobStatus('{{ $job->id }}', 'rejected')"
+                                        onclick="updateJobStatus('{{ $job->id }}', 'rejected', 'Reject Job', 'Are you sure you want to reject this job?', 'error')"
                                         class="text-red-600 hover:text-red-900"
                                         title="Reject Job">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,11 +225,11 @@
                                 </button>
                                 @endif
                                 
-                                <form action="{{ route('admin.jobs.destroy', $job) }}" method="POST" class="inline">
+                                <form action="{{ route('admin.jobs.destroy', $job) }}" method="POST" class="inline" id="delete-form-{{ $job->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" 
-                                            onclick="if(confirm('Are you sure you want to delete this job?')) this.form.submit()"
+                                            onclick="confirmDelete('{{ $job->id }}', '{{ $job->title }}')"
                                             class="text-gray-600 hover:text-gray-900"
                                             title="Delete Job">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,14 +268,43 @@
 </form>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function updateJobStatus(jobId, status) {
-    if (confirm('Are you sure you want to update this job status?')) {
-        const form = document.getElementById('status-form');
-        form.action = `/admin/jobs/${jobId}/status`;
-        document.getElementById('status-input').value = status;
-        form.submit();
-    }
+function updateJobStatus(jobId, status, title, text, icon) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, proceed!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.getElementById('status-form');
+            form.action = `/admin/jobs/${jobId}/status`;
+            document.getElementById('status-input').value = status;
+            form.submit();
+        }
+    });
+}
+
+function confirmDelete(jobId, jobTitle) {
+    Swal.fire({
+        title: 'Delete Job',
+        html: `Are you sure you want to delete <strong>${jobTitle}</strong>?<br><span class="text-sm text-red-600">This action cannot be undone!</span>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(`delete-form-${jobId}`).submit();
+        }
+    });
 }
 
 // Simple search functionality

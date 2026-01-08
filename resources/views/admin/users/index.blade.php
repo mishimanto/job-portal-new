@@ -13,8 +13,9 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13 0h-6m0 0V8a3 3 0 00-6 0v4m6 0a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 12a5 5 0 100-10 5 5 0 000 10zm7 9v-1a7 7 0 00-14 0v1" />
                             </svg>
                         </div>
                     </div>
@@ -643,15 +644,19 @@ function userManagement() {
                 `Are you sure you want to delete ${user.name}? This action cannot be undone.`,
                 'error',
                 'Yes, delete it!',
-                'danger'
+                '#d33'
             )) {
                 try {
                     const response = await fetch(`/admin/users/${user.id}`, {
                         method: 'DELETE',
                         headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest', // এই header টি add করো
+                            'Accept': 'application/json' // JSON response expect করছে
                         }
                     });
+                    
+                    const data = await response.json();
                     
                     if (response.ok) {
                         // Remove user from the list
@@ -659,10 +664,11 @@ function userManagement() {
                         this.total--;
                         this.showAlert('Success', 'User deleted successfully', 'success');
                     } else {
-                        throw new Error('Failed to delete user');
+                        throw new Error(data.message || 'Failed to delete user');
                     }
                 } catch (error) {
-                    this.showAlert('Error', 'Failed to delete user', 'error');
+                    console.error('Error:', error);
+                    this.showAlert('Error', error.message || 'Failed to delete user', 'error');
                 }
             }
         },
@@ -734,7 +740,7 @@ function userManagement() {
                 confirmButtonText: confirmText,
                 cancelButtonText: 'Cancel',
                 confirmButtonColor: confirmColor,
-                cancelButtonColor: '#d33',
+                cancelButtonColor: 'gray',
                 reverseButtons: true
             }).then((result) => result.isConfirmed);
         },

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('company_logo')->nullable();
             $table->string('location');
             $table->decimal('salary', 10, 2)->nullable();
-            $table->string('job_type'); // full-time, part-time, contract, remote
+            $table->string('job_type'); 
             $table->string('experience_level');
             $table->json('skills_required')->nullable();
             $table->json('benefits')->nullable();

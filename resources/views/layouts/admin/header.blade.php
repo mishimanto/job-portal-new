@@ -62,7 +62,7 @@
                         </div>
                         <div class="hidden lg:block text-left">
                             <p class="text-sm font-semibold text-gray-900">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-gray-500">Administrator</p>
+                            <!-- <p class="text-xs text-gray-500">Administrator</p> -->
                         </div>
                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -80,10 +80,10 @@
                          x-transition:leave-end="transform opacity-0 scale-95"
                          class="origin-top-right absolute right-0 mt-2 w-56 rounded-lg shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50 border border-gray-200"
                          style="display: none;">
-                        <div class="px-4 py-3 border-b border-gray-100">
+                        <!-- <div class="px-4 py-3 border-b border-gray-100">
                             <p class="text-sm font-semibold text-gray-900">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-gray-500 truncate">{{ auth()->user()->email }}</p>
-                        </div>
+                        </div> -->
                         
                         <a href="{{ route('admin.dashboard') }}" 
                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">

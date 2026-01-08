@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Company;
 
 class JobController extends Controller
 {
@@ -59,7 +62,9 @@ class JobController extends Controller
 
     public function create()
     {
-        return view('admin.jobs.create');
+        $categories = Category::where('is_active', true)->orderBy('order')->get();
+        $companies = Company::where('is_active', true)->orderBy('name')->get();
+        return view('admin.jobs.create', compact('categories', 'companies'));
     }
 
     public function store(Request $request)
@@ -78,18 +83,19 @@ class JobController extends Controller
             'company_logo' => 'nullable|image|max:2048',
             'is_active' => 'boolean',
             'status' => 'required|string|in:pending,approved,rejected',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         // Format skills required
         if ($request->filled('skills_required')) {
             $skills = array_map('trim', explode(',', $request->skills_required));
-            $validated['skills_required'] = json_encode($skills);
+            $validated['skills_required'] = $skills; // Just assign the array
         }
 
         // Format benefits
         if ($request->filled('benefits')) {
             $benefits = array_filter(array_map('trim', explode("\n", $request->benefits)));
-            $validated['benefits'] = json_encode($benefits);
+            $validated['benefits'] = $benefits; // Just assign the array
         }
 
         // Handle file upload
@@ -106,6 +112,66 @@ class JobController extends Controller
 
         return redirect()->route('admin.jobs.index')
             ->with('success', 'Job posted successfully.');
+    }
+
+    public function edit(Job $job)
+    {
+        $categories = Category::where('is_active', true)->orderBy('order')->get();
+        return view('admin.jobs.edit', compact('job', 'categories'));
+    }
+
+    public function update(Request $request, Job $job)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
+            'salary' => 'nullable|numeric|min:0',
+            'job_type' => 'required|string|in:full-time,part-time,contract,remote,internship',
+            'experience_level' => 'required|string|in:intern,junior,mid,senior,lead,executive',
+            'skills_required' => 'nullable|string',
+            'benefits' => 'nullable|string',
+            'application_deadline' => 'nullable|date|after_or_equal:today',
+            'company_logo' => 'nullable|image|max:2048',
+            'is_active' => 'boolean',
+            'status' => 'required|string|in:pending,approved,rejected',
+            'category_id' => 'nullable|exists:categories,id',
+        ]);
+
+        // Format skills required
+        if ($request->filled('skills_required')) {
+            $skills = array_map('trim', explode(',', $request->skills_required));
+            $validated['skills_required'] = $skills; // Just assign the array
+        }
+
+        // Format benefits
+        if ($request->filled('benefits')) {
+            $benefits = array_filter(array_map('trim', explode("\n", $request->benefits)));
+            $validated['benefits'] = $benefits; // Just assign the array
+        }
+
+        // Handle file upload - new logo
+        if ($request->hasFile('company_logo')) {
+            // Delete old logo if exists
+            if ($job->company_logo) {
+                Storage::disk('public')->delete($job->company_logo);
+            }
+            $validated['company_logo'] = $request->file('company_logo')->store('company-logos', 'public');
+        }
+
+        // Handle logo removal if requested
+        if ($request->has('remove_logo') && $request->remove_logo == '1') {
+            if ($job->company_logo) {
+                Storage::disk('public')->delete($job->company_logo);
+            }
+            $validated['company_logo'] = null;
+        }
+
+        $job->update($validated);
+
+        return redirect()->route('admin.jobs.show', $job)
+            ->with('success', 'Job updated successfully.');
     }
 
     public function destroy(Job $job)

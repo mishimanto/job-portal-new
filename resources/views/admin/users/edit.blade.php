@@ -61,7 +61,7 @@
                         Back to Users
                     </a>
                     
-                    <button @click="showDeleteModal = true"
+                    <button @click="confirmDeleteUser()"
                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                         <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -140,13 +140,13 @@
                     <p class="mt-1 text-xs text-gray-500">
                         <span x-show="form.role === 'admin'" class="text-yellow-600">
                             <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z"/>
                             </svg>
                             Admins have full system access
                         </span>
                         <span x-show="form.role === 'job_seeker'" class="text-blue-600">
                             <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 002 2z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0 1 12 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2m4 6h.01M5 20h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
                             </svg>
                             Job seekers can apply for jobs and manage their profile
                         </span>
@@ -185,8 +185,8 @@
                                     @click="showPassword = !showPassword"
                                     class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path x-show="showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-                                    <path x-show="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path x-show="showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0 1 12 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 0 1 1.563-3.029m5.858.908a3 3 0 1 1 4.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0 1 12 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 0 1-4.132 5.411m0 0L21 21"/>
+                                    <path x-show="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                     <path x-show="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
                             </button>
@@ -197,7 +197,7 @@
                             <ul class="text-xs text-gray-500 space-y-1">
                                 <li :class="!form.password || form.password.length >= 8 ? 'text-green-600' : 'text-red-400'">
                                     <svg class="inline w-3 h-3 mr-1" :class="!form.password || form.password.length >= 8 ? 'text-green-500' : 'text-red-500'" fill="currentColor" viewBox="0 0 20 20">
-                                        <path :d="!form.password || form.password.length >= 8 ? 'M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' : 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'"/>
+                                        <path :d="!form.password || form.password.length >= 8 ? 'M16.707 5.293a1 1 0 0 1 1.414 0l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0z' : 'M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z'"/>
                                     </svg>
                                     Minimum 8 characters
                                 </li>
@@ -219,8 +219,8 @@
                                     @click="showConfirmPassword = !showConfirmPassword"
                                     class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path x-show="showConfirmPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
-                                    <path x-show="!showConfirmPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path x-show="showConfirmPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0 1 12 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 0 1 1.563-3.029m5.858.908a3 3 0 1 1 4.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0 1 12 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 0 1-4.132 5.411m0 0L21 21"/>
+                                    <path x-show="!showConfirmPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                                     <path x-show="!showConfirmPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
                             </button>
@@ -228,7 +228,7 @@
                         <p class="mt-2 text-xs" 
                            :class="!form.password || form.password === form.password_confirmation ? 'text-green-600' : 'text-red-600'">
                             <svg class="inline w-3 h-3 mr-1" :class="!form.password || form.password === form.password_confirmation ? 'text-green-500' : 'text-red-500'" fill="currentColor" viewBox="0 0 20 20">
-                                <path :d="!form.password || form.password === form.password_confirmation ? 'M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' : 'M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'"/>
+                                <path :d="!form.password || form.password === form.password_confirmation ? 'M16.707 5.293a1 1 0 0 1 1.414 0l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0z' : 'M4.293 4.293a1 1 0 0 1 1.414 0L10 8.586l4.293-4.293a1 1 0 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 0 1-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 0 1-1.414-1.414L8.586 10 4.293 5.707a1 1 0 0 1 0-1.414z'"/>
                             </svg>
                             Passwords match
                         </p>
@@ -303,7 +303,7 @@
                             <span class="flex items-center">
                                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
                                 Updating...
                             </span>
@@ -312,78 +312,6 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
-<!-- Delete Confirmation Modal -->
-<div x-show="showDeleteModal" 
-     x-transition:enter="transition ease-out duration-300"
-     x-transition:enter-start="opacity-0"
-     x-transition:enter-end="opacity-100"
-     x-transition:leave="transition ease-in duration-200"
-     x-transition:leave-start="opacity-100"
-     x-transition:leave-end="opacity-0"
-     class="fixed inset-0 z-50 overflow-y-auto" 
-     x-cloak>
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" 
-             @click="showDeleteModal = false"></div>
-        
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                        <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.342 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">
-                            Delete User
-                        </h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500">
-                                Are you sure you want to delete <span class="font-semibold">{{ $user->name }}</span>?
-                                This action cannot be undone and will permanently delete all user data.
-                            </p>
-                            <div class="mt-4 p-3 bg-red-50 rounded border border-red-200">
-                                <p class="text-sm text-red-600">
-                                    <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.342 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                                    </svg>
-                                    Warning: This action cannot be reversed.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button type="button" 
-                        @click="deleteUser"
-                        :disabled="deleting"
-                        :class="deleting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-red-700'"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                    <template x-if="!deleting">
-                        Delete User
-                    </template>
-                    <template x-if="deleting">
-                        <span class="flex items-center">
-                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Deleting...
-                        </span>
-                    </template>
-                </button>
-                <button type="button" 
-                        @click="showDeleteModal = false"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                    Cancel
-                </button>
-            </div>
-        </div>
     </div>
 </div>
 @endsection
@@ -396,7 +324,6 @@ function editUser() {
         deleting: false,
         showPassword: false,
         showConfirmPassword: false,
-        showDeleteModal: false,
         errors: {},
         form: {
             name: '{{ $user->name }}',
@@ -424,31 +351,18 @@ function editUser() {
             };
             this.errors = {};
             
-            Swal.fire({
-                title: 'Reset!',
-                text: 'Form has been reset to original values',
-                icon: 'success',
-                timer: 2000,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end'
-            });
+            this.showAlert('Reset!', 'Form has been reset to original values', 'success');
         },
         
         async toggleUserStatus() {
-            const result = await Swal.fire({
-                title: this.form.is_active ? 'Deactivate User?' : 'Activate User?',
-                text: this.form.is_active 
+            if (await this.confirmAction(
+                this.form.is_active ? 'Deactivate User?' : 'Activate User?',
+                this.form.is_active 
                     ? 'User will not be able to login until activated.'
                     : 'User will be able to login and use the system.',
-                icon: this.form.is_active ? 'warning' : 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, ' + (this.form.is_active ? 'deactivate' : 'activate'),
-                cancelButtonText: 'Cancel',
-                reverseButtons: true
-            });
-            
-            if (result.isConfirmed) {
+                this.form.is_active ? 'warning' : 'info',
+                'Yes, ' + (this.form.is_active ? 'deactivate' : 'activate') + '!'
+            )) {
                 this.form.is_active = !this.form.is_active;
             }
         },
@@ -462,15 +376,7 @@ function editUser() {
                 this.errors.password = 'Passwords do not match';
                 this.loading = false;
                 
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Passwords do not match',
-                    icon: 'error',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+                this.showAlert('Error!', 'Passwords do not match', 'error');
                 return;
             }
             
@@ -478,15 +384,7 @@ function editUser() {
                 this.errors.password = 'Password must be at least 8 characters';
                 this.loading = false;
                 
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Password must be at least 8 characters',
-                    icon: 'error',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+                this.showAlert('Error!', 'Password must be at least 8 characters', 'error');
                 return;
             }
             
@@ -509,7 +407,8 @@ function editUser() {
                 const response = await fetch('{{ route('admin.users.update', $user) }}', {
                     method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
                     },
                     body: formData
                 });
@@ -517,39 +416,43 @@ function editUser() {
                 const data = await response.json();
                 
                 if (!response.ok) {
-                    if (data.errors) {
-                        this.errors = data.errors;
+                    if (response.status === 422) {
+                        this.errors = data.errors || {};
+                        let errorMessages = [];
+                        for (const field in data.errors) {
+                            errorMessages.push(data.errors[field][0]);
+                        }
+                        
+                        this.showAlert('Validation Error!', errorMessages.join('<br>'), 'error', 5000);
+                    } else {
+                        throw new Error(data.message || 'Failed to update user');
                     }
-                    throw new Error(data.message || 'Failed to update user');
+                    return;
                 }
                 
                 // Success
-                await Swal.fire({
-                    title: 'Success!',
-                    text: 'User updated successfully',
-                    icon: 'success',
-                    showCancelButton: false,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
+                this.showAlert('Success!', data.message || 'User updated successfully', 'success').then(() => {
+                    // Redirect to users list or reload page
+                    window.location.href = '{{ route('admin.users.index') }}';
                 });
-                
-                // Redirect to users list
-                window.location.href = '{{ route('admin.users.index') }}';
                 
             } catch (error) {
                 console.error('Error:', error);
-                
-                Swal.fire({
-                    title: 'Error!',
-                    text: error.message || 'Failed to update user',
-                    icon: 'error',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+                this.showAlert('Error!', error.message || 'An error occurred while updating the user', 'error', 5000);
             } finally {
                 this.loading = false;
+            }
+        },
+        
+        async confirmDeleteUser() {
+            if (await this.confirmAction(
+                'Delete User?',
+                `Are you sure you want to delete {{ $user->name }}? This action cannot be undone and will permanently delete all user data.`,
+                'error',
+                'Yes, delete it!',
+                '#d33'
+            )) {
+                await this.deleteUser();
             }
         },
         
@@ -561,6 +464,7 @@ function editUser() {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest', // এই header টি add করো
                         'Accept': 'application/json'
                     }
                 });
@@ -572,34 +476,45 @@ function editUser() {
                 }
                 
                 // Success
-                await Swal.fire({
-                    title: 'Deleted!',
-                    text: 'User has been deleted successfully.',
-                    icon: 'success',
-                    showCancelButton: false,
-                    confirmButtonText: 'Go to Users List',
-                    confirmButtonColor: '#3085d6'
+                this.showAlert('Deleted!', data.message || 'User has been deleted successfully', 'success').then(() => {
+                    window.location.href = '{{ route('admin.users.index') }}';
                 });
-                
-                // Redirect to users list
-                window.location.href = '{{ route('admin.users.index') }}';
                 
             } catch (error) {
                 console.error('Error:', error);
-                
-                Swal.fire({
-                    title: 'Error!',
-                    text: error.message || 'Failed to delete user',
-                    icon: 'error',
-                    timer: 3000,
-                    showConfirmButton: false,
-                    toast: true,
-                    position: 'top-end'
-                });
+                this.showAlert('Error!', error.message || 'An error occurred while deleting the user', 'error', 5000);
             } finally {
                 this.deleting = false;
-                this.showDeleteModal = false;
             }
+        },
+        
+        // Common method for showing confirmation dialogs
+        async confirmAction(title, text, icon, confirmText = 'Yes, proceed!', confirmColor = '#3085d6') {
+            return await Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                showCancelButton: true,
+                confirmButtonText: confirmText,
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: confirmColor,
+                cancelButtonColor: 'gray',
+                reverseButtons: true
+            }).then((result) => result.isConfirmed);
+        },
+        
+        // Common method for showing toast alerts
+        showAlert(title, text, icon, timer = 3000) {
+            return Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                timer: timer,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end',
+                timerProgressBar: true
+            });
         }
     }
 }
@@ -608,13 +523,6 @@ function editUser() {
 
 @push('styles')
 <style>
-[x-cloak] {
-    display: none !important;
-}
-
-/* Password strength indicator */
-.password-strength {
-    transition: all 0.3s ease;
-}
+[x-cloak] { display: none !important; }
 </style>
 @endpush

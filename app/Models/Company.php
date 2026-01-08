@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Company extends Model
 {
@@ -21,6 +23,7 @@ class Company extends Model
         'size',
         'founded_date',
         'is_active',
+        'category_id',
     ];
 
     protected $casts = [
@@ -28,8 +31,13 @@ class Company extends Model
         'is_active' => 'boolean',
     ];
 
-    public function jobs()
+    public function category(): BelongsTo
     {
-        return $this->hasMany(OpenJob::class, 'company_name', 'name');
+        return $this->belongsTo(Category::class);
+    }
+
+    public function jobs(): HasMany
+    {
+        return $this->hasMany(Job::class, 'company_name', 'name');
     }
 }

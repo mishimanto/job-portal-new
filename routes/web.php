@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ApplicationController as AdminApplicationControll
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CompanyController as AdminCompanyController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\JobSeeker\DashboardController as JobSeekerDashboardController;
 use App\Http\Controllers\JobSeeker\ProfileController;
 use App\Http\Controllers\JobController;
@@ -78,6 +79,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jobs/create', [AdminJobController::class, 'create'])->name('jobs.create');
         Route::post('/jobs', [AdminJobController::class, 'store'])->name('jobs.store');
         Route::get('/jobs/{job}', [AdminJobController::class, 'show'])->name('jobs.show');
+        Route::get('/jobs/{job}/edit', [AdminJobController::class, 'edit'])->name('jobs.edit');
+        Route::put('/jobs/{job}', [AdminJobController::class, 'update'])->name('jobs.update');
         Route::post('/jobs/{job}/status', [AdminJobController::class, 'updateStatus'])->name('jobs.update-status');
         Route::delete('/jobs/{job}', [AdminJobController::class, 'destroy'])->name('jobs.destroy');
 
@@ -89,13 +92,18 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/applications/{application}', [AdminApplicationController::class, 'destroy'])->name('applications.destroy');
         
         // Users
-        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
-        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+        // Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        // Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+        // Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
         // User Management
         Route::resource('users', AdminUserController::class);
         Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('users.toggle-status');
+
+        // Categories
+        Route::resource('categories', CategoryController::class);
+        Route::patch('categories/{category}/status', [CategoryController::class, 'updateStatus'])
+            ->name('categories.update-status');
         
         // Companies
         Route::get('/companies', [AdminCompanyController::class, 'index'])->name('companies.index');

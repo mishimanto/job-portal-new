@@ -29,6 +29,31 @@
                     <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
                     @endif
                 </a>
+
+                 <!-- Categories -->
+                <a href="{{ route('admin.categories.index') }}" 
+                   class="{{ request()->routeIs('admin.categories.*') ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
+                    <svg
+                        class="{{ request()->routeIs('admin.categories.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 6a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2V6z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 15a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 15a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2v-3z"/>
+                    </svg>
+
+                    Categories
+                    @if(request()->routeIs('admin.categories.*'))
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                    @endif
+                </a>
                 
                 <!-- Jobs -->
                 <a href="{{ route('admin.jobs.index') }}" 
@@ -56,15 +81,43 @@
                 
                 <!-- Users -->
                 <a href="{{ route('admin.users.index') }}" 
-                   class="{{ request()->routeIs('admin.users.*') ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
-                    <svg class="{{ request()->routeIs('admin.users.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5 0c-.667.916-1.583 1.5-2.6 1.5h-1.3c-1.02 0-1.9-.592-2.6-1.5"/>
+                    class="{{ request()->routeIs('admin.users.*') 
+                        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' 
+                        : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} 
+                        group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="{{ request()->routeIs('admin.users.*') 
+                            ? 'text-white' 
+                            : 'text-gray-400 group-hover:text-white' }} 
+                            mr-3 h-5 w-5"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 19.128a9.38 9.38 0 0 0 2.625.372
+                                9.337 9.337 0 0 0 4.121-.952
+                                4.125 4.125 0 0 0-7.533-2.493
+                                M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07
+                                M15 19.128v.106A12.318 12.318 0 0 1 8.624 21
+                                c-2.331 0-4.512-.645-6.374-1.766l-.001-.109
+                                a6.375 6.375 0 0 1 11.964-3.07
+                                M12 6.375a3.375 3.375 0 1 1-6.75 0
+                                3.375 3.375 0 0 1 6.75 0
+                                M20.25 8.625a2.625 2.625 0 1 1-5.25 0
+                                2.625 2.625 0 0 1 5.25 0" />
                     </svg>
+
                     Users
+
                     @if(request()->routeIs('admin.users.*'))
-                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                        <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
                     @endif
                 </a>
+
                 
                 <!-- Companies -->
                 <a href="{{ route('admin.companies.index') }}" 
