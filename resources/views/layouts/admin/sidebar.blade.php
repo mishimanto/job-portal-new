@@ -146,7 +146,7 @@
         </div>
         
         <!-- User Profile (Without Logout Button) -->
-        <div class="flex-shrink-0 p-4 border-t border-gray-700 mt-auto">
+        <!-- <div class="flex-shrink-0 p-4 border-t border-gray-700 mt-auto">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
                     <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
@@ -160,7 +160,7 @@
                     <p class="text-xs text-gray-300 truncate">{{ auth()->user()->email }}</p>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -177,7 +177,6 @@
         </button>
     </div>
 
-    <!-- Mobile sidebar -->
     <!-- Mobile sidebar -->
 <div x-data="{ sidebarOpen: false }" class="lg:hidden">
     <!-- Mobile menu button -->
