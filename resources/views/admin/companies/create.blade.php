@@ -6,14 +6,14 @@
 
 @section('content')
 <div class="bg-white shadow rounded-lg overflow-hidden">
-    <div class="px-6 py-5 border-b border-gray-200">
+    <!-- <div class="px-6 py-5 border-b border-gray-200">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             Company Details
         </h3>
         <p class="mt-1 text-sm text-gray-500">
             Fill in the company information below
         </p>
-    </div>
+    </div> -->
     
     <form action="{{ route('admin.companies.store') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
         @csrf
@@ -162,31 +162,31 @@
 
         <!-- Logo Upload -->
         <div>
-    <label for="logo" class="block text-sm font-medium text-gray-700 mb-2">
-        Company Logo
-    </label>
-    <div class="flex items-center space-x-4">
-        <div class="flex-shrink-0">
-            <div id="logoPreview" class="h-16 w-16 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-gray-300 border-dashed">
-                <span class="text-gray-400 text-xs">No logo</span>
+            <label for="logo" class="block text-sm font-medium text-gray-700 mb-2">
+                Company Logo
+            </label>
+            <div class="flex items-center space-x-4">
+                <div class="flex-shrink-0">
+                    <div id="logoPreview" class="h-16 w-16 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-gray-300 border-dashed">
+                        <span class="text-gray-400 text-xs">No logo</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <input type="file" 
+                        name="logo" 
+                        id="logo"
+                        accept="image/*"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
+                        onchange="previewLogo(event)">
+                    <p class="mt-1 text-xs text-gray-500">
+                        Maximum file size: 2MB. Supported formats: JPG, PNG, GIF
+                    </p>
+                    @error('logo')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
         </div>
-        <div class="flex-1">
-            <input type="file" 
-                   name="logo" 
-                   id="logo"
-                   accept="image/*"
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200"
-                   onchange="previewLogo(event)">
-            <p class="mt-1 text-xs text-gray-500">
-                Maximum file size: 2MB. Supported formats: JPG, PNG, GIF
-            </p>
-            @error('logo')
-                <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-            @enderror
-        </div>
-    </div>
-</div>
 
 
         <!-- Form Actions -->

@@ -38,152 +38,37 @@
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Header -->
-    <div class="mb-8">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <div class="p-3 bg-blue-100 rounded-xl mr-4">
-                    <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-900">Edit Job Posting</h1>
-                    <p class="mt-2 text-lg text-gray-600">Update: {{ $job->title }}</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-3">
-                <a href="{{ route('admin.jobs.show', $job) }}" 
-                   class="inline-flex items-center px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow">
-                    <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    View Job
-                </a>
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Job Status Badges -->
+    <div class="mt-6 flex flex-wrap gap-3 mb-8">
+        <div class="flex items-center">
+            <div class="px-3 py-1.5 rounded-full text-xs font-semibold 
+                {{ $job->status == 'approved' ? 'bg-green-100 text-green-800' : 
+                   ($job->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                   'bg-red-100 text-red-800') }}">
+                {{ ucfirst($job->status) }}
             </div>
         </div>
-        
-        <!-- Job Status Badges -->
-        <div class="mt-6 flex flex-wrap gap-3">
-            <div class="flex items-center">
-                <div class="px-3 py-1.5 rounded-full text-xs font-semibold 
-                    {{ $job->status == 'approved' ? 'bg-green-100 text-green-800' : 
-                       ($job->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                       'bg-red-100 text-red-800') }}">
-                    {{ ucfirst($job->status) }}
-                </div>
-            </div>
-            <div class="flex items-center">
-                <div class="px-3 py-1.5 rounded-full text-xs font-semibold 
-                    {{ $job->is_active ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
-                    {{ $job->is_active ? 'Active' : 'Inactive' }}
-                </div>
-            </div>
-            <div class="flex items-center">
-                <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
-                    {{ $job->job_type }}
-                </div>
-            </div>
-            <div class="flex items-center">
-                <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
-                    {{ $job->experience_level }}
-                </div>
+        <div class="flex items-center">
+            <div class="px-3 py-1.5 rounded-full text-xs font-semibold 
+                {{ $job->is_active ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800' }}">
+                {{ $job->is_active ? 'Active' : 'Inactive' }}
             </div>
         </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 bg-blue-50 rounded-xl mr-4">
-                    <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-600">Created</p>
-                    <p class="text-xl font-bold text-gray-900">{{ $job->created_at->format('M d, Y') }}</p>
-                </div>
+        <div class="flex items-center">
+            <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800">
+                {{ $job->job_type }}
             </div>
         </div>
-        
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 bg-green-50 rounded-xl mr-4">
-                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-600">Last Updated</p>
-                    <p class="text-xl font-bold text-gray-900">{{ $job->updated_at->format('M d, Y') }}</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 bg-purple-50 rounded-xl mr-4">
-                    <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-600">Location</p>
-                    <p class="text-xl font-bold text-gray-900">{{ $job->location }}</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <div class="flex items-center">
-                <div class="p-3 bg-indigo-50 rounded-xl mr-4">
-                    <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-sm font-medium text-gray-600">Salary</p>
-                    <p class="text-xl font-bold text-gray-900">
-                        @if($job->is_negotiable)
-                            Negotiable
-                        @elseif($job->salary_min && $job->salary_max)
-                            ${{ number_format($job->salary_min) }} - ${{ number_format($job->salary_max) }}
-                        @else
-                            Not specified
-                        @endif
-                    </p>
-                </div>
+        <div class="flex items-center">
+            <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+                {{ $job->experience_level }}
             </div>
         </div>
     </div>
 
     <!-- Form Container -->
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8">
-        <!-- Form Header -->
-        <div class="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="p-3 bg-blue-100 rounded-xl">
-                            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        <h2 class="text-xl font-bold text-gray-900">Edit Job Information</h2>
-                        <p class="text-sm text-gray-600 mt-1">Update the details below and save changes</p>
-                    </div>
-                </div>
-                <div class="px-4 py-2 bg-white rounded-full border border-blue-200">
-                    <span class="text-sm font-semibold text-blue-700">ID: #{{ $job->id }}</span>
-                </div>
-            </div>
-        </div>
-
         <!-- Form Content -->
         <form action="{{ route('admin.jobs.update', $job) }}" method="POST" enctype="multipart/form-data" class="divide-y divide-gray-100">
             @csrf
@@ -199,10 +84,10 @@
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Basic Information</h3>
-                        <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span>
                     </div>
                     
                     <div class="space-y-8">
+                        <!-- Grid Row 1 -->
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <!-- Job Title -->
                             <div>
@@ -220,6 +105,7 @@
                                     </div>
                                     <input type="text" name="title" id="title" 
                                            value="{{ old('title', $job->title) }}"
+                                           placeholder="e.g., Senior Software Engineer"
                                            required
                                            class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
                                 </div>
@@ -260,11 +146,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
                                 </div>
                                 @error('company_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -296,11 +177,6 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
                                 </div>
                                 @error('category_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -322,18 +198,15 @@
                                 <span class="ml-1 text-red-500">*</span>
                             </div>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute pt-5 left-3 my-auto">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                     </svg>
                                 </div>
                                 <textarea name="description" id="description" rows="6"
+                                          placeholder="Provide a detailed description of the job role, responsibilities, and qualifications."
                                           required
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('description', $job->description) }}</textarea>
-                            </div>
-                            <div class="flex justify-between items-center mt-2">
-                                <p class="text-xs text-gray-500">Detailed job description helps attract better candidates</p>
-                                <span class="text-xs text-gray-400" id="char-count">{{ strlen($job->description) }} characters</span>
                             </div>
                             @error('description')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -358,7 +231,6 @@
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Job Details</h3>
-                        <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span>
                     </div>
                     
                     <div class="space-y-8">
@@ -381,7 +253,8 @@
                                     <input type="text" name="location" id="location" 
                                            value="{{ old('location', $job->location) }}"
                                            required
-                                           class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
+                                           class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300"
+                                           placeholder="e.g., New York, NY">
                                 </div>
                                 @error('location')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -417,11 +290,6 @@
                                         <option value="internship" {{ old('job_type', $job->job_type) == 'internship' ? 'selected' : '' }}>Internship</option>
                                         <option value="hybrid" {{ old('job_type', $job->job_type) == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
                                 </div>
                                 @error('job_type')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -459,11 +327,6 @@
                                         <option value="lead" {{ old('experience_level', $job->experience_level) == 'lead' ? 'selected' : '' }}>Lead/Manager</option>
                                         <option value="executive" {{ old('experience_level', $job->experience_level) == 'executive' ? 'selected' : '' }}>Executive</option>
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
                                 </div>
                                 @error('experience_level')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -519,11 +382,10 @@
                     
                     <div class="space-y-8">
                         <!-- Negotiable Toggle -->
-                        <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                        <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h4 class="font-semibold text-gray-900">Salary Negotiability</h4>
-                                    <p class="text-sm text-gray-600 mt-1">Enable if salary range is flexible</p>
+                                    <h4 class="font-semibold text-gray-900">Salary Negotiable</h4>
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" name="is_negotiable" id="is_negotiable" value="1" 
@@ -535,64 +397,57 @@
                         </div>
 
                         <!-- Salary Range -->
-                        <div id="salary-range-container">
-                            <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Salary Range (Monthly)
-                                </label>
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500">$</span>
-                                            </div>
-                                            <input type="number" name="salary_min" id="salary_min" 
-                                                   value="{{ old('salary_min', $job->salary_min) }}"
-                                                   min="0" step="1000"
-                                                   placeholder="Minimum salary"
-                                                   class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
-                                        </div>
-                                    </div>
-                                    
-                                    <div>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500">$</span>
-                                            </div>
-                                            <input type="number" name="salary_max" id="salary_max" 
-                                                   value="{{ old('salary_max', $job->salary_max) }}"
-                                                   min="0" step="1000"
-                                                   placeholder="Maximum salary"
-                                                   class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
-                                        </div>
+                        <div id="salary-range-container" class="mb-4">
+
+                            <label class="block text-sm font-semibold text-gray-800 mb-3">
+                                Salary Range (Monthly)
+                            </label>
+
+                            <!-- All in One Row -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                                <!-- Currency -->
+                                <div>
+                                    <div class="relative group">
+                                        <select name="salary_currency" id="salary_currency"
+                                            class="block w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                                            <option value="BDT" {{ old('salary_currency', $job->salary_currency) == 'BDT' ? 'selected' : '' }}>BDT (৳)</option>
+                                            <option value="USD" {{ old('salary_currency', $job->salary_currency) == 'USD' ? 'selected' : '' }}>USD ($)</option>
+                                            <option value="EUR" {{ old('salary_currency', $job->salary_currency) == 'EUR' ? 'selected' : '' }}>EUR (€)</option>
+                                            <option value="GBP" {{ old('salary_currency', $job->salary_currency) == 'GBP' ? 'selected' : '' }}>GBP (£)</option>
+                                            <option value="INR" {{ old('salary_currency', $job->salary_currency) == 'INR' ? 'selected' : '' }}>INR (₹)</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <p class="mt-3 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
-                                    💡 Leave empty if salary is negotiable. Provide range for better candidate expectations.
-                                </p>
+
+                                <!-- Minimum Salary -->
+                                <div>
+                                    <div class="relative">
+                                        <input type="number" name="salary_min" id="salary_min"
+                                            value="{{ old('salary_min', $job->salary_min) }}"
+                                            placeholder="Min Salary"
+                                            class="pl-8 w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:bg-white">
+                                    </div>
+                                </div>
+
+                                <!-- Maximum Salary -->
+                                <div>
+                                    <div class="relative">
+                                        <input type="number" name="salary_max" id="salary_max"
+                                            value="{{ old('salary_max', $job->salary_max) }}"
+                                            placeholder="Max Salary"
+                                            class="pl-8 w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:bg-white">
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <!-- Currency -->
-                            <div id="currency-container">
-                                <label for="salary_currency" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Currency
-                                </label>
-                                <div class="relative group max-w-xs">
-                                    <select name="salary_currency" id="salary_currency" 
-                                            class="block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
-                                        <option value="USD" {{ old('salary_currency', $job->salary_currency ?? 'USD') == 'USD' ? 'selected' : '' }}>USD - United States Dollar ($)</option>
-                                        <option value="EUR" {{ old('salary_currency', $job->salary_currency) == 'EUR' ? 'selected' : '' }}>EUR - Euro (€)</option>
-                                        <option value="GBP" {{ old('salary_currency', $job->salary_currency) == 'GBP' ? 'selected' : '' }}>GBP - British Pound (£)</option>
-                                        <option value="BDT" {{ old('salary_currency', $job->salary_currency) == 'BDT' ? 'selected' : '' }}>BDT - Bangladeshi Taka (৳)</option>
-                                        <option value="INR" {{ old('salary_currency', $job->salary_currency) == 'INR' ? 'selected' : '' }}>INR - Indian Rupee (₹)</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+                            <p class="mt-3 text-xs text-gray-500 rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>Leave empty if salary is negotiable. Provide range for better candidate expectations.</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -617,7 +472,7 @@
                                 Skills Required
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute top-4 left-3 pt-1">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
@@ -626,7 +481,12 @@
                                           placeholder="e.g., JavaScript, PHP, Laravel, React, Vue.js, Python, AWS"
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('skills_required', is_array($job->skills_required) ? implode(', ', $job->skills_required) : $job->skills_required) }}</textarea>
                             </div>
-                            <p class="mt-2 text-xs text-gray-500">Separate skills with commas. Add relevant technologies.</p>
+                            <p class="mt-3 text-xs text-gray-500 rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-xs text-gray-500">Separate skills with commas. Add relevant technologies.</span>
+                            </p>
                         </div>
 
                         <!-- Benefits -->
@@ -635,16 +495,21 @@
                                 Benefits
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute top-4 left-3 pt-1">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
                                     </svg>
                                 </div>
-                                <textarea name="benefits" id="benefits" rows="5"
+                                <textarea name="benefits" id="benefits" rows="7"
                                           placeholder="Health Insurance&#10;Paid Time Off&#10;Remote Work Options&#10;Professional Development&#10;Stock Options&#10;Flexible Hours"
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('benefits', is_array($job->benefits) ? implode("\n", $job->benefits) : $job->benefits) }}</textarea>
                             </div>
-                            <p class="mt-2 text-xs text-gray-500">Enter each benefit on a new line. Competitive benefits attract top talent.</p>
+                            <p class="mt-3 text-xs text-gray-500 rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-xs text-gray-500">Enter each benefit on a new line. Competitive benefits attract top talent.</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -667,82 +532,73 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Company Logo -->
                             <div>
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Company Logo
-                                </label>
-                                
-                                @if($job->company_logo)
-                                    <!-- Current Logo -->
-                                    <div class="mb-4 p-5 bg-blue-50 rounded-2xl border border-blue-100">
-                                        <div class="flex items-center justify-between">
-                                            <div class="flex items-center space-x-4">
-                                                <img src="{{ Storage::url($job->company_logo) }}" 
-                                                     alt="{{ $job->company->name ?? 'Company' }} Logo"
-                                                     class="h-14 w-14 rounded-xl object-cover border-2 border-white shadow">
-                                                <div>
-                                                    <p class="font-medium text-gray-900">Current Logo</p>
-                                                    <p class="text-sm text-gray-600">Upload new to replace</p>
+                                <div class="mt-1">
+                                    <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-blue-400 transition-colors duration-200 bg-gray-50 hover:bg-blue-50 relative">
+                                        
+                                        <div class="text-center">
+                                            @if($job->company_logo)
+                                            <div id="current-logo-container" 
+                                                class="mb-4 flex items-center justify-between bg-white px-3 py-2 rounded-md border border-gray-200 max-w-xs mx-auto">
+                                                
+                                                <div class="flex items-center space-x-2">
+                                                    <img src="{{ Storage::url($job->company_logo) }}" 
+                                                        alt="{{ $job->company->name ?? 'Company' }} Logo"
+                                                        class="h-10 w-10 rounded-lg object-cover border border-gray-200">
+                                                    <span class="text-sm font-medium truncate">Current Logo</span>
                                                 </div>
+
+                                                <button type="button" 
+                                                        onclick="removeCurrentLogo()"
+                                                        class="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1 rounded-md hover:bg-red-50 transition-colors">
+                                                    Remove
+                                                </button>
                                             </div>
-                                            <button type="button" 
-                                                    onclick="removeCurrentLogo()"
-                                                    class="text-sm font-semibold text-red-600 hover:text-red-800 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
-                                                Remove
-                                            </button>
+                                            @endif
+                                            
+                                            <div class="mt-2">
+                                                <label for="company_logo" class="cursor-pointer">
+                                                    <span class="inline-flex items-center px-4 py-2.5 text-blue-500 font-semibold rounded-lg hover:bg-gray-200 transition-colors duration-200">
+                                                        <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                                        </svg>
+                                                        {{ $job->company_logo ? 'Change Logo' : 'Upload Logo' }}
+                                                    </span>
+                                                    <input type="file" name="company_logo" id="company_logo" 
+                                                           accept="image/*"
+                                                           class="sr-only">
+                                                </label>
+                                            </div>
+                                            <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
                                         </div>
-                                    </div>
-                                @endif
-                                
-                                <!-- Logo Upload -->
-                                <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-blue-400 transition-colors duration-200 bg-gray-50 hover:bg-blue-50">
-                                    <div class="text-center">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                        </svg>
-                                        <div class="mt-4">
-                                            <label for="company_logo" class="cursor-pointer">
-                                                <span class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                                                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                                                    </svg>
-                                                    {{ $job->company_logo ? 'Change Logo' : 'Upload Logo' }}
-                                                </span>
-                                                <input type="file" name="company_logo" id="company_logo" 
-                                                       accept="image/*"
-                                                       class="sr-only">
-                                            </label>
-                                        </div>
-                                        <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- New Logo Preview -->
-                                <div id="logo-preview" class="hidden mt-4">
-                                    <div class="flex items-center justify-between bg-indigo-50 p-5 rounded-2xl border border-indigo-100">
-                                        <div class="flex items-center space-x-4">
-                                            <img id="preview-image" class="h-14 w-14 rounded-xl object-cover border-2 border-white shadow" 
-                                                 src="" alt="New logo preview">
-                                            <div>
-                                                <p class="font-medium text-gray-900">New Logo Preview</p>
-                                                <p class="text-sm text-gray-600">Will replace current logo</p>
+
+                                        <!-- New Logo Preview (shows in same position as current logo) -->
+                                        <div id="logo-preview" class="hidden">
+                                            <div class="mt-2 mb-4 flex items-center justify-between bg-white px-3 py-2 rounded-md border border-gray-200 max-w-xs mx-auto">
+                                                <div class="flex items-center space-x-2">
+                                                    <img id="preview-image" class="h-10 w-10 rounded-lg object-cover border border-gray-200" 
+                                                         src="" alt="New logo preview">
+                                                    <span class="text-sm font-medium truncate">New Logo</span>
+                                                </div>
+                                                <button type="button" 
+                                                        onclick="removeLogoPreview()"
+                                                        class="text-xs text-red-600 hover:text-red-800 font-medium px-2 py-1 rounded-md hover:bg-red-50 transition-colors">
+                                                    Remove
+                                                </button>
                                             </div>
                                         </div>
-                                        <button type="button" 
-                                                onclick="removeLogoPreview()"
-                                                class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors">
-                                            Cancel
-                                        </button>
                                     </div>
                                 </div>
                                 
                                 <!-- Hidden field for logo removal -->
-                                <input type="hidden" name="remove_logo" id="remove_logo" value="0">
+                                @if($job->company_logo)
+                                    <input type="hidden" name="remove_logo" id="remove_logo" value="0">
+                                @endif
                             </div>
 
                             <!-- Status & Active -->
                             <div class="space-y-6">
                                 <!-- Active Status -->
-                                <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                                <div class="bg-white p-4 rounded-xl border border-gray-200">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <div class="p-2 bg-blue-50 rounded-lg mr-3">
@@ -752,7 +608,6 @@
                                             </div>
                                             <div>
                                                 <h4 class="font-semibold text-gray-900">Active Status</h4>
-                                                <p class="text-sm text-gray-600 mt-1">Make job visible to candidates</p>
                                             </div>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
@@ -765,25 +620,18 @@
                                 </div>
 
                                 <!-- Approval Status -->
-                                <div class="bg-white p-5 rounded-2xl border border-gray-200">
+                                <div class="bg-white p-5 rounded-xl border border-gray-200">
                                     <label for="status" class="block text-sm font-semibold text-gray-800 mb-2">
                                         Approval Status
                                     </label>
                                     <div class="relative group">
                                         <select name="status" id="status"
                                                 class="block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
-                                            <option value="pending" {{ old('status', $job->status) == 'pending' ? 'selected' : '' }}>⏳ Pending Review</option>
-                                            <option value="approved" {{ old('status', $job->status) == 'approved' ? 'selected' : '' }}>✅ Approved</option>
-                                            <option value="rejected" {{ old('status', $job->status) == 'rejected' ? 'selected' : '' }}>❌ Rejected</option>
-                                            <option value="draft" {{ old('status', $job->status) == 'draft' ? 'selected' : '' }}>📝 Draft</option>
+                                            <option value="approved" {{ old('status', $job->status) == 'approved' ? 'selected' : '' }}>Approved</option>
+                                            <option value="pending" {{ old('status', $job->status) == 'pending' ? 'selected' : '' }}>Pending Review</option>
+                                            <option value="rejected" {{ old('status', $job->status) == 'rejected' ? 'selected' : '' }}>Rejected</option>
                                         </select>
-                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                            </svg>
-                                        </div>
                                     </div>
-                                    <p class="mt-2 text-xs text-gray-500">Changing status may affect visibility and applicant flow.</p>
                                 </div>
                             </div>
                         </div>
@@ -794,35 +642,17 @@
             <!-- Form Actions -->
             <div class="px-8 py-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600">
-                            <span class="text-red-500">*</span> Indicates required field
-                            <span class="mx-2">•</span>
-                            Last saved: {{ $job->updated_at->diffForHumans() }}
-                        </p>
-                    </div>
                     <div class="flex items-center space-x-4">
-                        <a href="{{ route('admin.jobs.show', $job) }}" 
+                        <a href="{{ route('admin.jobs.index') }}" 
                            class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                            </svg>
                             Cancel
                         </a>
-                        <button type="button" onclick="previewChanges()"
-                                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
-                            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                            </svg>
-                            Preview
-                        </button>
                         <button type="submit" 
-                                class="inline-flex items-center px-8 py-3.5 border border-transparent rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl">
+                                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
                             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
-                            Update Job
+                            Update Job Posting
                         </button>
                     </div>
                 </div>
@@ -830,37 +660,40 @@
         </form>
     </div>
 
-    <!-- Activity Log -->
-    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8">
-        <div class="px-8 py-6 border-b border-gray-100 bg-gray-50">
-            <h3 class="text-lg font-bold text-gray-900">Recent Activity</h3>
-        </div>
-        <div class="px-8 py-6">
-            <div class="space-y-4">
-                <div class="flex items-start">
-                    <div class="p-2 bg-green-100 rounded-lg mr-4">
-                        <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Tips Sidebar -->
+    <div class="">
+        <div class="lg:w-2/3"></div>
+        <div class="">
+            <div class="bg-gradient-to-b from-blue-50 to-white rounded-2xl border border-blue-100 p-6 mb-6">
+                <div class="flex items-center mb-4">
+                    <h4 class="font-bold text-gray-900">Notes:</h4>
+                </div>
+                <ul class="space-y-2">
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-900">Job created successfully</p>
-                        <p class="text-sm text-gray-600">By Admin on {{ $job->created_at->format('M d, Y h:i A') }}</p>
-                    </div>
-                </div>
-                @if($job->updated_at != $job->created_at)
-                <div class="flex items-start">
-                    <div class="p-2 bg-blue-100 rounded-lg mr-4">
-                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        <span class="text-sm text-gray-700">Be specific with job titles and descriptions</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                    </div>
-                    <div>
-                        <p class="text-sm font-medium text-gray-900">Last updated</p>
-                        <p class="text-sm text-gray-600">By Admin on {{ $job->updated_at->format('M d, Y h:i A') }}</p>
-                    </div>
-                </div>
-                @endif
+                        <span class="text-sm text-gray-700">Include detailed requirements to attract qualified candidates</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span class="text-sm text-gray-700">Competitive benefits increase application rates</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span class="text-sm text-gray-700">Set realistic deadlines for better planning</span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -871,7 +704,6 @@
 // Character count for description
 document.getElementById('description').addEventListener('input', function(e) {
     const charCount = this.value.length;
-    document.getElementById('char-count').textContent = charCount + ' characters';
 });
 
 // Handle negotiable checkbox
@@ -880,7 +712,6 @@ const salaryMin = document.getElementById('salary_min');
 const salaryMax = document.getElementById('salary_max');
 const salaryCurrency = document.getElementById('salary_currency');
 const salaryContainer = document.getElementById('salary-range-container');
-const currencyContainer = document.getElementById('currency-container');
 
 function toggleSalaryFields() {
     if (negotiableCheckbox.checked) {
@@ -891,16 +722,12 @@ function toggleSalaryFields() {
         salaryMax.value = '';
         salaryContainer.style.opacity = '0.5';
         salaryContainer.style.pointerEvents = 'none';
-        currencyContainer.style.opacity = '0.5';
-        currencyContainer.style.pointerEvents = 'none';
     } else {
         salaryMin.disabled = false;
         salaryMax.disabled = false;
         salaryCurrency.disabled = false;
         salaryContainer.style.opacity = '1';
         salaryContainer.style.pointerEvents = 'auto';
-        currencyContainer.style.opacity = '1';
-        currencyContainer.style.pointerEvents = 'auto';
     }
 }
 
@@ -911,10 +738,7 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleSalaryFields();
     
     // Set minimum date for deadline to today
-    const deadlineField = document.getElementById('application_deadline');
-    if (deadlineField && !deadlineField.value) {
-        deadlineField.min = new Date().toISOString().split('T')[0];
-    }
+    document.getElementById('application_deadline').min = new Date().toISOString().split('T')[0];
 });
 
 // Auto-format skills input
@@ -930,52 +754,111 @@ document.getElementById('benefits').addEventListener('blur', function(e) {
 });
 
 // Logo preview functionality
-document.getElementById('company_logo').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('preview-image');
-            const logoPreview = document.getElementById('logo-preview');
-            
-            preview.src = e.target.result;
-            logoPreview.classList.remove('hidden');
+const companyLogoInput = document.getElementById('company_logo');
+if (companyLogoInput) {
+    companyLogoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('preview-image');
+                const logoPreview = document.getElementById('logo-preview');
+                
+                if (preview && logoPreview) {
+                    preview.src = e.target.result;
+                    logoPreview.classList.remove('hidden');
+                    
+                    // Hide current logo when new one is selected
+                    const currentLogoContainer = document.getElementById('current-logo-container');
+                    if (currentLogoContainer) {
+                        currentLogoContainer.classList.add('hidden');
+                    }
+                }
+            }
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(file);
-    }
-});
+    });
+}
 
 function removeLogoPreview() {
     const input = document.getElementById('company_logo');
     const logoPreview = document.getElementById('logo-preview');
     
-    input.value = '';
-    logoPreview.classList.add('hidden');
-}
-
-function removeCurrentLogo() {
-    if (confirm('Are you sure you want to remove the current logo?')) {
-        document.getElementById('remove_logo').value = '1';
-        const logoContainer = document.querySelector('.bg-blue-50 .flex.items-center.justify-between');
-        if (logoContainer) {
-            logoContainer.closest('.mb-4').remove();
+    if (input && logoPreview) {
+        input.value = '';
+        logoPreview.classList.add('hidden');
+        
+        // Show current logo again if exists
+        const currentLogoContainer = document.getElementById('current-logo-container');
+        if (currentLogoContainer) {
+            currentLogoContainer.classList.remove('hidden');
         }
     }
 }
 
-function previewChanges() {
-    alert('Preview functionality would show how the job will appear to applicants. In a real application, this would open a preview modal.');
+function removeCurrentLogo() {
+    // SweetAlert 2 confirmation
+    Swal.fire({
+        title: 'Remove Current Logo?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: 'gray',
+        confirmButtonText: 'Yes, remove it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'px-4 py-2 rounded-lg',
+            cancelButton: 'px-4 py-2 rounded-lg'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const removeLogoInput = document.getElementById('remove_logo');
+            if (removeLogoInput) {
+                removeLogoInput.value = '1';
+            }
+            
+            // Hide current logo container
+            const currentLogoContainer = document.getElementById('current-logo-container');
+            if (currentLogoContainer) {
+                currentLogoContainer.classList.add('hidden');
+            }
+            
+            // Reset file input if any
+            const fileInput = document.getElementById('company_logo');
+            if (fileInput) {
+                fileInput.value = '';
+            }
+            
+            // Hide new logo preview if visible
+            const logoPreview = document.getElementById('logo-preview');
+            if (logoPreview) {
+                logoPreview.classList.add('hidden');
+            }
+            
+            // Show success message
+            Swal.fire(
+                'Removed!',
+                'Current logo has been removed.',
+                'success'
+            );
+        }
+    });
 }
 
 // Update is_active based on status selection
-document.getElementById('status').addEventListener('change', function(e) {
-    const isActiveCheckbox = document.getElementById('is_active');
-    if (this.value === 'approved') {
-        isActiveCheckbox.checked = true;
-    } else if (this.value === 'rejected') {
-        isActiveCheckbox.checked = false;
-    }
-});
+const statusSelect = document.getElementById('status');
+if (statusSelect) {
+    statusSelect.addEventListener('change', function(e) {
+        const isActiveCheckbox = document.getElementById('is_active');
+        if (this.value === 'approved') {
+            isActiveCheckbox.checked = true;
+        } else if (this.value === 'rejected') {
+            isActiveCheckbox.checked = false;
+        }
+    });
+}
 </script>
 @endpush
 @endsection

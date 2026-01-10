@@ -694,49 +694,181 @@
             </div>
 
             <!-- Social Links -->
-            <div id="social-links" class="bg-white rounded-lg shadow p-6 mb-6">
-                <h2 class="text-xl font-semibold mb-4">Social Links</h2>
-                <form action="{{ route('job-seeker.profile.social-links.update') }}" method="POST">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">LinkedIn</label>
-                            <input type="url" name="linkedin" value="{{ old('linkedin', $socialLinks->linkedin ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://linkedin.com/in/username">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">GitHub</label>
-                            <input type="url" name="github" value="{{ old('github', $socialLinks->github ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://github.com/username">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Twitter</label>
-                            <input type="url" name="twitter" value="{{ old('twitter', $socialLinks->twitter ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://twitter.com/username">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Portfolio Website</label>
-                            <input type="url" name="website" value="{{ old('website', $socialLinks->website ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
-                            <input type="url" name="facebook" value="{{ old('facebook', $socialLinks->facebook ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://facebook.com/username">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
-                            <input type="url" name="instagram" value="{{ old('instagram', $socialLinks->instagram ?? '') }}" 
-                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://instagram.com/username">
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            Save Social Links
-                        </button>
-                    </div>
-                </form>
+            <!-- Social Links -->
+<div id="social-links" class="bg-white rounded-lg shadow p-6 mb-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Social Links</h2>
+        <button type="button" onclick="toggleSocialLinkForm()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            Add Social Link
+        </button>
+    </div>
+
+    <!-- Add Social Link Form (Initially Hidden) -->
+    <div id="socialLinkForm" class="hidden mb-6">
+        <form action="{{ route('job-seeker.profile.social-link.store') }}" method="POST">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
+                    <select name="platform" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="">Select Platform</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="github">GitHub</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="website">Portfolio Website</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                    <input type="url" name="url" required class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="https://example.com/username">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username (Optional)</label>
+                    <input type="text" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="username">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_public" value="1" class="mr-2" checked>
+                        <span class="text-sm text-gray-700">Make this link public on your profile</span>
+                    </label>
+                </div>
             </div>
+            <div class="mt-4">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Add Social Link</button>
+                <button type="button" onclick="toggleSocialLinkForm()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md ml-2">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Edit Social Link Form (Hidden by default) -->
+    <div id="editSocialLinkForm" class="hidden mb-6">
+        <form id="editSocialLinkFormElement" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Platform</label>
+                    <select name="platform" required id="edit_social_platform" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="">Select Platform</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="github">GitHub</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="website">Portfolio Website</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">URL</label>
+                    <input type="url" name="url" required id="edit_social_url" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username (Optional)</label>
+                    <input type="text" name="username" id="edit_social_username" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_public" value="1" id="edit_social_is_public" class="mr-2">
+                        <span class="text-sm text-gray-700">Make this link public on your profile</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md">Update Social Link</button>
+                <button type="button" onclick="toggleEditSocialLinkForm()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md ml-2">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Social Links List -->
+    <div class="space-y-4">
+        @foreach($socialLinks as $link)
+        <div class="border border-gray-200 rounded-lg p-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <!-- Platform Icon -->
+                    @switch($link->platform)
+                        @case('linkedin')
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i class="fab fa-linkedin text-blue-600 text-lg"></i>
+                            </div>
+                            @break
+                        @case('github')
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fab fa-github text-gray-800 text-lg"></i>
+                            </div>
+                            @break
+                        @case('twitter')
+                            <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
+                                <i class="fab fa-twitter text-blue-400 text-lg"></i>
+                            </div>
+                            @break
+                        @case('facebook')
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i class="fab fa-facebook text-blue-600 text-lg"></i>
+                            </div>
+                            @break
+                        @case('instagram')
+                            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center">
+                                <i class="fab fa-instagram text-pink-600 text-lg"></i>
+                            </div>
+                            @break
+                        @case('website')
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                                <i class="fas fa-globe text-green-600 text-lg"></i>
+                            </div>
+                            @break
+                        @default
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                <i class="fas fa-link text-gray-600 text-lg"></i>
+                            </div>
+                    @endswitch
+                    
+                    <div>
+                        <h3 class="font-medium text-gray-900">{{ ucfirst($link->platform) }}</h3>
+                        @if($link->username)
+                        <p class="text-sm text-gray-600">Username: {{ $link->username }}</p>
+                        @endif
+                        <a href="{{ $link->url }}" target="_blank" class="text-blue-600 text-sm hover:underline block truncate max-w-xs">
+                            {{ $link->url }}
+                        </a>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $link->is_public ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                            {{ $link->is_public ? 'Public' : 'Private' }}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button onclick="editSocialLink({{ $link->id }}, '{{ $link->platform }}', '{{ $link->url }}', '{{ $link->username }}', {{ $link->is_public ? 'true' : 'false' }})" 
+                            class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        Edit
+                    </button>
+                    <form action="{{ route('job-seeker.profile.social-link.destroy', $link) }}" method="POST" class="inline">
+                        @csrf @method('DELETE')
+                        <button type="submit" 
+                                class="text-red-600 hover:text-red-800 text-sm font-medium" 
+                                onclick="return confirm('Are you sure you want to delete this social link?')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
+        
+        @if($socialLinks->isEmpty())
+        <div class="text-center py-8 border-2 border-gray-300 border-dashed rounded-lg">
+            <i class="fas fa-share-alt text-gray-400 text-4xl mb-3"></i>
+            <p class="text-gray-500">No social links added yet.</p>
+            <p class="text-gray-400 text-sm mt-1">Click "Add Social Link" to add your social media profiles.</p>
+        </div>
+        @endif
+    </div>
+</div>
 
             <!-- Visibility Settings -->
             <div id="visibility" class="bg-white rounded-lg shadow p-6">
@@ -907,6 +1039,30 @@ function editCertification(id, name, issuingOrganization, issueDate, expirationD
     
     // Scroll to form
     document.getElementById('editCertificationForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Social Link Functions
+function toggleSocialLinkForm() {
+    document.getElementById('socialLinkForm').classList.toggle('hidden');
+}
+
+function toggleEditSocialLinkForm() {
+    document.getElementById('editSocialLinkForm').classList.toggle('hidden');
+}
+
+function editSocialLink(id, platform, url, username, isPublic) {
+    document.getElementById('editSocialLinkForm').classList.remove('hidden');
+    document.getElementById('edit_social_platform').value = platform;
+    document.getElementById('edit_social_url').value = url;
+    document.getElementById('edit_social_username').value = username || '';
+    document.getElementById('edit_social_is_public').checked = isPublic === 'true';
+    
+    // Set form action
+    const form = document.getElementById('editSocialLinkFormElement');
+    form.action = `/job-seeker/profile/social-link/${id}`;
+    
+    // Scroll to form
+    document.getElementById('editSocialLinkForm').scrollIntoView({ behavior: 'smooth' });
 }
 
 // Smooth scrolling for navigation links

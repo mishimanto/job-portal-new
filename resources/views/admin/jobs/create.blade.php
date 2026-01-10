@@ -28,10 +28,10 @@
 @endsection
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header with Stats -->
     <div class="mb-8">
-        <div class="flex items-center justify-between">
+        <!-- <div class="flex items-center justify-between">
             <div>
                 <div class="flex items-center">
                     <div class="p-3 bg-blue-100 rounded-xl mr-4">
@@ -54,46 +54,56 @@
                     Back to Jobs
                 </a>
             </div>
-        </div>
+        </div> -->
         
         <!-- Progress Steps -->
-        <div class="mt-8 max-w-3xl">
-            <div class="flex items-center justify-between relative">
-                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2 z-0"></div>
-                <div class="relative z-10 flex items-center">
+        <div class="mt-8 max-w-7xl mx-auto">
+            <div class="relative flex items-center justify-between">
+
+                <!-- Background Line -->
+                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex items-center gap-3 px-2">
                     <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-                        <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
+                        <span class="text-white font-semibold">1</span>
                     </div>
-                    <span class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium text-blue-600">Basic Info</span>
+                    <span class="whitespace-nowrap text-sm font-medium text-blue-600">Basic Info</span>
                 </div>
-                <div class="relative z-10 flex items-center">
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex items-center gap-3 px-2">
                     <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
                         <span class="text-white font-semibold">2</span>
                     </div>
-                    <span class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium text-blue-600">Details</span>
+                    <span class="whitespace-nowrap text-sm font-medium text-blue-600">Details</span>
                 </div>
-                <div class="relative z-10 flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500 font-semibold">3</span>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex items-center gap-3  px-2">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                        <span class="text-white font-semibold">3</span>
                     </div>
-                    <span class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium text-gray-500">Salary</span>
+                    <span class="whitespace-nowrap text-sm font-medium text-blue-600">Salary</span>
                 </div>
-                <div class="relative z-10 flex items-center">
-                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500 font-semibold">4</span>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 flex items-center gap-3 px-2">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                        <span class="text-white font-semibold">4</span>
                     </div>
-                    <span class="absolute top-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm font-medium text-gray-500">Requirements</span>
+                    <span class="whitespace-nowrap text-sm font-medium text-blue-600">Requirements</span>
                 </div>
+
             </div>
         </div>
+
     </div>
 
     <!-- Form Container -->
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-8">
         <!-- Form Header -->
-        <div class="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <!-- <div class="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -112,7 +122,7 @@
                     <span class="text-sm font-semibold text-blue-700">Step 1 of 4</span>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Form Content -->
         <form action="{{ route('admin.jobs.store') }}" method="POST" enctype="multipart/form-data" class="divide-y divide-gray-100">
@@ -128,7 +138,7 @@
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Basic Information</h3>
-                        <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span>
+                        <!-- <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span> -->
                     </div>
                     
                     <div class="space-y-8">
@@ -150,6 +160,7 @@
                                     </div>
                                     <input type="text" name="title" id="title" 
                                            value="{{ old('title') }}"
+                                           placeholder="e.g., Senior Software Engineer"
                                            required
                                            class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
                                 </div>
@@ -187,11 +198,11 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 @error('company_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -223,11 +234,11 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 @error('category_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -249,19 +260,20 @@
                                 <span class="ml-1 text-red-500">*</span>
                             </div>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute top-10 pt-5 left-3 my-auto">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                     </svg>
                                 </div>
                                 <textarea name="description" id="description" rows="6"
+                                          placeholder="Provide a detailed description of the job role, responsibilities, and qualifications."
                                           required
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('description') }}</textarea>
                             </div>
-                            <div class="flex justify-between items-center mt-2">
+                            <!-- <div class="flex justify-between items-center mt-2">
                                 <p class="text-xs text-gray-500">Detailed job description helps attract better candidates</p>
                                 <span class="text-xs text-gray-400" id="char-count">0 characters</span>
-                            </div>
+                            </div> -->
                             @error('description')
                             <p class="mt-2 text-sm text-red-600 flex items-center">
                                 <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,7 +297,7 @@
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold text-gray-900">Job Details</h3>
-                        <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span>
+                        <!-- <span class="ml-2 text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Required</span> -->
                     </div>
                     
                     <div class="space-y-8">
@@ -345,11 +357,11 @@
                                         <option value="internship" {{ old('job_type') == 'internship' ? 'selected' : '' }}>Internship</option>
                                         <option value="hybrid" {{ old('job_type') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 @error('job_type')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -387,11 +399,11 @@
                                         <option value="lead" {{ old('experience_level') == 'lead' ? 'selected' : '' }}>Lead/Manager</option>
                                         <option value="executive" {{ old('experience_level') == 'executive' ? 'selected' : '' }}>Executive</option>
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 @error('experience_level')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -447,11 +459,11 @@
                     
                     <div class="space-y-8">
                         <!-- Negotiable Toggle -->
-                        <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                        <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <h4 class="font-semibold text-gray-900">Salary Negotiability</h4>
-                                    <p class="text-sm text-gray-600 mt-1">Enable if salary range is flexible</p>
+                                    <h4 class="font-semibold text-gray-900">Salary Negotiable</h4>
+                                    <!-- <p class="text-sm text-gray-600 mt-1">Enable if salary range is flexible</p> -->
                                 </div>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" name="is_negotiable" id="is_negotiable" value="1" 
@@ -462,65 +474,79 @@
                             </div>
                         </div>
 
+                        
+
                         <!-- Salary Range -->
-                        <div id="salary-range-container">
-                            <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Salary Range (Monthly)
-                                </label>
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500">$</span>
-                                            </div>
-                                            <input type="number" name="salary_min" id="salary_min" 
-                                                   value="{{ old('salary_min') }}"
-                                                   min="0" step="1000"
-                                                   placeholder="Minimum salary"
-                                                   class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
-                                        </div>
-                                    </div>
-                                    
-                                    <div>
-                                        <div class="relative group">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500">$</span>
-                                            </div>
-                                            <input type="number" name="salary_max" id="salary_max" 
-                                                   value="{{ old('salary_max') }}"
-                                                   min="0" step="1000"
-                                                   placeholder="Maximum salary"
-                                                   class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
-                                        </div>
+                        <div id="salary-range-container" class="mb-4">
+
+                            <label class="block text-sm font-semibold text-gray-800 mb-3">
+                                Salary Range (Monthly)
+                            </label>
+
+                            <!-- All in One Row -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                                <!-- Currency -->
+                                <div>
+                                    <!-- <label for="salary_currency" class="block text-xs font-medium text-gray-600 mb-1">
+                                        Currency
+                                    </label> -->
+                                    <div class="relative group">
+                                        <select name="salary_currency" id="salary_currency"
+                                            class="block w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                                            <option value="BDT">BDT (৳)</option>
+                                            <option value="USD">USD ($)</option>
+                                            <option value="EUR">EUR (€)</option>
+                                            <option value="GBP">GBP (£)</option>
+                                            <option value="BDT">BDT (৳)</option>
+                                            <option value="INR">INR (₹)</option>
+                                        </select>
+                                        <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                        </div> -->
                                     </div>
                                 </div>
-                                <p class="mt-3 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
-                                    💡 Leave empty if salary is negotiable. Provide range for better candidate expectations.
-                                </p>
+
+                                <!-- Minimum Salary -->
+                                <div>
+                                    <!-- <label class="block text-xs font-medium text-gray-600 mb-1">
+                                        Minimum
+                                    </label> -->
+                                    <div class="relative">
+                                        <!-- <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                            $
+                                        </div> -->
+                                        <input type="number" name="salary_min"
+                                            placeholder="Min Salary"
+                                            class="pl-8 w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:bg-white">
+                                    </div>
+                                </div>
+
+                                <!-- Maximum Salary -->
+                                <div>
+                                    <!-- <label class="block text-xs font-medium text-gray-600 mb-1">
+                                        Maximum
+                                    </label> -->
+                                    <div class="relative">
+                                        <!-- <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
+                                            $
+                                        </div> -->
+                                        <input type="number" name="salary_max"
+                                            placeholder="Max Salary"
+                                            class="pl-8 w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:bg-white">
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <!-- Currency -->
-                            <div id="currency-container">
-                                <label for="salary_currency" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Currency
-                                </label>
-                                <div class="relative group max-w-xs">
-                                    <select name="salary_currency" id="salary_currency" 
-                                            class="block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
-                                        <option value="USD" {{ old('salary_currency', 'USD') == 'USD' ? 'selected' : '' }}>USD - United States Dollar ($)</option>
-                                        <option value="EUR" {{ old('salary_currency') == 'EUR' ? 'selected' : '' }}>EUR - Euro (€)</option>
-                                        <option value="GBP" {{ old('salary_currency') == 'GBP' ? 'selected' : '' }}>GBP - British Pound (£)</option>
-                                        <option value="BDT" {{ old('salary_currency') == 'BDT' ? 'selected' : '' }}>BDT - Bangladeshi Taka (৳)</option>
-                                        <option value="INR" {{ old('salary_currency') == 'INR' ? 'selected' : '' }}>INR - Indian Rupee (₹)</option>
-                                    </select>
-                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
+                            <p class="mt-3 text-xs text-gray-500 rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>Leave empty if salary is negotiable. Provide range for better candidate expectations.</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -545,7 +571,7 @@
                                 Skills Required
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute top-4 left-3 pt-5">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
@@ -554,7 +580,13 @@
                                           placeholder="e.g., JavaScript, PHP, Laravel, React, Vue.js, Python, AWS"
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('skills_required') }}</textarea>
                             </div>
-                            <p class="mt-2 text-xs text-gray-500">Separate skills with commas. Add relevant technologies.</p>
+                            <!-- <p class="mt-2 text-xs text-gray-500">Separate skills with commas. Add relevant technologies.</p> -->
+                            <p class="mt-3 text-xs text-gray-500rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-xs text-gray-500">Separate skills with commas. Add relevant technologies.</span>
+                            </p>
                         </div>
 
                         <!-- Benefits -->
@@ -563,16 +595,22 @@
                                 Benefits
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3">
+                                <div class="absolute top-4 left-3 pt-5">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
                                     </svg>
                                 </div>
-                                <textarea name="benefits" id="benefits" rows="5"
+                                <textarea name="benefits" id="benefits" rows="7"
                                           placeholder="Health Insurance&#10;Paid Time Off&#10;Remote Work Options&#10;Professional Development&#10;Stock Options&#10;Flexible Hours"
                                           class="pl-10 block w-full px-4 py-4 rounded-xl border border-gray-200 bg-gray-50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">{{ old('benefits') }}</textarea>
                             </div>
-                            <p class="mt-2 text-xs text-gray-500">Enter each benefit on a new line. Competitive benefits attract top talent.</p>
+                            <!-- <p class="mt-2 text-xs text-gray-500">Enter each benefit on a new line. Competitive benefits attract top talent.</p> -->
+                            <p class="mt-3 text-xs text-gray-500rounded-lg flex items-center gap-1">
+                                <svg class="h-4 w-4 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="text-xs text-gray-500">Enter each benefit on a new line. Competitive benefits attract top talent.</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -595,18 +633,18 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Company Logo -->
                             <div>
-                                <label for="company_logo" class="block text-sm font-semibold text-gray-800 mb-2">
+                                <!-- <label for="company_logo" class="block text-sm font-semibold text-gray-800 mb-2">
                                     Company Logo
-                                </label>
+                                </label> -->
                                 <div class="mt-1">
                                     <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 hover:border-blue-400 transition-colors duration-200 bg-gray-50 hover:bg-blue-50">
                                         <div class="text-center">
                                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                             </svg>
-                                            <div class="mt-4">
+                                            <div class="mt-2">
                                                 <label for="company_logo" class="cursor-pointer">
-                                                    <span class="inline-flex items-center px-4 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                                    <span class="inline-flex items-center px-4 py-2.5 text-blue-500 font-semibold rounded-lg hover:bg-gray-200 transition-colors duration-200">
                                                         <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                                                         </svg>
@@ -644,7 +682,7 @@
                             <!-- Status & Active -->
                             <div class="space-y-6">
                                 <!-- Active Status -->
-                                <div class="bg-white p-5 rounded-xl border border-gray-200">
+                                <div class="bg-white p-4 rounded-xl border border-gray-200">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <div class="p-2 bg-blue-50 rounded-lg mr-3">
@@ -654,7 +692,7 @@
                                             </div>
                                             <div>
                                                 <h4 class="font-semibold text-gray-900">Active Status</h4>
-                                                <p class="text-sm text-gray-600 mt-1">Make job visible to candidates</p>
+                                                <!-- <p class="text-sm text-gray-600 mt-1">Make job visible to candidates</p> -->
                                             </div>
                                         </div>
                                         <label class="relative inline-flex items-center cursor-pointer">
@@ -674,17 +712,17 @@
                                     <div class="relative group">
                                         <select name="status" id="status"
                                                 class="block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
-                                            <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>✅ Approved</option>
-                                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>⏳ Pending Review</option>
-                                            <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>📝 Draft</option>
+                                            <option value="approved" {{ old('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending Review</option>
+                                            <!-- <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option> -->
                                         </select>
-                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                             <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                             </svg>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <p class="mt-2 text-xs text-gray-500">Admin jobs are usually auto-approved. Use "Draft" to save progress.</p>
+                                    <!-- <p class="mt-2 text-xs text-gray-500">Admin jobs are usually auto-approved. Use "Draft" to save progress.</p> -->
                                 </div>
                             </div>
                         </div>
@@ -695,27 +733,27 @@
             <!-- Form Actions -->
             <div class="px-8 py-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
                 <div class="flex items-center justify-between">
-                    <div>
+                    <!-- <div>
                         <p class="text-sm text-gray-600">
                             <span class="text-red-500">*</span> Indicates required field
                             <span class="mx-2">•</span>
                             <span id="form-progress">25% complete</span>
                         </p>
-                    </div>
+                    </div> -->
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('admin.jobs.index') }}" 
                            class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
                             Cancel
                         </a>
-                        <button type="button" id="save-draft-btn"
+                        <!-- <button type="button" id="save-draft-btn"
                                 class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
                             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
                             </svg>
                             Save Draft
-                        </button>
+                        </button> -->
                         <button type="submit" 
-                                class="inline-flex items-center px-8 py-3.5 border border-transparent rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-lg hover:shadow-xl">
+                                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
                             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
@@ -728,19 +766,19 @@
     </div>
 
     <!-- Tips Sidebar -->
-    <div class="lg:flex lg:space-x-8">
+    <div class="">
         <div class="lg:w-2/3"></div>
         <div class="lg:w-1/3">
             <div class="bg-gradient-to-b from-blue-50 to-white rounded-2xl border border-blue-100 p-6 mb-6">
                 <div class="flex items-center mb-4">
-                    <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                    <!-- <div class="p-2 bg-blue-100 rounded-lg mr-3">
                         <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                    </div>
-                    <h4 class="font-bold text-gray-900">Quick Tips</h4>
+                    </div> -->
+                    <h4 class="font-bold text-gray-900">Notes:</h4>
                 </div>
-                <ul class="space-y-4">
+                <ul class="space-y-2">
                     <li class="flex items-start">
                         <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>

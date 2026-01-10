@@ -10,29 +10,135 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Custom CSS -->
+    <style>
+        [x-cloak] { display: none !important; }
+        
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .preloader-circle {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Custom styles for testimonials */
+        .testimonial-slider .swiper-pagination-bullet {
+            width: 12px;
+            height: 12px;
+            background: #c7d2fe;
+            opacity: 1;
+        }
+        
+        .testimonial-slider .swiper-pagination-bullet-active {
+            background: #4f46e5;
+        }
+        
+        /* Hero section overlay */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(79, 70, 229, 0.3), rgba(79, 70, 229, 0.1));
+        }
+    </style>
 
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased bg-gray-50 min-h-screen flex flex-col">
+<body class="font-sans antialiased bg-gray-50">
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-circle"></div>
+            <!-- <div class="preloader-img mt-4">
+                <img src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo" class="w-20 h-auto">
+            </div> -->
+        </div>
+    </div>
+
     <!-- Navigation -->
     @include('partials.navigation')
 
     <!-- Page Content -->
-    <main class="flex-grow min-h-screen">
-        <!-- Page Header -->
-        <!-- Main Content -->
-        <div class="w-full">
-            @yield('content')
-        </div>
+    <main class="min-h-screen">
+        @yield('content')
     </main>
 
     <!-- Footer -->
     @include('partials.footer')
 
-    <!-- Scripts -->
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    
+    <!-- Main Script -->
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    preloader.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500);
+                }, 1000);
+            }
+        });
+
+        // Initialize Swiper for testimonials
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // Testimonial Slider
+        //     const testimonialSwiper = new Swiper('.testimonial-slider', {
+        //         loop: true,
+        //         autoplay: {
+        //             delay: 5000,
+        //             disableOnInteraction: false,
+        //         },
+        //         pagination: {
+        //             el: '.swiper-pagination',
+        //             clickable: true,
+        //         },
+        //         spaceBetween: 30,
+        //         slidesPerView: 1,
+        //         effect: 'fade',
+        //         fadeEffect: {
+        //             crossFade: true
+        //         },
+        //     });
+        // });
+    </script>
+
     @stack('scripts')
 </body>
-
 </html>

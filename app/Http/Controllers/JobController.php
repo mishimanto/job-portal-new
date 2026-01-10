@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class JobController extends Controller
 {
     public function index(Request $request)
     {
+        $categories = Category::where('is_active', true)->orderBy('order')->get();
         $query = Job::active();
         
         // Search filters
@@ -39,7 +41,7 @@ class JobController extends Controller
         
         $jobs = $query->orderBy('created_at', 'desc')->paginate(15);
         
-        return view('jobs.index', compact('jobs'));
+        return view('jobs.index', compact('jobs', 'categories'));
     }
 
     public function show(Job $job, Request $request)

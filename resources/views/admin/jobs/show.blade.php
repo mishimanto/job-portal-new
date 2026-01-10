@@ -41,12 +41,12 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                    <!-- <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
                         @if($job->status == 'approved') bg-green-100 text-green-800
                         @elseif($job->status == 'pending') bg-yellow-100 text-yellow-800
                         @else bg-red-100 text-red-800 @endif">
                         {{ ucfirst($job->status) }}
-                    </span>
+                    </span> -->
                     
                     @if($job->status == 'pending')
                     <div class="flex space-x-2">
@@ -165,7 +165,7 @@
                                         elseif($job->salary_currency == 'BDT') $currencySymbol = '৳';
                                         elseif($job->salary_currency == 'INR') $currencySymbol = '₹';
                                     @endphp
-                                    {{ $currencySymbol }} {{ number_format($job->salary_min) }} - {{ $currencySymbol }} {{ number_format($job->salary_max) }} per year
+                                    {{ $currencySymbol }} {{ number_format($job->salary_min) }} - {{ $currencySymbol }} {{ number_format($job->salary_max) }} 
                                 @elseif($job->salary_min)
                                     @php
                                         $currencySymbol = '$';
@@ -174,7 +174,7 @@
                                         elseif($job->salary_currency == 'BDT') $currencySymbol = '৳';
                                         elseif($job->salary_currency == 'INR') $currencySymbol = '₹';
                                     @endphp
-                                    {{ $currencySymbol }} {{ number_format($job->salary_min) }} per year
+                                    {{ $currencySymbol }} {{ number_format($job->salary_min) }} 
                                 @else
                                     <span class="text-gray-500 italic">Not specified</span>
                                 @endif
@@ -241,7 +241,7 @@
                             <dt class="text-sm font-medium text-gray-500">Last Updated</dt>
                             <dd class="text-sm font-semibold text-gray-900">{{ $job->updated_at->format('M d, Y') }}</dd>
                         </div>
-                        <div class="flex items-center justify-between">
+                        <!-- <div class="flex items-center justify-between">
                             <dt class="text-sm font-medium text-gray-500">Salary Type</dt>
                             <dd class="text-sm font-semibold text-gray-900">
                                 @if($job->is_negotiable)
@@ -254,7 +254,7 @@
                                     <span class="text-gray-500">Not set</span>
                                 @endif
                             </dd>
-                        </div>
+                        </div> -->
                     </dl>
                 </div>
             </div>
@@ -296,26 +296,29 @@
                         </form>
                         @endif
                         
-                        <a href="{{ route('admin.jobs.edit', $job) }}" 
-                           class="block w-full text-center inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                            </svg>
-                            Edit Job
-                        </a>
-                        
-                        <form action="{{ route('admin.jobs.destroy', $job) }}" method="POST" class="w-full">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" 
-                                    onclick="if(confirm('Are you sure you want to delete this job?')) this.form.submit()"
-                                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        <div class="flex space-x-2 w-full mx-auto">
+                            <a href="{{ route('admin.jobs.edit', $job) }}" 
+                            class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
-                                Delete Job
-                            </button>
-                        </form>
+                                Edit Job
+                            </a>
+
+                            <form action="{{ route('admin.jobs.destroy', $job) }}" method="POST" class="flex-1">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" 
+                                        onclick="if(confirm('Are you sure you want to delete this job?')) this.form.submit()"
+                                        class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    Delete Job
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
