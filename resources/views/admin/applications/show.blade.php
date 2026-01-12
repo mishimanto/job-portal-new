@@ -34,14 +34,14 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        Application #{{ $application->id }}
+                        Application #{{ $application->id }} 
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500">
+                    <p class="mt-1 text-sm text-gray-300">
                         Applied {{ $application->applied_at->diffForHumans() }}
                     </p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium
+                    <span class="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium
                         @if($application->status == 'hired') bg-green-100 text-green-800
                         @elseif($application->status == 'shortlisted') bg-blue-100 text-blue-800
                         @elseif($application->status == 'reviewed') bg-yellow-100 text-yellow-800
@@ -50,7 +50,7 @@
                         {{ ucfirst($application->status) }}
                     </span>
                     
-                    <div class="relative" x-data="{ open: false }">
+                    <!-- <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" 
                                 class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             Update Status
@@ -89,7 +89,7 @@
                                 </button>
                             </form>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -177,7 +177,21 @@
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">Salary</p>
-                            <p class="text-sm text-gray-900">${{ number_format($application->job->salary, 2) }}</p>
+                            <p class="text-sm text-gray-900">
+                                @if($application->job->salary_min && $application->job->salary_max)
+                                    {{ $application->job->salary_currency ?? 'USD' }} 
+                                    {{ number_format($application->job->salary_min, 2) }} - 
+                                    {{ number_format($application->job->salary_max, 2) }}
+                                @elseif($application->job->salary)
+                                    {{ $application->job->salary }}
+                                @else
+                                    Not specified
+                                @endif
+                                
+                                @if($application->job->is_negotiable)
+                                    <span class="ml-2 text-xs text-green-600 font-medium">(Negotiable)</span>
+                                @endif
+                            </p>
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">Deadline</p>
@@ -198,7 +212,7 @@
                     </h3>
                 </div>
                 <div class="px-4 py-5 sm:p-6">
-                    <form method="POST" action="{{ route('admin.applications.update-status', $application) }}">
+                    <form method="POST" action="{{ route('admin.applications.update-status', $application) }}" id="statusForm">
                         @csrf
                         @method('POST')
                         <div class="space-y-4">
@@ -216,7 +230,8 @@
                                     Update Status
                                 </label>
                                 <select name="status" id="status_select" 
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                        onchange="toggleAdditionalFields()">
                                     <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Pending</option>
                                     <option value="reviewed" {{ $application->status == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
                                     <option value="shortlisted" {{ $application->status == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
@@ -225,80 +240,87 @@
                                 </select>
                             </div>
                             
+                            <!-- Interview Time Field (for shortlisted) -->
+                            <div id="interview_time_field" style="display: none;">
+                                <label for="interview_time" class="block text-sm font-medium text-gray-700">
+                                    Interview Time & Date *
+                                </label>
+                                <input type="datetime-local" 
+                                       name="interview_time" 
+                                       id="interview_time"
+                                       value="{{ $interviewTime ?? '' }}"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <p class="mt-1 text-xs text-gray-500">
+                                    Required for shortlisted status. Candidate will receive email with this time.
+                                </p>
+                            </div>
+                            
+                            <!-- Joining Date Field (for hired) -->
+                            <div id="joining_date_field" style="display: none;">
+                                <label for="joining_date" class="block text-sm font-medium text-gray-700">
+                                    Joining Date *
+                                </label>
+                                <input type="date" 
+                                       name="joining_date" 
+                                       id="joining_date"
+                                       value="{{ $joiningDate ?? '' }}"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <p class="mt-1 text-xs text-gray-500">
+                                    Required for hired status. Candidate will receive email with this date.
+                                </p>
+                            </div>
+                            
                             <button type="submit" 
                                     class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Save Updates
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-
-            <!-- Timeline -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        Timeline
-                    </h3>
-                </div>
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="flow-root">
-                        <ul class="-mb-8">
-                            <li>
-                                <div class="relative pb-8">
-                                    <div class="relative flex items-start space-x-3">
-                                        <div class="relative">
-                                            <div class="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center ring-8 ring-white">
-                                                <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <div>
-                                                <div class="text-sm">
-                                                    Application submitted
-                                                </div>
-                                                <p class="mt-0.5 text-sm text-gray-500">
-                                                    {{ $application->applied_at->format('M d, Y h:i A') }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                    
+                    <script>
+                        function toggleAdditionalFields() {
+                            const status = document.getElementById('status_select').value;
+                            const interviewField = document.getElementById('interview_time_field');
+                            const joiningField = document.getElementById('joining_date_field');
                             
-                            @if($application->reviewed_at)
-                            <li>
-                                <div class="relative pb-8">
-                                    <span class="absolute top-8 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
-                                    <div class="relative flex items-start space-x-3">
-                                        <div class="relative">
-                                            <div class="h-8 w-8 bg-green-600 rounded-full flex items-center justify-center ring-8 ring-white">
-                                                <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="min-w-0 flex-1">
-                                            <div>
-                                                <div class="text-sm">
-                                                    Application reviewed
-                                                </div>
-                                                <p class="mt-0.5 text-sm text-gray-500">
-                                                    {{ $application->reviewed_at->format('M d, Y h:i A') }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @endif
-                        </ul>
-                    </div>
+                            // Hide both fields first
+                            interviewField.style.display = 'none';
+                            joiningField.style.display = 'none';
+                            
+                            // Show appropriate field based on status
+                            if (status === 'shortlisted') {
+                                interviewField.style.display = 'block';
+                            } else if (status === 'hired') {
+                                joiningField.style.display = 'block';
+                            }
+                        }
+                        
+                        // Initialize on page load
+                        document.addEventListener('DOMContentLoaded', function() {
+                            toggleAdditionalFields();
+                        });
+                        
+                        // Form validation
+                        document.getElementById('statusForm').addEventListener('submit', function(e) {
+                            const status = document.getElementById('status_select').value;
+                            const interviewTime = document.getElementById('interview_time');
+                            const joiningDate = document.getElementById('joining_date');
+                            
+                            if (status === 'shortlisted' && (!interviewTime || !interviewTime.value)) {
+                                e.preventDefault();
+                                alert('Please enter interview time for shortlisted status.');
+                                interviewTime.focus();
+                            }
+                            
+                            if (status === 'hired' && (!joiningDate || !joiningDate.value)) {
+                                e.preventDefault();
+                                alert('Please enter joining date for hired status.');
+                                joiningDate.focus();
+                            }
+                        });
+                    </script>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 @endsection

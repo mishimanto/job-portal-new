@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Notifications\ApplicationStatusUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApplicationController extends Controller
 {
@@ -35,20 +37,87 @@ class ApplicationController extends Controller
     public function show(JobApplication $application)
     {
         $application->load(['user', 'job']);
-        return view('admin.applications.show', compact('application'));
+        
+        // Get interview time and joining date from notes
+        $interviewTime = $application->interview_time;
+        $joiningDate = $application->joining_date;
+        
+        return view('admin.applications.show', compact('application', 'interviewTime', 'joiningDate'));
     }
 
     public function updateStatus(Request $request, JobApplication $application)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'status' => 'required|in:pending,reviewed,shortlisted,rejected,hired',
+            'interview_time' => 'required_if:status,shortlisted|nullable|date',
+            'joining_date' => 'required_if:status,hired|nullable|date',
+            'notes' => 'nullable|string',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         
-        $application->update([
-            'status' => $request->status,
-            'reviewed_at' => now(),
-            'notes' => $request->notes ?? $application->notes,
-        ]);
+        $status = $request->status;
+        $interviewTime = $request->interview_time;
+        $joiningDate = $request->joining_date;
+        
+        // Validate required fields based on status
+        if ($status === 'shortlisted' && !$interviewTime) {
+            return redirect()->back()
+                ->with('error', 'Interview time is required for shortlisted status.')
+                ->withInput();
+        }
+        
+        if ($status === 'hired' && !$joiningDate) {
+            return redirect()->back()
+                ->with('error', 'Joining date is required for hired status.')
+                ->withInput();
+        }
+        
+        // Update application
+        $application->status = $status;
+        
+        if ($status === 'reviewed' && !$application->reviewed_at) {
+            $application->reviewed_at = now();
+        }
+        
+        if ($request->notes) {
+            $application->notes = $request->notes;
+        }
+        
+        // Store interview time or joining date in interview_notes
+        if ($interviewTime) {
+            $application->setInterviewTime($interviewTime);
+        }
+        
+        if ($joiningDate) {
+            $application->setJoiningDate($joiningDate);
+        }
+        
+        $application->save();
+        
+        // Send email notification for specific statuses
+        if (in_array($status, ['shortlisted', 'hired'])) {
+            try {
+                $application->user->notify(
+                    new ApplicationStatusUpdated($application, $interviewTime, $joiningDate)
+                );
+                
+                // Log email sent
+                $application->interview_notes = array_merge(
+                    $application->interview_notes ?? [],
+                    ['email_sent_at' => now()->toDateTimeString()]
+                );
+                $application->save();
+                
+            } catch (\Exception $e) {
+                // Log error but don't fail the request
+                \Log::error('Failed to send status update email: ' . $e->getMessage());
+            }
+        }
         
         return redirect()->route('admin.applications.show', $application)
             ->with('success', 'Application status updated successfully.');

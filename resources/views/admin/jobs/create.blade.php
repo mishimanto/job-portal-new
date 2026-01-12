@@ -61,7 +61,7 @@
             <div class="relative flex items-center justify-between">
 
                 <!-- Background Line -->
-                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div>
+                <!-- <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2"></div> -->
 
                 <!-- Step 1 -->
                 <div class="relative z-10 flex items-center gap-3 px-2">
@@ -260,7 +260,7 @@
                                 <span class="ml-1 text-red-500">*</span>
                             </div>
                             <div class="relative group">
-                                <div class="absolute top-10 pt-5 left-3 my-auto">
+                                <div class="absolute pt-5 left-3 my-auto">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
                                     </svg>
@@ -571,7 +571,7 @@
                                 Skills Required
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3 pt-5">
+                                <div class="absolute left-3 pt-5">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
@@ -595,7 +595,7 @@
                                 Benefits
                             </label>
                             <div class="relative group">
-                                <div class="absolute top-4 left-3 pt-5">
+                                <div class="absolute left-3 pt-5">
                                     <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
                                     </svg>

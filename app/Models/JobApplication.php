@@ -199,4 +199,43 @@ class JobApplication extends Model
         
         return $this->save();
     }
+
+    // ✅ Get interview time from interview_notes
+    public function getInterviewTimeAttribute()
+    {
+        $notes = $this->interview_notes ?? [];
+        return $notes['interview_time'] ?? null;
+    }
+
+    // ✅ Get joining date from interview_notes
+    public function getJoiningDateAttribute()
+    {
+        $notes = $this->interview_notes ?? [];
+        return $notes['joining_date'] ?? null;
+    }
+
+    // ✅ Set interview time
+    public function setInterviewTime($time)
+    {
+        $notes = $this->interview_notes ?? [];
+        $notes['interview_time'] = $time;
+        $this->interview_notes = $notes;
+    }
+
+    // ✅ Set joining date
+    public function setJoiningDate($date)
+    {
+        $notes = $this->interview_notes ?? [];
+        $notes['joining_date'] = $date;
+        $this->interview_notes = $notes;
+    }
+
+    // ✅ Check if email should be sent for current status
+    public function shouldSendEmail()
+    {
+        return in_array($this->status, [
+            self::STATUS_SHORTLISTED,
+            self::STATUS_HIRED
+        ]);
+    }
 }
