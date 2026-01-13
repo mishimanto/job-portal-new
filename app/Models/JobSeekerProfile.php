@@ -40,4 +40,10 @@ class JobSeekerProfile extends Model
     {
         return $this->resume_file ? asset('storage/' . $this->resume_file) : null;
     }
+
+    // Check if resume is downloadable
+    public function getIsResumeDownloadableAttribute()
+    {
+        return $this->resume_file && $this->make_resume_public;
+    }
 }

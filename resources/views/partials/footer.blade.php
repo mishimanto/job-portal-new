@@ -77,7 +77,7 @@
         <div class="border-t border-gray-800 pt-8 mt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="text-gray-400 text-center md:text-left mb-4 md:mb-0">
-                    <p>Copyright &copy; {{ date('Y') }} All rights reserved | This template is made with <i class="fas fa-heart text-red-500"></i> by <a href="https://colorlib.com" class="text-indigo-400 hover:text-white">Colorlib</a></p>
+                    <p>Copyright &copy; {{ date('Y') }} All rights reserved | <a href="#" class="text-indigo-400 hover:text-white">Job Portal</a></p>
                 </div>
                 <div class="flex space-x-4">
                     <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">

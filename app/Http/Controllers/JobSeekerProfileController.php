@@ -15,14 +15,17 @@ use App\Models\JobSeekerProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator; // ✅ ADD THIS LINE
-
+use Illuminate\Support\Facades\Validator; 
+use Illuminalte\Support\Facades\Session;
 class JobSeekerProfileController extends Controller
 {
     
     public function edit()
     {
         $user = Auth::user();
+
+         // Get current active tab from session or default to basic-profile
+        $activeTab = session('active_profile_tab', 'basic-profile');
         
         // Get or create job seeker profile
         $jobSeekerProfile = JobSeekerProfile::firstOrCreate(
@@ -54,11 +57,15 @@ class JobSeekerProfileController extends Controller
             'certifications' => $user->certifications,
             'socialLinks' => $user->socialLinks,
             'visibilitySettings' => $user->profileVisibilitySetting ?? new ProfileVisibilitySetting(),
+            'activeTab' => $activeTab, // Pass active tab to view
         ]);
     }
 
     public function completeUpdate(Request $request)
     {
+        // Save current tab in session
+        session(['active_profile_tab' => 'basic-profile']);
+
         $user = Auth::user();
         
         // Validate all fields
@@ -294,26 +301,34 @@ class JobSeekerProfileController extends Controller
     // Education methods
     public function storeEducation(Request $request)
     {
+        session(['active_profile_tab' => 'education']);
+        
+        // Validate without is_current first
         $validated = $request->validate([
             'institution' => 'required|string|max:255',
             'degree' => 'required|string|max:255',
             'field_of_study' => 'nullable|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
-            'is_current' => 'boolean',
             'description' => 'nullable|string',
             'grade' => 'nullable|string|max:50',
             'activities' => 'nullable|array',
         ]);
-
+        
+        // Add is_current separately using $request->has()
+        $validated['is_current'] = $request->has('is_current');
+        
         $user = Auth::user();
         $user->educations()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Education added successfully.');
+        return redirect()->route('job-seeker.profile.edit')
+            ->with('success', 'Education added successfully.');
     }
 
     public function updateEducation(Request $request, Education $education)
     {
+        session(['active_profile_tab' => 'education']);
+        
         if (Auth::id() !== $education->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -324,11 +339,13 @@ class JobSeekerProfileController extends Controller
             'field_of_study' => 'nullable|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
-            'is_current' => 'boolean',
             'description' => 'nullable|string',
             'grade' => 'nullable|string|max:50',
             'activities' => 'nullable|array',
         ]);
+        
+        // Add is_current separately
+        $validated['is_current'] = $request->has('is_current');
 
         $education->update($validated);
 
@@ -337,6 +354,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroyEducation(Education $education)
     {
+        session(['active_profile_tab' => 'education']);
+
         if (Auth::id() !== $education->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -349,6 +368,8 @@ class JobSeekerProfileController extends Controller
     // Skill methods
     public function storeSkill(Request $request)
     {
+        session(['active_profile_tab' => 'skills']);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'level' => 'nullable|in:beginner,intermediate,advanced,expert',
@@ -364,6 +385,8 @@ class JobSeekerProfileController extends Controller
 
     public function updateSkill(Request $request, Skill $skill)
     {
+        session(['active_profile_tab' => 'skills']);
+        
         if (Auth::id() !== $skill->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -382,6 +405,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroySkill(Skill $skill)
     {
+        session(['active_profile_tab' => 'skills']);
+
         if (Auth::id() !== $skill->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -394,19 +419,24 @@ class JobSeekerProfileController extends Controller
     // Experience methods
     public function storeExperience(Request $request)
     {
+        session(['active_profile_tab' => 'experience']);
+        
+        // Validate without is_current first
         $validated = $request->validate([
             'job_title' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
             'employment_type' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
-            'is_current' => 'boolean',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'description' => 'nullable|string',
             'responsibilities' => 'nullable|array',
             'industry' => 'nullable|string|max:255',
         ]);
-
+        
+        // Add is_current separately
+        $validated['is_current'] = $request->has('is_current');
+        
         $user = Auth::user();
         $user->experiences()->create($validated);
 
@@ -415,6 +445,8 @@ class JobSeekerProfileController extends Controller
 
     public function updateExperience(Request $request, Experience $experience)
     {
+        session(['active_profile_tab' => 'experience']);
+        
         if (Auth::id() !== $experience->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -424,13 +456,15 @@ class JobSeekerProfileController extends Controller
             'company_name' => 'required|string|max:255',
             'employment_type' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
-            'is_current' => 'boolean',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
             'description' => 'nullable|string',
             'responsibilities' => 'nullable|array',
             'industry' => 'nullable|string|max:255',
         ]);
+        
+        // Add is_current separately
+        $validated['is_current'] = $request->has('is_current');
 
         $experience->update($validated);
 
@@ -439,6 +473,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroyExperience(Experience $experience)
     {
+        session(['active_profile_tab' => 'experience']);
+
         if (Auth::id() !== $experience->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -451,6 +487,9 @@ class JobSeekerProfileController extends Controller
     // Project methods
     public function storeProject(Request $request)
     {
+        session(['active_profile_tab' => 'projects']);
+        
+        // Validate without is_ongoing first
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -458,11 +497,13 @@ class JobSeekerProfileController extends Controller
             'technologies_used' => 'nullable|array',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
-            'is_ongoing' => 'boolean',
             'project_url' => 'nullable|url|max:255',
             'images' => 'nullable|array',
         ]);
-
+        
+        // Add is_ongoing separately
+        $validated['is_ongoing'] = $request->has('is_ongoing');
+        
         $user = Auth::user();
         $user->projects()->create($validated);
 
@@ -471,6 +512,8 @@ class JobSeekerProfileController extends Controller
 
     public function updateProject(Request $request, Project $project)
     {
+        session(['active_profile_tab' => 'projects']);
+        
         if (Auth::id() !== $project->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -482,10 +525,12 @@ class JobSeekerProfileController extends Controller
             'technologies_used' => 'nullable|array',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after:start_date',
-            'is_ongoing' => 'boolean',
             'project_url' => 'nullable|url|max:255',
             'images' => 'nullable|array',
         ]);
+        
+        // Add is_ongoing separately
+        $validated['is_ongoing'] = $request->has('is_ongoing');
 
         $project->update($validated);
 
@@ -494,6 +539,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroyProject(Project $project)
     {
+        session(['active_profile_tab' => 'projects']);
+
         if (Auth::id() !== $project->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -506,6 +553,8 @@ class JobSeekerProfileController extends Controller
     // Certification methods
     public function storeCertification(Request $request)
     {
+        session(['active_profile_tab' => 'certifications']);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'issuing_organization' => 'required|string|max:255',
@@ -524,6 +573,8 @@ class JobSeekerProfileController extends Controller
 
     public function updateCertification(Request $request, Certification $certification)
     {
+        session(['active_profile_tab' => 'certifications']);
+
         if (Auth::id() !== $certification->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -545,6 +596,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroyCertification(Certification $certification)
     {
+        session(['active_profile_tab' => 'certifications']);
+
         if (Auth::id() !== $certification->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -557,6 +610,8 @@ class JobSeekerProfileController extends Controller
     // Social Link methods
     public function storeSocialLink(Request $request)
     {
+        session(['active_profile_tab' => 'social-links']);
+
         $validated = $request->validate([
             'platform' => 'required|string|max:255',
             'url' => 'required|url|max:255',
@@ -572,6 +627,8 @@ class JobSeekerProfileController extends Controller
 
     public function updateSocialLink(Request $request, SocialLink $socialLink)
     {
+        session(['active_profile_tab' => 'social-links']);
+
         if (Auth::id() !== $socialLink->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -590,6 +647,8 @@ class JobSeekerProfileController extends Controller
 
     public function destroySocialLink(SocialLink $socialLink)
     {
+        session(['active_profile_tab' => 'social-links']);
+
         if (Auth::id() !== $socialLink->user_id) {
             abort(403, 'Unauthorized action.');
         }
@@ -602,6 +661,8 @@ class JobSeekerProfileController extends Controller
     // Visibility Settings method
     public function updateVisibilitySettings(Request $request)
     {
+        session(['active_profile_tab' => 'visibility-settings']);
+        
         $validated = $request->validate([
             'make_profile_public' => 'boolean',
             'show_education' => 'boolean',
@@ -712,6 +773,92 @@ class JobSeekerProfileController extends Controller
                 ->with('error', 'Failed to delete profile photo: ' . $e->getMessage());
         }
     }
-    
-    
+    // Resume Upload
+    public function uploadResume(Request $request)
+    {
+        $user = Auth::user();
+        
+        $request->validate([
+            'resume_file' => 'required|mimes:pdf,doc,docx|max:5120', // 5MB
+            'make_resume_public' => 'boolean',
+        ]);
+        
+        DB::beginTransaction();
+        
+        try {
+            // Delete old resume if exists
+            $jobSeekerProfile = JobSeekerProfile::where('user_id', $user->id)->first();
+            if ($jobSeekerProfile && $jobSeekerProfile->resume_file) {
+                $oldResumePath = public_path('storage/' . $jobSeekerProfile->resume_file);
+                if (file_exists($oldResumePath)) {
+                    unlink($oldResumePath);
+                }
+            }
+            
+            // Store new resume
+            if ($request->hasFile('resume_file')) {
+                $path = $request->file('resume_file')->store('resumes', 'public');
+                
+                // Update or create job seeker profile
+                JobSeekerProfile::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'resume_file' => $path,
+                        'make_resume_public' => $request->has('make_resume_public'),
+                    ]
+                );
+            }
+            
+            DB::commit();
+            
+            return redirect()->route('job-seeker.profile.edit')
+                ->with('success', 'Resume uploaded successfully.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return redirect()->route('job-seeker.profile.edit')
+                ->with('error', 'Failed to upload resume: ' . $e->getMessage());
+        }
+    }
+
+    // Resume Delete
+    public function deleteResume()
+    {
+        $user = Auth::user();
+        
+        DB::beginTransaction();
+        
+        try {
+            $jobSeekerProfile = JobSeekerProfile::where('user_id', $user->id)->first();
+            
+            if (!$jobSeekerProfile || !$jobSeekerProfile->resume_file) {
+                return redirect()->route('job-seeker.profile.edit')
+                    ->with('error', 'No resume to delete.');
+            }
+            
+            // Delete file from storage
+            $oldResumePath = public_path('storage/' . $jobSeekerProfile->resume_file);
+            if (file_exists($oldResumePath)) {
+                unlink($oldResumePath);
+            }
+            
+            // Update database
+            $jobSeekerProfile->update([
+                'resume_file' => null,
+                'make_resume_public' => false,
+            ]);
+            
+            DB::commit();
+            
+            return redirect()->route('job-seeker.profile.edit')
+                ->with('success', 'Resume deleted successfully.');
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            
+            return redirect()->route('job-seeker.profile.edit')
+                ->with('error', 'Failed to delete resume: ' . $e->getMessage());
+        }
+    }    
 }

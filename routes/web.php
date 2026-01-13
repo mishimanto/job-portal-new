@@ -84,6 +84,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/photo', [JobSeekerProfileController::class, 'updateProfilePhoto'])->name('photo.update');
             Route::delete('/photo', [JobSeekerProfileController::class, 'deleteProfilePhoto'])->name('photo.delete');
             Route::post('/complete-update', [JobSeekerProfileController::class, 'completeUpdate'])->name('complete-update');
+
+            // Job Seeker Profile Routes - Resume routes যোগ করুন
+Route::post('/resume', [JobSeekerProfileController::class, 'uploadResume'])->name('resume.upload');
+Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->name('resume.delete');
                        
         });
         

@@ -3,15 +3,15 @@
 @section('title', 'Edit Profile')
 
 @section('content')
-<div class="container mx-auto px-4 py-8 max-w-6xl">
+<div class="container mx-auto px-4 py-8 max-w-7xl">
     <!-- Breadcrumb -->
-    <nav class="mb-8">
+    <!-- <nav class="mb-8">
         <ol class="flex items-center space-x-2 text-sm text-gray-600">
             <li><a href="{{ route('job-seeker.dashboard') }}" class="hover:text-blue-600 transition-colors">Dashboard</a></li>
             <li><span class="mx-2">›</span></li>
             <li class="text-gray-800 font-medium">Edit Profile</li>
         </ol>
-    </nav>
+    </nav> -->
 
     <!-- Success/Error Messages -->
     @if(session('success'))
@@ -47,7 +47,6 @@
                     <i class="fas fa-exclamation-triangle text-red-500"></i>
                 </div>
                 <div class="ml-3">
-                    <!-- <p class="text-red-700 font-medium">Please fix the following errors:</p> -->
                     <ul class="mt-2 text-red-600 list-disc list-inside text-sm">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -60,139 +59,145 @@
 
     <!-- Main Layout -->
     <div class="flex flex-col lg:flex-row gap-8">
-        <!-- Left Sidebar - Navigation -->
+        <!-- Left Sidebar -->
         <div class="lg:w-64 flex-shrink-0">
             <!-- Profile Card -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <!-- Profile Photo -->
-                <div class="text-center mb-6">
-                    <div class="relative inline-block">
+                <div class="text-center">
+                    <div class="relative w-full flex justify-center">
                         @if($user->profile_photo)
                             <img src="{{ asset('storage/' . $user->profile_photo) }}" 
                                  alt="Profile Photo" 
-                                 class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md mx-auto"
+                                 class="w-32 h-32 object-cover border-4 border-white shadow-md mx-auto"
                                  id="profilePhotoPreview">
                         @else
                             <div 
-                                class="w-50 h-32 mx-auto rounded-md border-2 border-dashed border-gray-300 
+                                class="w-full h-32 mx-auto rounded-md border-2 border-dashed border-gray-300 
                                     flex flex-col items-center justify-center text-center 
                                     text-gray-400 bg-gray-50">
-
-                                <svg class="w- h-8 mb-1" fill="none" stroke="currentColor" stroke-width="1.5"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 16v-8m0 0l-3 3m3-3l3 3M20 16.5a4.5 4.5 0 00-3.5-4.37
-                                            6 6 0 10-8.99 0A4.5 4.5 0 004 16.5" />
-                                </svg>
-
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 <span class="text-xs font-medium">Upload Photo</span>
                             </div>
                         @endif
 
-                        
                         <!-- Photo Upload Indicator -->
                         <div id="uploadProgress" class="hidden absolute inset-0 bg-blue-500 bg-opacity-75 rounded-full flex items-center justify-center">
                             <i class="fas fa-spinner fa-spin text-white text-2xl"></i>
                         </div>
                     </div>
                     
-                    <h3 class="mt-3 font-medium text-gray-900">{{ $user->name }}</h3>
-                    <p class="text-sm text-gray-500">{{ $jobSeekerProfile->title ?? 'Job Seeker' }}</p>
+                    <!-- <h3 class="mt-3 font-medium text-gray-900">{{ $user->name }}</h3>
+                    <p class="text-sm text-gray-500">{{ $jobSeekerProfile->title ?? 'Job Seeker' }}</p> -->
                 </div>
                 
                 <!-- Photo Upload Section -->
-                <div class="space-y-3">
+                <div class="flex items-center justify-center p-3 space-y-3">
                     <form id="photoUploadForm" action="{{ route('job-seeker.profile.photo.update') }}" method="POST" enctype="multipart/form-data" class="hidden">
                         @csrf
                         <input type="file" name="profile_photo" id="profile_photo" accept="image/*">
                     </form>
                     
+                    <!-- Upload -->
+
                     <button onclick="document.getElementById('profile_photo').click()" 
-                            class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        <i class="fas fa-camera mr-2"></i>
-                        Upload Photo
+                            class="flex items-center mr-4 gap-1 text-blue-600 hover:text-blue-800 transition">
+                        <i class="fas fa-camera"></i>
+                        <span class="text-sm">Upload</span>
                     </button>
                     
+                    <!-- Remove -->
                     @if($user->profile_photo)
                     <button onclick="confirmDeletePhoto()"
-                            class="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
-                        <i class="fas fa-trash mr-2"></i>
-                        Remove Photo
+                            class="flex items-center gap-1 text-red-600 hover:text-red-800 transition">
+                        <i class="fas fa-trash"></i>
+                        <span class="text-sm">Remove</span>
                     </button>
                     @endif
                     
-                    <div class="text-xs text-gray-400 text-center pt-2 border-t border-gray-100">
+                    
+                </div>
+                <div class="text-xs text-gray-400 text-center pt-2 border-t border-gray-100">
                         <p>JPG, PNG or GIF • Max 2MB</p>
                     </div>
-                </div>
             </div>
             
             <!-- Navigation -->
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200" id="sidebar-nav-container">
                 <nav class="p-4">
                     <ul class="space-y-1">
                         <li>
-                            <button onclick="showSection('basic-profile')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors bg-blue-50 text-blue-700 font-medium">
-                                <span class="w-1 h-6 bg-blue-600 rounded-full mr-3"></span>
+                            <button data-tab="basic-profile" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'basic-profile' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'basic-profile' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-user-circle mr-2"></i>
                                 Profile Info
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('education')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="education" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'education' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'education' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-graduation-cap mr-2"></i>
                                 Education
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('skills')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="skills" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'skills' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'skills' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-tools mr-2"></i>
                                 Skills
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('experience')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="experience" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'experience' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'experience' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-briefcase mr-2"></i>
                                 Experience
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('projects')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="projects" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'projects' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'projects' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-project-diagram mr-2"></i>
                                 Projects
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('certifications')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="certifications" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'certifications' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'certifications' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-certificate mr-2"></i>
                                 Certifications
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('social-links')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="social-links" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'social-links' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'social-links' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-share-alt mr-2"></i>
                                 Social Links
                             </button>
                         </li>
                         <li>
-                            <button onclick="showSection('visibility')" 
-                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">
-                                <span class="w-1 h-6 bg-transparent rounded-full mr-3"></span>
+                            <button data-tab="visibility" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'visibility' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'visibility' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
                                 <i class="fas fa-eye mr-2"></i>
                                 Visibility
+                            </button>
+                        </li>
+                        <li>
+                            <button data-tab="resume" 
+                                    class="w-full text-left px-3 py-2.5 rounded-md flex items-center transition-colors {{ $activeTab == 'resume' ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <span class="w-1 h-6 rounded-full mr-3 {{ $activeTab == 'resume' ? 'bg-blue-600' : 'bg-transparent' }}"></span>
+                                <i class="fas fa-file-alt mr-2"></i>
+                                Resume
                             </button>
                         </li>
                     </ul>
@@ -201,7 +206,7 @@
             
             <!-- Profile Completion -->
             @php
-                $totalFields = 10;
+                $totalFields = 11;
                 $completedFields = 0;
                 if($user->name) $completedFields++;
                 if($personalInfo->first_name || $personalInfo->last_name) $completedFields++;
@@ -213,6 +218,7 @@
                 if($educations->count() > 0) $completedFields++;
                 if($skills->count() > 0) $completedFields++;
                 if($experiences->count() > 0) $completedFields++;
+                if($jobSeekerProfile->resume_file) $completedFields++;
                 $completionPercentage = ($completedFields / $totalFields) * 100;
             @endphp
             
@@ -227,14 +233,12 @@
 
         <!-- Main Content Area -->
         <div class="flex-1">
-            <!-- All sections are initially shown, JavaScript will hide/show them -->
-            
             <!-- Basic Profile Information -->
-            <div id="basic-profile" class="section active">
+            <div id="basic-profile" class="section {{ $activeTab == 'basic-profile' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <h2 class="text-lg font-semibold text-gray-900">Profile Information</h2>
-                        <p class="text-sm text-gray-600 mt-1">Update your personal and professional information</p>
+                        <!-- <p class="text-sm text-gray-600 mt-1">Update your personal and professional information</p> -->
                     </div>
                     
                     <div class="p-6">
@@ -396,13 +400,13 @@
             </div>
 
             <!-- Education Section -->
-            <div id="education" class="section hidden">
+            <div id="education" class="section {{ $activeTab == 'education' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Education</h2>
-                                <p class="text-sm text-gray-600 mt-1">Add your educational background</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Add your educational background</p> -->
                             </div>
                             <button onclick="toggleEducationForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -412,23 +416,24 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Education Form -->
+                        <!-- Add/Edit Education Form -->
                         <div id="educationForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Education</h3>
-                            <form action="{{ route('job-seeker.profile.education.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="educationFormTitle">Add New Education</h3>
+                            <form id="educationFormElement" method="POST" action="{{ route('job-seeker.profile.education.store') }}">
                                 @csrf
+                                <input type="hidden" id="education_id" name="education_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Institution *</label>
-                                        <input type="text" name="institution" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="institution" id="education_institution" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Degree *</label>
-                                        <input type="text" name="degree" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="degree" id="education_degree" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
-                                        <input type="date" name="start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="date" name="start_date" id="education_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
@@ -445,7 +450,7 @@
                                     <button type="button" onclick="toggleEducationForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="educationSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Education
                                     </button>
                                 </div>
@@ -467,7 +472,7 @@
                                         </div>
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button onclick="editEducation({{ $education->id }}, '{{ $education->institution }}', '{{ $education->degree }}', '{{ $education->start_date->format('Y-m-d') }}', '{{ $education->end_date ? $education->end_date->format('Y-m-d') : '' }}', {{ $education->is_current ? 'true' : 'false' }})" 
+                                        <button onclick="editEducation({{ $education->id }}, '{{ addslashes($education->institution) }}', '{{ addslashes($education->degree) }}', '{{ $education->start_date->format('Y-m-d') }}', '{{ $education->end_date ? $education->end_date->format('Y-m-d') : '' }}', {{ $education->is_current ? 'true' : 'false' }})" 
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
@@ -493,13 +498,13 @@
             </div>
 
             <!-- Skills Section -->
-            <div id="skills" class="section hidden">
+            <div id="skills" class="section {{ $activeTab == 'skills' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Skills</h2>
-                                <p class="text-sm text-gray-600 mt-1">Add your professional skills</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional skills</p> -->
                             </div>
                             <button onclick="toggleSkillForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -509,19 +514,20 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Skill Form -->
+                        <!-- Add/Edit Skill Form -->
                         <div id="skillForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Skill</h3>
-                            <form action="{{ route('job-seeker.profile.skill.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="skillFormTitle">Add New Skill</h3>
+                            <form id="skillFormElement" method="POST" action="{{ route('job-seeker.profile.skill.store') }}">
                                 @csrf
+                                <input type="hidden" id="skill_id" name="skill_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Skill Name *</label>
-                                        <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="name" id="skill_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Proficiency Level</label>
-                                        <select name="level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select name="level" id="skill_level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="">Select Level</option>
                                             <option value="beginner">Beginner</option>
                                             <option value="intermediate">Intermediate</option>
@@ -534,7 +540,7 @@
                                     <button type="button" onclick="toggleSkillForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="skillSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Skill
                                     </button>
                                 </div>
@@ -549,7 +555,11 @@
                                 @if($skill->level)
                                 <span class="ml-1.5 text-xs bg-blue-100 px-1.5 py-0.5 rounded">({{ ucfirst($skill->level) }})</span>
                                 @endif
-                                <form action="{{ route('job-seeker.profile.skill.destroy', $skill) }}" method="POST" class="ml-2">
+                                <button onclick="editSkill({{ $skill->id }}, '{{ addslashes($skill->name) }}', '{{ $skill->level }}')" 
+                                        class="ml-2 text-blue-500 hover:text-blue-700 text-xs">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <form action="{{ route('job-seeker.profile.skill.destroy', $skill) }}" method="POST" class="ml-1">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-blue-500 hover:text-blue-700 text-xs" onclick="return confirm('Remove this skill?')">
                                         <i class="fas fa-times"></i>
@@ -569,13 +579,13 @@
             </div>
 
             <!-- Experience Section -->
-            <div id="experience" class="section hidden">
+            <div id="experience" class="section {{ $activeTab == 'experience' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Work Experience</h2>
-                                <p class="text-sm text-gray-600 mt-1">Add your professional work experience</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional work experience</p> -->
                             </div>
                             <button onclick="toggleExperienceForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -585,23 +595,24 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Experience Form -->
+                        <!-- Add/Edit Experience Form -->
                         <div id="experienceForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Experience</h3>
-                            <form action="{{ route('job-seeker.profile.experience.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="experienceFormTitle">Add New Experience</h3>
+                            <form id="experienceFormElement" method="POST" action="{{ route('job-seeker.profile.experience.store') }}">
                                 @csrf
+                                <input type="hidden" id="experience_id" name="experience_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
-                                        <input type="text" name="job_title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="job_title" id="experience_job_title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
-                                        <input type="text" name="company_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="company_name" id="experience_company_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Employment Type</label>
-                                        <select name="employment_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select name="employment_type" id="experience_employment_type" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="">Select Type</option>
                                             <option value="full-time">Full-time</option>
                                             <option value="part-time">Part-time</option>
@@ -612,11 +623,11 @@
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                                        <input type="text" name="location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="location" id="experience_location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
-                                        <input type="date" name="start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="date" name="start_date" id="experience_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
@@ -630,14 +641,14 @@
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                                        <textarea name="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                        <textarea name="description" id="experience_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                                     </div>
                                 </div>
                                 <div class="mt-6 flex justify-end space-x-3">
                                     <button type="button" onclick="toggleExperienceForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="experienceSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Experience
                                     </button>
                                 </div>
@@ -676,7 +687,7 @@
                                         @endif
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button onclick="editExperience({{ $experience->id }}, '{{ $experience->job_title }}', '{{ $experience->company_name }}', '{{ $experience->employment_type }}', '{{ $experience->location }}', '{{ $experience->start_date->format('Y-m-d') }}', '{{ $experience->end_date ? $experience->end_date->format('Y-m-d') : '' }}', {{ $experience->is_current ? 'true' : 'false' }}, `{{ $experience->description }}`)" 
+                                        <button onclick="editExperience({{ $experience->id }}, '{{ addslashes($experience->job_title) }}', '{{ addslashes($experience->company_name) }}', '{{ $experience->employment_type }}', '{{ $experience->location }}', '{{ $experience->start_date->format('Y-m-d') }}', '{{ $experience->end_date ? $experience->end_date->format('Y-m-d') : '' }}', {{ $experience->is_current ? 'true' : 'false' }}, `{{ addslashes($experience->description) }}`)" 
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
@@ -702,13 +713,13 @@
             </div>
 
             <!-- Projects Section -->
-            <div id="projects" class="section hidden">
+            <div id="projects" class="section {{ $activeTab == 'projects' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Projects</h2>
-                                <p class="text-sm text-gray-600 mt-1">Showcase your projects and work</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Showcase your projects and work</p> -->
                             </div>
                             <button onclick="toggleProjectForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -718,23 +729,24 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Project Form -->
+                        <!-- Add/Edit Project Form -->
                         <div id="projectForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Project</h3>
-                            <form action="{{ route('job-seeker.profile.project.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="projectFormTitle">Add New Project</h3>
+                            <form id="projectFormElement" method="POST" action="{{ route('job-seeker.profile.project.store') }}">
                                 @csrf
+                                <input type="hidden" id="project_id" name="project_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Project Title *</label>
-                                        <input type="text" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="title" id="project_title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                                        <input type="text" name="role" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="role" id="project_role" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
-                                        <input type="date" name="start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="date" name="start_date" id="project_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
@@ -748,18 +760,18 @@
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
-                                        <textarea name="description" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                                        <textarea name="description" id="project_description" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Project URL (Optional)</label>
-                                        <input type="url" name="project_url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com">
+                                        <input type="url" name="project_url" id="project_url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com">
                                     </div>
                                 </div>
                                 <div class="mt-6 flex justify-end space-x-3">
                                     <button type="button" onclick="toggleProjectForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="projectSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Project
                                     </button>
                                 </div>
@@ -786,7 +798,7 @@
                                 </a>
                                 @endif
                                 <div class="mt-4 flex space-x-3">
-                                    <button onclick="editProject({{ $project->id }}, '{{ $project->title }}', '{{ $project->role }}', '{{ $project->start_date->format('Y-m-d') }}', '{{ $project->end_date ? $project->end_date->format('Y-m-d') : '' }}', {{ $project->is_ongoing ? 'true' : 'false' }}, `{{ $project->description }}`, '{{ $project->project_url }}')" 
+                                    <button onclick="editProject({{ $project->id }}, '{{ addslashes($project->title) }}', '{{ $project->role }}', '{{ $project->start_date->format('Y-m-d') }}', '{{ $project->end_date ? $project->end_date->format('Y-m-d') : '' }}', {{ $project->is_ongoing ? 'true' : 'false' }}, `{{ addslashes($project->description) }}`, '{{ $project->project_url }}')" 
                                             class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                         Edit
                                     </button>
@@ -811,13 +823,13 @@
             </div>
 
             <!-- Certifications Section -->
-            <div id="certifications" class="section hidden">
+            <div id="certifications" class="section {{ $activeTab == 'certifications' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Certifications</h2>
-                                <p class="text-sm text-gray-600 mt-1">Add your professional certifications</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Add your professional certifications</p> -->
                             </div>
                             <button onclick="toggleCertificationForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -827,42 +839,43 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Certification Form -->
+                        <!-- Add/Edit Certification Form -->
                         <div id="certificationForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Certification</h3>
-                            <form action="{{ route('job-seeker.profile.certification.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="certificationFormTitle">Add New Certification</h3>
+                            <form id="certificationFormElement" method="POST" action="{{ route('job-seeker.profile.certification.store') }}">
                                 @csrf
+                                <input type="hidden" id="certification_id" name="certification_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Certification Name *</label>
-                                        <input type="text" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="name" id="certification_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Issuing Organization *</label>
-                                        <input type="text" name="issuing_organization" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="issuing_organization" id="certification_issuing_organization" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Issue Date *</label>
-                                        <input type="date" name="issue_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="date" name="issue_date" id="certification_issue_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Expiration Date</label>
-                                        <input type="date" name="expiration_date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="date" name="expiration_date" id="certification_expiration_date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Credential ID (Optional)</label>
-                                        <input type="text" name="credential_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <input type="text" name="credential_id" id="certification_credential_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Credential URL (Optional)</label>
-                                        <input type="url" name="credential_url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/credential">
+                                        <input type="url" name="credential_url" id="certification_credential_url" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/credential">
                                     </div>
                                 </div>
                                 <div class="mt-6 flex justify-end space-x-3">
                                     <button type="button" onclick="toggleCertificationForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="certificationSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Certification
                                     </button>
                                 </div>
@@ -897,7 +910,7 @@
                                         @endif
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button onclick="editCertification({{ $certification->id }}, '{{ $certification->name }}', '{{ $certification->issuing_organization }}', '{{ $certification->issue_date->format('Y-m-d') }}', '{{ $certification->expiration_date ? $certification->expiration_date->format('Y-m-d') : '' }}', '{{ $certification->credential_id }}', '{{ $certification->credential_url }}')" 
+                                        <button onclick="editCertification({{ $certification->id }}, '{{ addslashes($certification->name) }}', '{{ addslashes($certification->issuing_organization) }}', '{{ $certification->issue_date->format('Y-m-d') }}', '{{ $certification->expiration_date ? $certification->expiration_date->format('Y-m-d') : '' }}', '{{ $certification->credential_id }}', '{{ $certification->credential_url }}')" 
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
@@ -923,13 +936,13 @@
             </div>
 
             <!-- Social Links Section -->
-            <div id="social-links" class="section hidden">
+            <div id="social-links" class="section {{ $activeTab == 'social-links' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Social Links</h2>
-                                <p class="text-sm text-gray-600 mt-1">Add your social media profiles</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Add your social media profiles</p> -->
                             </div>
                             <button onclick="toggleSocialLinkForm()" 
                                     class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -939,15 +952,16 @@
                     </div>
                     
                     <div class="p-6">
-                        <!-- Add Social Link Form -->
+                        <!-- Add/Edit Social Link Form -->
                         <div id="socialLinkForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
-                            <h3 class="text-sm font-medium text-gray-900 mb-4">Add New Social Link</h3>
-                            <form action="{{ route('job-seeker.profile.social-link.store') }}" method="POST">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4" id="socialLinkFormTitle">Add New Social Link</h3>
+                            <form id="socialLinkFormElement" method="POST" action="{{ route('job-seeker.profile.social-link.store') }}">
                                 @csrf
+                                <input type="hidden" id="social_link_id" name="social_link_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Platform *</label>
-                                        <select name="platform" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <select name="platform" id="social_link_platform" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="">Select Platform</option>
                                             <option value="linkedin">LinkedIn</option>
                                             <option value="github">GitHub</option>
@@ -960,15 +974,15 @@
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">URL *</label>
-                                        <input type="url" name="url" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/username">
+                                        <input type="url" name="url" id="social_link_url" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/username">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Username (Optional)</label>
-                                        <input type="text" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="username">
+                                        <input type="text" name="username" id="social_link_username" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="username">
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="flex items-center">
-                                            <input type="checkbox" name="is_public" value="1" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
+                                            <input type="checkbox" name="is_public" id="social_link_is_public" value="1" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" checked>
                                             <span class="ml-2 text-sm text-gray-700">Make this link public on your profile</span>
                                         </label>
                                     </div>
@@ -977,7 +991,7 @@
                                     <button type="button" onclick="toggleSocialLinkForm()" class="px-4 py-2 border border-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                                         Cancel
                                     </button>
-                                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                    <button type="submit" id="socialLinkSubmitBtn" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                         Add Social Link
                                     </button>
                                 </div>
@@ -1042,13 +1056,13 @@
             </div>
 
             <!-- Visibility Settings Section -->
-            <div id="visibility" class="section hidden">
+            <div id="visibility" class="section {{ $activeTab == 'visibility' ? 'active' : 'hidden' }}">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="border-b border-gray-200 px-6 py-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="text-lg font-semibold text-gray-900">Visibility Settings</h2>
-                                <p class="text-sm text-gray-600 mt-1">Control your profile visibility and privacy</p>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Control your profile visibility and privacy</p> -->
                             </div>
                         </div>
                     </div>
@@ -1124,6 +1138,136 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Resume Section -->
+            <div id="resume" class="section {{ $activeTab == 'resume' ? 'active' : 'hidden' }}">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="border-b border-gray-200 px-6 py-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="text-lg font-semibold text-gray-900">Resume</h2>
+                                <!-- <p class="text-sm text-gray-600 mt-1">Upload and manage your resume</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- Current Resume -->
+                        @if($jobSeekerProfile->resume_file)
+                        <div class="mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4">Current Resume</h3>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
+                                        <i class="fas fa-file-pdf text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900">Your Resume</h4>
+                                        <p class="text-sm text-gray-600">Uploaded on {{ \Carbon\Carbon::parse($jobSeekerProfile->updated_at)->format('M d, Y') }}</p>
+                                        <div class="mt-2 flex space-x-3">
+                                            <a href="{{ asset('storage/' . $jobSeekerProfile->resume_file) }}" 
+                                               target="_blank" 
+                                               class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                                <i class="fas fa-eye mr-1.5"></i> View Resume
+                                            </a>
+                                            <a href="{{ asset('storage/' . $jobSeekerProfile->resume_file) }}" 
+                                               download 
+                                               class="inline-flex items-center text-green-600 hover:text-green-800 text-sm font-medium">
+                                                <i class="fas fa-download mr-1.5"></i> Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form action="{{ route('job-seeker.profile.resume.delete') }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            onclick="return confirm('Are you sure you want to delete your resume?')"
+                                            class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                        <i class="fas fa-trash mr-1"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        @endif
+                        
+                        <!-- Upload Resume Form -->
+                        <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                            <h3 class="text-sm font-medium text-gray-900 mb-4">
+                                @if($jobSeekerProfile->resume_file)
+                                Upload New Resume
+                                @else
+                                Upload Resume
+                                @endif
+                            </h3>
+                            
+                            <form action="{{ route('job-seeker.profile.resume.upload') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                
+                                <div class="space-y-4">
+                                    <div>
+                                        <!-- <label class="block text-sm font-medium text-gray-700 mb-2">
+                                            Resume File *
+                                        </label> -->
+                                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-blue-400 transition-colors">
+                                            <div class="space-y-1 text-center">
+                                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                <div class="flex text-sm text-gray-600">
+                                                    <label for="resume_file" class="mx-auto relative cursor-pointer rounded-md font-medium text-blue-600 hover:text-blue-500 ">
+                                                        <span>Upload a file</span>
+                                                        <input id="resume_file" name="resume_file" type="file" class="sr-only" accept=".pdf,.doc,.docx">
+                                                    </label>
+                                                    <!-- <p class="pl-1">or drag and drop</p> -->
+                                                </div>
+                                                <p class="text-xs text-gray-500">
+                                                    PDF, DOC, DOCX up to 5MB
+                                                </p>
+                                                @if($errors->has('resume_file'))
+                                                    <p class="text-red-500 text-xs mt-1">{{ $errors->first('resume_file') }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6 flex justify-end">
+                                    <button type="submit" 
+                                            class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                        @if($jobSeekerProfile->resume_file)
+                                        Update Resume
+                                        @else
+                                        Upload Resume
+                                        @endif
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Tips -->
+                        <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-lightbulb text-yellow-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <h4 class="text-sm font-medium text-yellow-800">Tips for a great resume</h4>
+                                    <div class="mt-2 text-sm text-yellow-700">
+                                        <ul class="list-disc pl-5 space-y-1">
+                                            <li>Keep it to 1-2 pages maximum</li>
+                                            <li>Include relevant keywords from job descriptions</li>
+                                            <li>Quantify your achievements with numbers</li>
+                                            <li>Use a clean, professional format</li>
+                                            <li>Proofread for spelling and grammar errors</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1135,8 +1279,25 @@
 </form>
 
 <script>
-// Section Management
-function showSection(sectionId) {
+// Tab Management
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listeners to all tab buttons
+    document.querySelectorAll('#sidebar-nav-container button[data-tab]').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const tabId = this.getAttribute('data-tab');
+            showTab(tabId);
+        });
+    });
+
+    // Show the active tab on page load
+    const activeTab = '{{ $activeTab }}';
+    if (activeTab) {
+        showTab(activeTab, false); // Don't update URL
+    }
+});
+
+function showTab(tabId, updateURL = true) {
     // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
         section.classList.add('hidden');
@@ -1144,29 +1305,47 @@ function showSection(sectionId) {
     });
     
     // Show selected section
-    const section = document.getElementById(sectionId);
+    const section = document.getElementById(tabId);
     if (section) {
         section.classList.remove('hidden');
         section.classList.add('active');
+        
+        // Scroll to top of section
+        // section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     
     // Update sidebar active state
-    document.querySelectorAll('nav button').forEach(button => {
-        button.classList.remove('bg-blue-50', 'text-blue-700', 'font-medium');
-        button.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
-        button.querySelector('span').classList.remove('bg-blue-600');
-        button.querySelector('span').classList.add('bg-transparent');
+    document.querySelectorAll('#sidebar-nav-container button[data-tab]').forEach(button => {
+        const buttonTabId = button.getAttribute('data-tab');
+        if (buttonTabId === tabId) {
+            button.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
+            button.classList.add('bg-blue-50', 'text-blue-700', 'font-medium');
+            button.querySelector('span').classList.remove('bg-transparent');
+            button.querySelector('span').classList.add('bg-blue-600');
+        } else {
+            button.classList.remove('bg-blue-50', 'text-blue-700', 'font-medium');
+            button.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
+            button.querySelector('span').classList.remove('bg-blue-600');
+            button.querySelector('span').classList.add('bg-transparent');
+        }
     });
     
-    // Activate current button
-    const activeButton = document.querySelector(`button[onclick="showSection('${sectionId}')"]`);
-    if (activeButton) {
-        activeButton.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-900');
-        activeButton.classList.add('bg-blue-50', 'text-blue-700', 'font-medium');
-        activeButton.querySelector('span').classList.remove('bg-transparent');
-        activeButton.querySelector('span').classList.add('bg-blue-600');
+    // Update URL without reloading page
+    if (updateURL) {
+        const url = new URL(window.location);
+        url.searchParams.set('tab', tabId);
+        window.history.pushState({}, '', url);
     }
 }
+
+// Handle browser back/forward buttons
+window.addEventListener('popstate', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+        showTab(tabParam, false);
+    }
+});
 
 // Form Toggle Functions
 function toggleEducationForm() {
@@ -1245,6 +1424,272 @@ function toggleProjectEndDate() {
     }
 }
 
+// Edit Functions
+function editEducation(id, institution, degree, startDate, endDate, isCurrent) {
+    // Set form values
+    document.getElementById('education_id').value = id;
+    document.getElementById('education_institution').value = institution;
+    document.getElementById('education_degree').value = degree;
+    document.getElementById('education_start_date').value = startDate;
+    document.getElementById('education_end_date').value = endDate || '';
+    document.getElementById('education_is_current').checked = isCurrent;
+    
+    // Update form title and button
+    document.getElementById('educationFormTitle').textContent = 'Edit Education';
+    document.getElementById('educationSubmitBtn').textContent = 'Update Education';
+    document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('educationFormElement').action = `/job-seeker/profile/education/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('educationFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Toggle end date
+    toggleEducationEndDate();
+    
+    // Show form
+    document.getElementById('educationForm').classList.remove('hidden');
+    document.getElementById('educationForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editSkill(id, name, level) {
+    // Set form values
+    document.getElementById('skill_id').value = id;
+    document.getElementById('skill_name').value = name;
+    document.getElementById('skill_level').value = level || '';
+    
+    // Update form title and button
+    document.getElementById('skillFormTitle').textContent = 'Edit Skill';
+    document.getElementById('skillSubmitBtn').textContent = 'Update Skill';
+    document.getElementById('skillSubmitBtn').className = document.getElementById('skillSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('skillFormElement').action = `/job-seeker/profile/skill/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('skillFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Show form
+    document.getElementById('skillForm').classList.remove('hidden');
+    document.getElementById('skillForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editExperience(id, jobTitle, companyName, employmentType, location, startDate, endDate, isCurrent, description) {
+    // Set form values
+    document.getElementById('experience_id').value = id;
+    document.getElementById('experience_job_title').value = jobTitle;
+    document.getElementById('experience_company_name').value = companyName;
+    document.getElementById('experience_employment_type').value = employmentType || '';
+    document.getElementById('experience_location').value = location || '';
+    document.getElementById('experience_start_date').value = startDate;
+    document.getElementById('experience_end_date').value = endDate || '';
+    document.getElementById('experience_is_current').checked = isCurrent;
+    document.getElementById('experience_description').value = description || '';
+    
+    // Update form title and button
+    document.getElementById('experienceFormTitle').textContent = 'Edit Experience';
+    document.getElementById('experienceSubmitBtn').textContent = 'Update Experience';
+    document.getElementById('experienceSubmitBtn').className = document.getElementById('experienceSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('experienceFormElement').action = `/job-seeker/profile/experience/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('experienceFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Toggle end date
+    toggleExperienceEndDate();
+    
+    // Show form
+    document.getElementById('experienceForm').classList.remove('hidden');
+    document.getElementById('experienceForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editProject(id, title, role, startDate, endDate, isOngoing, description, projectUrl) {
+    // Set form values
+    document.getElementById('project_id').value = id;
+    document.getElementById('project_title').value = title;
+    document.getElementById('project_role').value = role || '';
+    document.getElementById('project_start_date').value = startDate;
+    document.getElementById('project_end_date').value = endDate || '';
+    document.getElementById('project_is_ongoing').checked = isOngoing;
+    document.getElementById('project_description').value = description || '';
+    document.getElementById('project_url').value = projectUrl || '';
+    
+    // Update form title and button
+    document.getElementById('projectFormTitle').textContent = 'Edit Project';
+    document.getElementById('projectSubmitBtn').textContent = 'Update Project';
+    document.getElementById('projectSubmitBtn').className = document.getElementById('projectSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('projectFormElement').action = `/job-seeker/profile/project/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('projectFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Toggle end date
+    toggleProjectEndDate();
+    
+    // Show form
+    document.getElementById('projectForm').classList.remove('hidden');
+    document.getElementById('projectForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editCertification(id, name, issuingOrganization, issueDate, expirationDate, credentialId, credentialUrl) {
+    // Set form values
+    document.getElementById('certification_id').value = id;
+    document.getElementById('certification_name').value = name;
+    document.getElementById('certification_issuing_organization').value = issuingOrganization;
+    document.getElementById('certification_issue_date').value = issueDate;
+    document.getElementById('certification_expiration_date').value = expirationDate || '';
+    document.getElementById('certification_credential_id').value = credentialId || '';
+    document.getElementById('certification_credential_url').value = credentialUrl || '';
+    
+    // Update form title and button
+    document.getElementById('certificationFormTitle').textContent = 'Edit Certification';
+    document.getElementById('certificationSubmitBtn').textContent = 'Update Certification';
+    document.getElementById('certificationSubmitBtn').className = document.getElementById('certificationSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('certificationFormElement').action = `/job-seeker/profile/certification/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('certificationFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Show form
+    document.getElementById('certificationForm').classList.remove('hidden');
+    document.getElementById('certificationForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function editSocialLink(id, platform, url, username, isPublic) {
+    // Set form values
+    document.getElementById('social_link_id').value = id;
+    document.getElementById('social_link_platform').value = platform;
+    document.getElementById('social_link_url').value = url;
+    document.getElementById('social_link_username').value = username || '';
+    document.getElementById('social_link_is_public').checked = isPublic;
+    
+    // Update form title and button
+    document.getElementById('socialLinkFormTitle').textContent = 'Edit Social Link';
+    document.getElementById('socialLinkSubmitBtn').textContent = 'Update Social Link';
+    document.getElementById('socialLinkSubmitBtn').className = document.getElementById('socialLinkSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
+    
+    // Update form action
+    document.getElementById('socialLinkFormElement').action = `/job-seeker/profile/social-link/${id}`;
+    
+    // Add method spoofing for PUT
+    const form = document.getElementById('socialLinkFormElement');
+    let methodInput = form.querySelector('input[name="_method"]');
+    if (!methodInput) {
+        methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'PUT';
+        form.appendChild(methodInput);
+    } else {
+        methodInput.value = 'PUT';
+    }
+    
+    // Show form
+    document.getElementById('socialLinkForm').classList.remove('hidden');
+    document.getElementById('socialLinkForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Reset forms to create mode when toggled
+document.addEventListener('DOMContentLoaded', function() {
+    // Education form reset
+    document.getElementById('educationFormElement').addEventListener('reset', function() {
+        document.getElementById('educationFormTitle').textContent = 'Add New Education';
+        document.getElementById('educationSubmitBtn').textContent = 'Add Education';
+        document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className.replace('bg-green-600', 'bg-blue-600').replace('hover:bg-green-700', 'hover:bg-blue-700');
+        document.getElementById('educationFormElement').action = '{{ route('job-seeker.profile.education.store') }}';
+        
+        const methodInput = document.getElementById('educationFormElement').querySelector('input[name="_method"]');
+        if (methodInput) {
+            methodInput.remove();
+        }
+    });
+    
+    // Similar for other forms
+    const forms = ['skillFormElement', 'experienceFormElement', 'projectFormElement', 'certificationFormElement', 'socialLinkFormElement'];
+    
+    forms.forEach(formId => {
+        const form = document.getElementById(formId);
+        if (form) {
+            form.addEventListener('reset', function() {
+                const formTitle = document.getElementById(formId.replace('Element', 'Title'));
+                const submitBtn = document.getElementById(formId.replace('Element', 'SubmitBtn'));
+                
+                if (formTitle && submitBtn) {
+                    formTitle.textContent = formTitle.textContent.replace('Edit', 'Add New');
+                    submitBtn.textContent = submitBtn.textContent.replace('Update', 'Add');
+                    submitBtn.className = submitBtn.className.replace('bg-green-600', 'bg-blue-600').replace('hover:bg-green-700', 'hover:bg-blue-700');
+                }
+                
+                // Reset action to store route
+                const baseRoute = formId.replace('FormElement', '').replace(/([A-Z])/g, '-$1').toLowerCase();
+                form.action = `/job-seeker/profile/${baseRoute}`;
+                
+                const methodInput = form.querySelector('input[name="_method"]');
+                if (methodInput) {
+                    methodInput.remove();
+                }
+            });
+        }
+    });
+});
+
 // Photo Upload
 document.getElementById('profile_photo').addEventListener('change', function(e) {
     if (this.files && this.files[0]) {
@@ -1284,209 +1729,8 @@ function confirmDeletePhoto() {
     }
 }
 
-function toggleEducationForm() {
-    document.getElementById('educationForm').classList.toggle('hidden');
-}
-
-function toggleEditEducationForm() {
-    document.getElementById('editEducationForm').classList.toggle('hidden');
-}
-
-function toggleSkillForm() {
-    document.getElementById('skillForm').classList.toggle('hidden');
-}
-
-function toggleExperienceForm() {
-    document.getElementById('experienceForm').classList.toggle('hidden');
-}
-
-function toggleEditExperienceForm() {
-    document.getElementById('editExperienceForm').classList.toggle('hidden');
-}
-
-function toggleProjectForm() {
-    document.getElementById('projectForm').classList.toggle('hidden');
-}
-
-function toggleEditProjectForm() {
-    document.getElementById('editProjectForm').classList.toggle('hidden');
-}
-
-function toggleCertificationForm() {
-    document.getElementById('certificationForm').classList.toggle('hidden');
-}
-
-function toggleEditCertificationForm() {
-    document.getElementById('editCertificationForm').classList.toggle('hidden');
-}
-
-// Edit functions
-function editEducation(id, institution, degree, startDate, endDate, isCurrent) {
-    document.getElementById('editEducationForm').classList.remove('hidden');
-    document.getElementById('edit_institution').value = institution;
-    document.getElementById('edit_degree').value = degree;
-    document.getElementById('edit_start_date').value = startDate;
-    document.getElementById('edit_end_date').value = endDate;
-    document.getElementById('edit_is_current').checked = isCurrent;
-    
-    // Set form action
-    const form = document.getElementById('editEducationFormElement');
-    form.action = `/job-seeker/profile/education/${id}`;
-    
-    // Scroll to form
-    document.getElementById('editEducationForm').scrollIntoView({ behavior: 'smooth' });
-}
-
-function editExperience(id, jobTitle, companyName, employmentType, location, startDate, endDate, isCurrent, description) {
-    document.getElementById('editExperienceForm').classList.remove('hidden');
-    document.getElementById('edit_job_title').value = jobTitle;
-    document.getElementById('edit_company_name').value = companyName;
-    document.getElementById('edit_employment_type').value = employmentType;
-    document.getElementById('edit_location').value = location;
-    document.getElementById('edit_experience_start_date').value = startDate;
-    document.getElementById('edit_experience_end_date').value = endDate;
-    document.getElementById('edit_experience_is_current').checked = isCurrent === 'true';
-    document.getElementById('edit_experience_description').value = description;
-    
-    // Set form action
-    const form = document.getElementById('editExperienceFormElement');
-    form.action = `/job-seeker/profile/experience/${id}`;
-    
-    // Scroll to form
-    document.getElementById('editExperienceForm').scrollIntoView({ behavior: 'smooth' });
-}
-
-function editProject(id, title, role, startDate, endDate, isOngoing, description, projectUrl) {
-    document.getElementById('editProjectForm').classList.remove('hidden');
-    document.getElementById('edit_project_title').value = title;
-    document.getElementById('edit_project_role').value = role;
-    document.getElementById('edit_project_start_date').value = startDate;
-    document.getElementById('edit_project_end_date').value = endDate;
-    document.getElementById('edit_project_is_ongoing').checked = isOngoing === 'true';
-    document.getElementById('edit_project_description').value = description;
-    document.getElementById('edit_project_url').value = projectUrl;
-    
-    // Set form action
-    const form = document.getElementById('editProjectFormElement');
-    form.action = `/job-seeker/profile/project/${id}`;
-    
-    // Scroll to form
-    document.getElementById('editProjectForm').scrollIntoView({ behavior: 'smooth' });
-}
-
-function editCertification(id, name, issuingOrganization, issueDate, expirationDate, credentialId, credentialUrl) {
-    document.getElementById('editCertificationForm').classList.remove('hidden');
-    document.getElementById('edit_certification_name').value = name;
-    document.getElementById('edit_issuing_organization').value = issuingOrganization;
-    document.getElementById('edit_issue_date').value = issueDate;
-    document.getElementById('edit_expiration_date').value = expirationDate;
-    document.getElementById('edit_credential_id').value = credentialId;
-    document.getElementById('edit_credential_url').value = credentialUrl;
-    
-    // Set form action
-    const form = document.getElementById('editCertificationFormElement');
-    form.action = `/job-seeker/profile/certification/${id}`;
-    
-    // Scroll to form
-    document.getElementById('editCertificationForm').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Social Link Functions
-function toggleSocialLinkForm() {
-    document.getElementById('socialLinkForm').classList.toggle('hidden');
-}
-
-function toggleEditSocialLinkForm() {
-    document.getElementById('editSocialLinkForm').classList.toggle('hidden');
-}
-
-function editSocialLink(id, platform, url, username, isPublic) {
-    document.getElementById('editSocialLinkForm').classList.remove('hidden');
-    document.getElementById('edit_social_platform').value = platform;
-    document.getElementById('edit_social_url').value = url;
-    document.getElementById('edit_social_username').value = username || '';
-    document.getElementById('edit_social_is_public').checked = isPublic === 'true';
-    
-    // Set form action
-    const form = document.getElementById('editSocialLinkFormElement');
-    form.action = `/job-seeker/profile/social-link/${id}`;
-    
-    // Scroll to form
-    document.getElementById('editSocialLinkForm').scrollIntoView({ behavior: 'smooth' });
-}
-
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            // Update active state in sidebar
-            document.querySelectorAll('#sidebar a').forEach(link => {
-                link.classList.remove('text-blue-600');
-                link.classList.add('text-gray-600');
-            });
-            this.classList.remove('text-gray-600');
-            this.classList.add('text-blue-600');
-            
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
-
-// Handle is_current checkbox for education
-document.querySelectorAll('input[name="is_current"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        const endDateInput = this.closest('form').querySelector('input[name="end_date"]');
-        if (this.checked) {
-            endDateInput.disabled = true;
-            endDateInput.value = '';
-        } else {
-            endDateInput.disabled = false;
-        }
-    });
-});
-
-// Handle is_ongoing checkbox for projects
-document.querySelectorAll('input[name="is_ongoing"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        const endDateInput = this.closest('form').querySelector('input[name="end_date"]');
-        if (this.checked) {
-            endDateInput.disabled = true;
-            endDateInput.value = '';
-        } else {
-            endDateInput.disabled = false;
-        }
-    });
-});
-
-// Initialize date inputs
+// Initialize date toggles
 document.addEventListener('DOMContentLoaded', function() {
-    // Disable end dates if is_current/is_ongoing is checked
-    document.querySelectorAll('input[name="is_current"]:checked').forEach(checkbox => {
-        const endDateInput = checkbox.closest('form').querySelector('input[name="end_date"]');
-        if (endDateInput) endDateInput.disabled = true;
-    });
-    
-    document.querySelectorAll('input[name="is_ongoing"]:checked').forEach(checkbox => {
-        const endDateInput = checkbox.closest('form').querySelector('input[name="end_date"]');
-        if (endDateInput) endDateInput.disabled = true;
-    });
-});
-
-// Initialize
-document.addEventListener('DOMContentLoaded', function() {
-    // Show first section by default
-    showSection('basic-profile');
-    
-    // Initialize date toggles
     toggleEducationEndDate();
     toggleExperienceEndDate();
     toggleProjectEndDate();
@@ -1496,6 +1740,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <style>
 .section {
     display: block;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .section.hidden {
@@ -1506,8 +1751,19 @@ document.addEventListener('DOMContentLoaded', function() {
     display: block;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Smooth transitions */
-.section, button, input, select, textarea {
+button, input, select, textarea {
     transition: all 0.2s ease-in-out;
 }
 
