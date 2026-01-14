@@ -52,9 +52,21 @@
         <!-- Footer Middle -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-t border-gray-800">
             <!-- Logo -->
-            <div>
-                <img src="{{ asset('assets/img/logo/logo2_footer.png') }}" alt="Logo" class="h-12">
-            </div>
+            <a href="{{ url('/') }}">
+                @if($siteLogo)
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="{{ asset('storage/' . $siteLogo) }}" 
+                            class="h-20 w-auto"
+                            alt="Site Logo">
+                    </div>
+
+                @else
+                    <span class="text-xl font-bold text-blue-600">
+                        {{ config('app.name') }}
+                    </span>
+                @endif
+            </a>
             
             <!-- Stats -->
             <div>

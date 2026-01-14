@@ -68,78 +68,6 @@
     </div>
     <!-- Hero Section End -->
 
-    <!-- Stats Section Start -->
-    <!-- <div class="relative bg-blue-50">
-        <div class="mx-auto">
-
-            <div class="grid grid-cols-2 md:grid-cols-4">
-
-                    @php
-                        $totalJobs = \App\Models\Job::active()->count();
-                        $totalCompanies = \App\Models\Company::where('is_active', true)->count();
-                        $totalApplications = \App\Models\JobApplication::count();
-                        $jobSeekers = \App\Models\User::where('role', 'job_seeker')->where('is_active', true)->count();
-                    @endphp
-
-                
-                <div class="group bg-white p-8 text-center 
-                            transition-all duration-300 
-                            hover:-translate-y-2 hover:shadow-xl hover:border-blue-300">
-                    
-                    <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-3 
-                                transition group-hover:scale-105">
-                        {{ $totalJobs }}
-                    </div>
-                    <div class="text-gray-700 font-medium tracking-wide">
-                        Available Jobs
-                    </div>
-                </div>
-
-                <div class="group bg-white p-8 text-center 
-                            transition-all duration-300 
-                            hover:-translate-y-2 hover:shadow-xl hover:border-blue-300">
-
-                    <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-3 
-                                transition group-hover:scale-105">
-                        {{ $totalCompanies }}+
-                    </div>
-                    <div class="text-gray-700 font-medium tracking-wide">
-                        Companies
-                    </div>
-                </div>
-
-                <div class="group bg-white p-8 text-center 
-                            transition-all duration-300 
-                            hover:-translate-y-2 hover:shadow-xl hover:border-blue-300">
-
-                    <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-3 
-                                transition group-hover:scale-105">
-                        {{ $totalApplications }}+
-                    </div>
-                    <div class="text-gray-700 font-medium tracking-wide">
-                        Applications
-                    </div>
-                </div>
-
-                <div class="group bg-white p-8 text-center 
-                            transition-all duration-300 
-                            hover:-translate-y-2 hover:shadow-xl hover:border-blue-300">
-
-                    <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-3 
-                                transition group-hover:scale-105">
-                        {{ $jobSeekers }}+
-                    </div>
-                    <div class="text-gray-700 font-medium tracking-wide">
-                        Job Seekers
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Stats Section End -->
-
     <!-- Categories Section Start -->
     <div id="categories" class="py-20 bg-white">
         <div class="container mx-auto px-4">
@@ -172,18 +100,8 @@
                     @foreach($categories as $category)
                         <a href="{{ route('jobs.index', ['category' => $category->id]) }}" 
                            class="group bg-gray-50 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-white rounded-2xl p-8 text-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-200 hover:border-indigo-200">
-                            <!-- <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-gradient-to-r from-indigo-100 to-purple-100 flex items-center justify-center group-hover:from-indigo-200 group-hover:to-purple-200 transition-all duration-300">
-                                @if($category->icon)
-                                    <div class="text-3xl">{!! $category->icon !!}</div>
-                                @else
-                                    <i class="fas fa-folder text-3xl text-indigo-600"></i>
-                                @endif
-                            </div> -->
                             <h3 class="text-xl font-bold text-blue-500 mb-2 group-hover:text-indigo-700">{{ $category->name }}</h3>
                             <p class="text-gray-600 text-sm">{{ $category->jobs_count }} open jobs</p>
-                            <!-- @if($category->description)
-                                <p class="text-gray-500 text-sm mt-2 line-clamp-2">{{ Str::limit($category->description, 60) }}</p>
-                            @endif -->
                         </a>
                     @endforeach
                 </div>
@@ -193,7 +111,6 @@
                         <i class="fas fa-folder-open text-3xl text-gray-400"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">No Categories Available</h3>
-                    <!-- <p class="text-gray-600">Job categories will be listed here soon.</p> -->
                 </div>
             @endif
         </div>
@@ -356,17 +273,6 @@
                 </div>
                 @endforeach
             </div>
-
-            <!-- View All Button -->
-            <!-- <div class="text-center mt-10">
-                <a href="{{ route('jobs.index') }}" 
-                class="inline-flex items-center px-6 py-3 border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg">
-                    View All Jobs
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                    </svg>
-                </a>
-            </div> -->
             @else
             <!-- Empty State -->
             <div class="max-w-md mx-auto text-center py-12">
@@ -385,7 +291,6 @@
 
     <!-- How It Works Section Start -->
     <section class="relative py-32 bg-[#1f2f87] text-white overflow-hidden how-it-works-bg">
-        {{-- Overlay (optional for better contrast) --}}
         <div class="absolute inset-0"></div>
 
         <div class="relative max-w-7xl mx-auto px-6">
@@ -412,9 +317,6 @@
                         </svg>
                     </div>
                     <h5 class="text-xl font-semibold mb-3">1. Search a job</h5>
-                    <!-- <p class="text-sm text-white/80 leading-relaxed">
-                        Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt.
-                    </p> -->
                 </div>
 
                 {{-- Card 2 --}}
@@ -428,9 +330,6 @@
                         </svg>
                     </div>
                     <h5 class="text-xl font-semibold mb-3">2. Apply for job</h5>
-                    <!-- <p class="text-sm text-white/80 leading-relaxed">
-                        Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt.
-                    </p> -->
                 </div>
 
                 {{-- Card 3 --}}
@@ -443,9 +342,6 @@
                         </svg>
                     </div>
                     <h5 class="text-xl font-semibold mb-3">3. Get your job</h5>
-                    <!-- <p class="text-sm text-white/80 leading-relaxed">
-                        Sorem spsum dolor sit amsectetur adipisclit, seddo eiusmod tempor incididunt.
-                    </p> -->
                 </div>
 
             </div>
@@ -455,19 +351,17 @@
     <!-- How It Works Section End -->
 
     <!-- Testimonials Section Start -->
-    <div class="py-20 bg-gradient-to-r from-gray-50 to-white">
+    <div class="py-20 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
         <div class="container mx-auto px-4">
             <!-- Section Title -->
-            <div class="text-center mb-16">
-                <span class="inline-block px-4 py-2 bg-indigo-100 text-indigo-600 rounded-full font-semibold uppercase tracking-wider text-sm mb-4">Testimonials</span>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Success Stories</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Hear from professionals who found their dream jobs through our platform</p>
+            <div class="text-center mb-6">
+                <!-- <span class="inline-block px-4 py-2 bg-[#BDE8F5] text-[#1C4D8D] rounded-full font-semibold uppercase tracking-wider text-sm mb-4">Testimonials</span> -->
+                <h2 class="text-4xl md:text-5xl font-bold text-[#1C4D8D] mb-6">Success Stories</h2>
+                <!-- <p class="text-[#4988C4] text-lg max-w-2xl mx-auto">Hear from professionals who found their dream jobs through our platform</p> -->
             </div>
 
-            <!-- Testimonial Slider -->
+            <!-- Testimonial Swiper -->
             @php
-                // In a real application, you'd have a testimonials table or user testimonials
-                // For now, using sample testimonials from successful job seekers
                 $testimonials = [
                     [
                         'name' => 'Sarah Johnson',
@@ -489,60 +383,101 @@
                         'company' => 'GrowthMarketing Pro',
                         'content' => "The resume builder and profile features helped me stand out. I received interview requests from 5 companies within the first week of joining.",
                         'avatar' => 'testimonial-founder.png'
+                    ],
+                    [
+                        'name' => 'David Rodriguez',
+                        'position' => 'Data Scientist',
+                        'company' => 'AI Solutions Ltd.',
+                        'content' => "As a data scientist, finding the right role was challenging. This platform matched me with companies that truly valued my skills. Got hired within a month!",
+                        'avatar' => 'testimonial-founder.png'
+                    ],
+                    [
+                        'name' => 'Lisa Thompson',
+                        'position' => 'Product Manager',
+                        'company' => 'StartUpHub',
+                        'content' => "The job recommendations were spot on. I found a startup that perfectly matched my career goals. The entire process was smooth and professional.",
+                        'avatar' => 'testimonial-founder.png'
+                    ],
+                    [
+                        'name' => 'James Wilson',
+                        'position' => 'DevOps Engineer',
+                        'company' => 'CloudTech Systems',
+                        'content' => "Transitioning to DevOps was made easy with this platform. The relevant job alerts and company profiles helped me make an informed decision.",
+                        'avatar' => 'testimonial-founder.png'
                     ]
                 ];
             @endphp
 
-            <div class="testimonial-slider swiper-container max-w-5xl mx-auto">
-                <div class="swiper-wrapper">
-                    @foreach($testimonials as $testimonial)
-                        <div class="swiper-slide">
-                            <div class="bg-white rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300">
-                                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-                                    <div class="text-center lg:text-left">
-                                        <div class="w-28 h-28 mx-auto lg:mx-0 mb-6 rounded-full overflow-hidden border-4 border-indigo-100 shadow-lg">
+            <!-- Swiper Container -->
+            <div class="relative max-w-6xl mx-auto">
+                <div class="swiper-container testimonial-swiper">
+                    <div class="swiper-wrapper">
+                        @foreach($testimonials as $testimonial)
+                            <div class="swiper-slide">
+                                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#BDE8F5]/30 hover:border-[#4988C4] h-full">
+                                    <!-- Rating -->
+                                    <div class="mb-6">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="fas fa-star text-yellow-400 text-lg"></i>
+                                        @endfor
+                                    </div>
+                                    
+                                    <!-- Testimonial Content -->
+                                    <p class="text-gray-700 text-lg italic leading-relaxed mb-8">
+                                        <i class="fas fa-quote-left text-[#BDE8F5] text-2xl mr-3 align-top"></i>
+                                        {{ $testimonial['content'] }}
+                                    </p>
+                                    
+                                    <!-- Author Info -->
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-16 h-16 rounded-full overflow-hidden border-4 border-[#BDE8F5] flex-shrink-0">
                                             <img src="{{ asset('assets/img/testmonial/' . $testimonial['avatar']) }}" 
                                                  alt="{{ $testimonial['name'] }}" 
                                                  class="w-full h-full object-cover">
                                         </div>
-                                        <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ $testimonial['name'] }}</h3>
-                                        <p class="text-indigo-600 font-medium mb-1">{{ $testimonial['position'] }}</p>
-                                        <p class="text-gray-600 text-sm">{{ $testimonial['company'] }}</p>
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="mb-6">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star text-yellow-400 text-xl"></i>
-                                            @endfor
+                                        <div class="flex-1">
+                                            <h3 class="text-xl font-bold text-[#1C4D8D] mb-1">{{ $testimonial['name'] }}</h3>
+                                            <p class="text-[#4988C4] font-medium mb-1">{{ $testimonial['position'] }}</p>
+                                            <p class="text-gray-600 text-sm">{{ $testimonial['company'] }}</p>
                                         </div>
-                                        <p class="text-gray-700 text-lg italic leading-relaxed">
-                                            <i class="fas fa-quote-left text-indigo-200 text-2xl mr-4 align-top"></i>
-                                            {{ $testimonial['content'] }}
-                                            <i class="fas fa-quote-right text-indigo-200 text-2xl ml-4 align-top"></i>
-                                        </p>
-                                        <div class="mt-8 pt-6 border-t border-gray-100">
-                                            <div class="flex items-center text-gray-500">
-                                                <i class="far fa-clock mr-2"></i>
-                                                <span class="text-sm">Hired 3 months ago</span>
-                                            </div>
+                                    </div>
+                                    
+                                    <!-- Time Info -->
+                                    <div class="mt-6 pt-6 border-t border-gray-100">
+                                        <div class="flex items-center text-gray-500">
+                                            <i class="far fa-clock mr-2"></i>
+                                            <span class="text-sm">Hired 3 months ago</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="absolute top-1/2 left-0 right-0 -translate-y-1/2 z-10 flex justify-between pointer-events-none">
+                        <button class="swiper-button-prev w-12 h-12 rounded-full bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 flex items-center justify-center transition-all duration-300 transform hover:scale-110 pointer-events-auto ml-4">
+                            <i class="fas fa-chevron-left text-[#1C4D8D]"></i>
+                        </button>
+                        <button class="swiper-button-next w-12 h-12 rounded-full bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 flex items-center justify-center transition-all duration-300 transform hover:scale-110 pointer-events-auto mr-4">
+                            <i class="fas fa-chevron-right text-[#1C4D8D]"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- Navigation -->
-                <div class="flex justify-center items-center mt-12 space-x-4">
-                    <button class="testimonial-prev w-12 h-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-300 hover:bg-gray-50 flex items-center justify-center">
-                        <i class="fas fa-chevron-left text-gray-700"></i>
-                    </button>
-                    <div class="swiper-pagination"></div>
-                    <button class="testimonial-next w-12 h-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-300 hover:bg-gray-50 flex items-center justify-center">
-                        <i class="fas fa-chevron-right text-gray-700"></i>
-                    </button>
-                </div>
+                <!-- Pagination Dots -->
+                <div class="swiper-pagination mt-8 !relative"></div>
+            </div>
+
+            <!-- View More Button -->
+            <div class="text-center mt-12">
+                <a href="#" 
+                   class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] hover:bg-[#4988C4] text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1">
+                    View All Success Stories
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </div>
@@ -606,21 +541,12 @@
         <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-blue-700/70 backdrop-blur-[2px]"></div>
     </div>
 
-
         <!-- Animated Elements -->
         <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-white/5 to-transparent rounded-full translate-x-1/3 translate-y-1/3"></div>
 
         <div class="relative container mx-auto px-4">
             <div class="max-w-3xl mx-auto text-center">
-                <!-- Badge -->
-                <!-- <div class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-semibold uppercase tracking-wider text-sm mb-6 hover:bg-white/15 transition-all duration-300 group">
-                    <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                    <span>Career Accelerator</span>
-                </div> -->
-
                 <!-- Heading -->
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                     Launch Your
@@ -666,26 +592,6 @@
                         <span>Upload Resume</span>
                     </a>
                 </div>
-
-                <!-- Stats -->
-                <!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 pt-10 border-t border-white/20">
-                    <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2">10K+</div>
-                        <div class="text-sm text-white/70 uppercase tracking-wider">Jobs Posted</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2">5K+</div>
-                        <div class="text-sm text-white/70 uppercase tracking-wider">Companies</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2">85%</div>
-                        <div class="text-sm text-white/70 uppercase tracking-wider">Success Rate</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-3xl md:text-4xl font-bold text-white mb-2">24h</div>
-                        <div class="text-sm text-white/70 uppercase tracking-wider">Fast Response</div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>
@@ -707,15 +613,14 @@
         animation: zoom-slow 20s ease-in-out infinite;
     }
     </style>
+
     <!-- Top Companies Section Start -->
     <div class="py-20 bg-white">
         <div class="container mx-auto px-4">
             <!-- Section Title -->
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-10">
                 <div>
-                    <!-- <span class="inline-block px-4 py-2 bg-indigo-100 text-indigo-600 rounded-full font-semibold uppercase tracking-wider text-sm mb-4">Companies</span> -->
                     <h2 class="text-3xl md:text-3xl font-bold text-gray-900 mb-2">Top Hiring Companies</h2>
-                    <!-- <p class="text-gray-600 text-lg">Leading employers actively hiring on our platform</p> -->
                 </div>
             </div>
 
@@ -745,10 +650,6 @@
                                 @endif
                             </div>
                             <h3 class="font-bold text-gray-900 group-hover:text-indigo-700 mb-1">{{ $company->name }}</h3>
-                            <!-- <div class="text-sm text-gray-600">{{ $company->jobs_count }} open positions</div>
-                            @if($company->industry)
-                                <div class="text-xs text-gray-500 mt-2">{{ $company->industry }}</div>
-                            @endif -->
                         </a>
                     @endforeach
                 </div>
@@ -758,7 +659,6 @@
                         <i class="fas fa-building text-3xl text-gray-400"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">No Companies Listed</h3>
-                    <!-- <p class="text-gray-600">Companies will be featured here soon.</p> -->
                 </div>
             @endif
         </div>
@@ -770,9 +670,7 @@
         <div class="container mx-auto px-4">
             <!-- Section Title -->
             <div class="text-center mb-16">
-                <!-- <span class="inline-block px-4 py-2 bg-indigo-100 text-indigo-600 rounded-full font-semibold uppercase tracking-wider text-sm mb-4">Insights</span> -->
                 <h2 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">Career Tips & Insights</h2>
-                <!-- <p class="text-gray-600 text-lg max-w-2xl mx-auto">Stay updated with the latest trends and advice for your career growth</p> -->
             </div>
 
             <!-- Blog Grid -->
@@ -792,14 +690,14 @@
                     </div>
                     <div class="p-8">
                         <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-medium mr-3">Career Tips</span>
+                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Career Tips</span>
                             <span><i class="far fa-clock mr-1"></i> 5 min read</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-indigo-700 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
                             <a href="#">5 Essential Tips for Building a Winning Resume in 2024</a>
                         </h3>
                         <p class="text-gray-600 mb-6">Learn how to create a resume that stands out to recruiters and gets you more interview calls.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-bold">
+                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
                             Read More <i class="fas fa-arrow-right text-sm"></i>
                         </a>
                     </div>
@@ -820,14 +718,14 @@
                     </div>
                     <div class="p-8">
                         <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-medium mr-3">Interviews</span>
+                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Interviews</span>
                             <span><i class="far fa-clock mr-1"></i> 7 min read</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-indigo-700 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
                             <a href="#">Ace Your Next Job Interview: Common Questions & Best Answers</a>
                         </h3>
                         <p class="text-gray-600 mb-6">Prepare for success with our guide to the most common interview questions and expert-approved answers.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-bold">
+                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
                             Read More <i class="fas fa-arrow-right text-sm"></i>
                         </a>
                     </div>
@@ -848,14 +746,14 @@
                     </div>
                     <div class="p-8">
                         <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="bg-indigo-100 text-indigo-600 px-3 py-1 rounded-full text-xs font-medium mr-3">Remote Work</span>
+                            <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium mr-3">Remote Work</span>
                             <span><i class="far fa-clock mr-1"></i> 6 min read</span>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-indigo-700 transition-colors">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#1C4D8D] transition-colors">
                             <a href="#">The Ultimate Guide to Succeeding in Remote Work Environments</a>
                         </h3>
                         <p class="text-gray-600 mb-6">Master the skills and habits needed to excel in remote work settings and maintain work-life balance.</p>
-                        <a href="#" class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-bold">
+                        <a href="#" class="inline-flex items-center gap-2 text-[#1C4D8D] hover:text-[#4988C4] font-bold">
                             Read More <i class="fas fa-arrow-right text-sm"></i>
                         </a>
                     </div>
@@ -865,7 +763,7 @@
             <!-- View More Button -->
             <div class="mt-12 flex justify-end">
                 <a href="#"
-                class="text-blue-600 font-semibold text-lg hover:underline underline-offset-8 transition">
+                class="text-[#1C4D8D] font-semibold text-lg hover:underline underline-offset-8 transition">
                     View All Articles
                 </a>
             </div>
@@ -908,17 +806,6 @@
         animation-delay: 0.4s;
     }
 
-    .testimonial-slider .swiper-pagination-bullet {
-        width: 12px;
-        height: 12px;
-        background: #c7d2fe;
-        opacity: 1;
-    }
-    
-    .testimonial-slider .swiper-pagination-bullet-active {
-        background: #4f46e5;
-    }
-
     .hero-bg {
         background-image: url('{{ asset('assets/img/hero/h1_hero.jpg') }}');
     }
@@ -933,47 +820,160 @@
         background-position: center;
     }
 
-    .hero-bg {
-    background-image: url('{{ asset('assets/img/hero/h1_hero.jpg') }}');
+    /* Swiper Custom Styles */
+    .testimonial-swiper {
+        padding: 20px 10px;
     }
 
-    .cta-bg {
-    background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('{{ asset('assets/img/gallery/cv_bg.jpg') }}');
+    .testimonial-swiper .swiper-slide {
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
     }
 
-    .how-it-works-bg {
-    background-image: url('{{ asset('assets/img/gallery/how-applybg.png') }}');
-    background-size: cover;
-    background-position: center;
+    .testimonial-swiper .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1.02);
+        transition: all 0.3s ease;
     }
-    
+
+    .testimonial-swiper .swiper-slide-prev,
+    .testimonial-swiper .swiper-slide-next {
+        opacity: 0.7;
+    }
+
+    .testimonial-swiper .swiper-button-prev,
+    .testimonial-swiper .swiper-button-next {
+        width: 48px;
+        height: 48px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-swiper .swiper-button-prev:hover,
+    .testimonial-swiper .swiper-button-next:hover {
+        background: #f9fafb;
+        transform: scale(1.1);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+
+    .testimonial-swiper .swiper-button-prev:after,
+    .testimonial-swiper .swiper-button-next:after {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1C4D8D;
+    }
+
+    .testimonial-swiper .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: #BDE8F5;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-swiper .swiper-pagination-bullet-active {
+        background: #1C4D8D;
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+        .testimonial-swiper .swiper-button-prev,
+        .testimonial-swiper .swiper-button-next {
+            display: none;
+        }
+        
+        .testimonial-swiper {
+            padding: 10px 5px;
+        }
+    }
 </style>
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Testimonial Slider
-        const testimonialSwiper = new Swiper('.testimonial-slider', {
+        // Initialize Testimonial Swiper
+        const testimonialSwiper = new Swiper('.testimonial-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
             loop: true,
             autoplay: {
                 delay: 5000,
                 disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            speed: 800,
+            grabCursor: true,
+            centeredSlides: true,
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                    centeredSlides: false,
+                },
+                1440: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                    centeredSlides: false,
+                },
+                2500: {
+                    slidesPerView: 3,
+                    spaceBetween: 30,
+                    centeredSlides: false,
+                },
             },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
+                dynamicBullets: true,
             },
             navigation: {
-                nextEl: '.testimonial-next',
-                prevEl: '.testimonial-prev',
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
             },
-            spaceBetween: 30,
-            slidesPerView: 1,
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true
-            },
+            on: {
+                init: function() {
+                    this.slides.forEach((slide, index) => {
+                        if (index === this.activeIndex) {
+                            slide.style.opacity = '1';
+                            slide.style.transform = 'scale(1.02)';
+                        }
+                    });
+                },
+                slideChange: function() {
+                    this.slides.forEach((slide, index) => {
+                        slide.style.opacity = '0.7';
+                        slide.style.transform = 'scale(1)';
+                        if (index === this.activeIndex) {
+                            slide.style.opacity = '0.7';
+                            slide.style.transform = 'scale(1.02)';
+                        } else if (index === this.activeIndex - 1 || index === this.activeIndex + 1) {
+                            slide.style.opacity = '1';
+                        }
+                    });
+                }
+            }
+        });
+
+        // Pause autoplay on hover
+        const swiperContainer = document.querySelector('.testimonial-swiper');
+        swiperContainer.addEventListener('mouseenter', function() {
+            testimonialSwiper.autoplay.stop();
+        });
+        swiperContainer.addEventListener('mouseleave', function() {
+            testimonialSwiper.autoplay.start();
         });
 
         // Smooth scroll for anchor links

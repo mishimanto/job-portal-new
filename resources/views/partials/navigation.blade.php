@@ -4,8 +4,25 @@
 
             <!-- Logo -->
             <a href="{{ url('/') }}">
-                <img src="{{ asset('assets/img/logo/logo.png') }}" class="h-10" alt="Logo">
+                @if($siteLogo)
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="{{ asset('storage/' . $siteLogo) }}" 
+                            class="h-10 w-auto"
+                            alt="Site Logo">
+
+                        <span class="text-xl font-bold text-blue-600">
+                            {{ config('app.name') }}
+                        </span>
+                    </div>
+
+                @else
+                    <span class="text-xl font-bold text-blue-600">
+                        {{ config('app.name') }}
+                    </span>
+                @endif
             </a>
+
 
             <!-- Desktop Menu -->
             <ul class="hidden lg:flex items-center gap-10 text-[15px] font-medium text-gray-800">
@@ -42,9 +59,21 @@
                     <button @click="openUser = !openUser"
                         class="flex items-center gap-3 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 font-medium">
                         
-                        <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
-                            {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-                        </div>
+                        @php
+                            $user = auth()->user();
+                        @endphp
+
+                        @if($user && $user->profile_photo)
+                            <img 
+                                src="{{ asset('storage/' . $user->profile_photo) }}"
+                                alt="{{ $user->name }}"
+                                class="w-8 h-8 rounded-full object-cover border border-gray-300">
+                        @else
+                            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            </div>
+                        @endif
+
 
                         <span>{{ auth()->user()->name }}</span>
 

@@ -7,6 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name', 'JobPortal')) - Job Portal</title>
 
+    <!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
@@ -75,7 +80,7 @@
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body class="antialiased bg-gray-50">
     <!-- Preloader -->
     <div id="preloader" class="preloader">
         <div class="preloader-inner">
