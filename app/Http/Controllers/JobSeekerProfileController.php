@@ -81,7 +81,8 @@ class JobSeekerProfileController extends Controller
             'country' => 'nullable|string|max:100',
             'zip_code' => 'nullable|string|max:20',
             'date_of_birth' => 'nullable|date|before:today', 
-            'gender' => 'nullable|in:male,female,other',     
+            'gender' => 'nullable|in:male,female,other',
+            'marital_status' => 'nullable|in:single,married,divorced,widowed,separated,other',    
             'bio' => 'nullable|string|max:1000', 
             'title' => 'nullable|string|max:255',
             'summary' => 'nullable|string|max:1000',
@@ -130,7 +131,8 @@ class JobSeekerProfileController extends Controller
                 'country' => $request->country,
                 'zip_code' => $request->zip_code,
                 'date_of_birth' => $request->date_of_birth,
-                'gender' => $request->gender,               
+                'gender' => $request->gender,  
+                'marital_status' => $request->marital_status,             
                 'bio' => $request->bio, 
             ];
             

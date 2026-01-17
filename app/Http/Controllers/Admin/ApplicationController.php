@@ -36,7 +36,19 @@ class ApplicationController extends Controller
 
     public function show(JobApplication $application)
     {
-        $application->load(['user', 'job']);
+        // Load application with related data
+        $application->load([
+            'user', 
+            'job',
+            'user.personalInformation',
+            'user.educations',
+            'user.experiences',
+            'user.skills',
+            'user.projects',
+            'user.certifications',
+            'user.socialLinks',
+            'user.jobSeekerProfile'
+        ]);
         
         // Get interview time and joining date from notes
         $interviewTime = $application->interview_time;

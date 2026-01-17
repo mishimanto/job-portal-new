@@ -47,7 +47,7 @@
                     <i class="fas fa-exclamation-triangle text-red-500"></i>
                 </div>
                 <div class="ml-3">
-                    <ul class="mt-2 text-red-600 list-disc list-inside text-sm">
+                    <ul class="text-red-600 list-disc list-inside text-sm">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -293,6 +293,19 @@
                                                 <option value="male" {{ old('gender', $personalInfo->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
                                                 <option value="female" {{ old('gender', $personalInfo->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
                                                 <option value="other" {{ old('gender', $personalInfo->gender ?? '') == 'other' ? 'selected' : '' }}>Other</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
+                                            <select name="marital_status" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                                <option value="">Select Status</option>
+                                                <option value="single" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'single' ? 'selected' : '' }}>Single</option>
+                                                <option value="married" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'married' ? 'selected' : '' }}>Married</option>
+                                                <option value="divorced" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'divorced' ? 'selected' : '' }}>Divorced</option>
+                                                <option value="widowed" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'widowed' ? 'selected' : '' }}>Widowed</option>
+                                                <option value="separated" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'separated' ? 'selected' : '' }}>Separated</option>
+                                                <option value="other" {{ old('marital_status', $personalInfo->marital_status ?? '') == 'other' ? 'selected' : '' }}>Other</option>
                                             </select>
                                         </div>
                                     </div>

@@ -9,6 +9,11 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,7 +27,7 @@
     <!-- Additional Styles -->
     @stack('styles')
 </head>
-<body class="font-sans antialiased bg-gray-50">
+<body class="antialiased bg-gray-50">
     <div class="min-h-screen flex">
         <!-- Mobile sidebar backdrop -->
         <div x-data="{ sidebarOpen: false }">

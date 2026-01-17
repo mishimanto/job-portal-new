@@ -5,8 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Blade;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Schema;
+
 
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
                 $unreadMessagesCount = ContactMessage::unread()->count();
                 $view->with('unreadMessagesCount', $unreadMessagesCount);
             }
+        });
+
+        // Register blade directives
+        Blade::directive('removeFilter', function ($expression) {
+            return "<?php echo \App\Helpers\FilterHelper::removeFilter($expression); ?>";
         });
     }
 }

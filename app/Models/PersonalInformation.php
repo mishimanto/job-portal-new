@@ -19,6 +19,7 @@ class PersonalInformation extends Model
         'zip_code',
         'date_of_birth',
         'gender',
+        'marital_status',
         'bio',
     ];
 
