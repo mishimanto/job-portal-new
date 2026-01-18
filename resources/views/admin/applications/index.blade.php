@@ -67,7 +67,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        Applications
+                        Applications ({{ $applications->total() }})
                     </h3>
                     <!-- <p class="mt-1 text-sm text-gray-500">
                         Total {{ $applications->total() }} applications found
@@ -193,9 +193,11 @@
             </table>
         </div>
         
+        <!-- Pagination -->
         <div class="px-6 py-4 border-t border-gray-200">
             {{ $applications->links() }}
         </div>
+
         @else
         <div class="text-center py-12">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

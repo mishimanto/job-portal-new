@@ -39,9 +39,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        // Auth::login($user);
+        
+        return redirect()->route('verification.notice')->with('status', 'Please verify your email address.');
 
-        // Always redirect to job seeker dashboard
-        return redirect()->route('job-seeker.dashboard');
     }
 }

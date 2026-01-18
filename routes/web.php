@@ -12,9 +12,8 @@ use App\Http\Controllers\JobSeekerProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
 
 // ----------------- Public routes -----------------
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -25,22 +24,20 @@ Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
 // ----------------- Auth routes -----------------
-Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
-});
-
 require __DIR__.'/auth.php';
 
 // ----------------- Authenticated routes -----------------
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ----- Job Seeker routes -----
     Route::middleware(['role:job_seeker'])->prefix('job-seeker')->name('job-seeker.')->group(function () {
         Route::get('/dashboard', [JobSeekerDashboardController::class, 'index'])->name('dashboard');
 
         // Profile Routes
-        Route::prefix('profile')->name('profile.')->group(function () {
+        Route::prefix('professional-profile')->name('professional-profile.')->group(function () {
             Route::get('/', [JobSeekerProfileController::class, 'edit'])->name('edit');
             Route::post('/basic-update', [JobSeekerProfileController::class, 'updateBasicProfile'])->name('basic-update');
             Route::post('/personal-info/update', [JobSeekerProfileController::class, 'updatePersonalInfo'])->name('personal-info.update');
@@ -89,19 +86,17 @@ Route::middleware(['auth'])->group(function () {
             // Job Seeker Profile Routes 
             Route::post('/resume', [JobSeekerProfileController::class, 'uploadResume'])->name('resume.upload');
             Route::delete('/resume', [JobSeekerProfileController::class, 'deleteResume'])->name('resume.delete');
-                        
         });
         
         // Applications
-            Route::get('/applications', [ApplicationController::class, 'myApplications'])->name('applications');
-        
+        Route::get('/applications', [ApplicationController::class, 'myApplications'])->name('applications');
     });
 
-        // Application routes (for all authenticated users)
-        Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
+    // Application routes (for all authenticated users)
+    Route::post('/jobs/{job}/apply', [ApplicationController::class, 'apply'])->name('jobs.apply');
 
-        // ----- Admin routes -----
-        Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // ----- Admin routes -----
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Jobs
@@ -135,6 +130,5 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/contact-messages/{id}/reply', [PageController::class, 'replyContactMessage'])->name('contact.reply');
         Route::put('/contact-messages/{id}', [PageController::class, 'updateContactMessage'])->name('contact.update');
         Route::delete('/contact-messages/{id}', [PageController::class, 'deleteContactMessage'])->name('contact.delete');
-        
     });
 });

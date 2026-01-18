@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto p-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">My Job Applications</h1>
+    <h1 class="text-3xl font-bold text-center text-gray-900 mb-8">My Job Applications</h1>
 
     @if($applications->isEmpty())
         <div class="text-center py-12">
@@ -13,7 +13,7 @@
             </svg>
             <h3 class="text-xl font-medium text-gray-900 mb-2">No applications yet</h3>
             <p class="text-gray-600 mb-6">You haven't applied to any jobs yet.</p>
-            <a href="{{ route('jobs.index') }}" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">
+            <a href="{{ route('jobs.index') }}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
                 Browse Jobs
             </a>
         </div>
@@ -23,23 +23,42 @@
             <div class="bg-white rounded-xl shadow-md border border-gray-200 p-6">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div class="flex-1">
-                        <h3 class="text-xl font-bold text-gray-900">
-                            <a href="{{ route('jobs.show', $application->job) }}" class="hover:text-indigo-600">
+                        <h3 class="text-xl font-bold text-blue-700">
+                            <a href="{{ route('jobs.show', $application->job) }}" class="hover:text-blue-600">
                                 {{ $application->job->title }}
                             </a>
                         </h3>
                         <p class="text-gray-600">{{ $application->job->company_name }}</p>
                         <div class="flex flex-wrap gap-2 mt-2">
-                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
-                                {{ $application->job->location }}
-                            </span>
-                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
-                                {{ ucfirst($application->job->job_type) }}
-                            </span>
-                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
-                                {{ ucfirst($application->job->experience_level) }}
-                            </span>
-                        </div>
+
+    {{-- Location --}}
+    <span class="flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
+        <svg class="w-4 h-4 mr-1.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+        </svg>
+        {{ $application->job->location }}
+    </span>
+
+    {{-- Job Type --}}
+    <span class="flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
+        <svg class="w-4 h-4 mr-1.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        {{ ucfirst($application->job->job_type) }}
+    </span>
+
+    {{-- Experience Level --}}
+    <span class="flex items-center px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
+        <svg class="w-4 h-4 mr-1.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422v6.844L12 20l-6.16-3.578v-6.844L12 14z"></path>
+        </svg>
+        {{ ucfirst($application->job->experience_level) }}
+    </span>
+
+</div>
+
                     </div>
                     
                     <div class="flex flex-col items-end">

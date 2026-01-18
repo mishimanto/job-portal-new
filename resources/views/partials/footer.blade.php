@@ -5,7 +5,7 @@
             <!-- About Us -->
             <div>
                 <h4 class="text-2xl font-bold mb-6">About Us</h4>
-                <p class="text-gray-400">Heaven frucvitful doesn't cover lesser days appear creeping seasons so behold.</p>
+                <p class="text-gray-400">{{ $siteSettings['about_us'] ?? 'Heaven frucvitful doesn\'t cover lesser days appear creeping seasons so behold.' }}</p>
             </div>
 
             <!-- Contact Info -->
@@ -13,13 +13,17 @@
                 <h4 class="text-2xl font-bold mb-6">Contact Info</h4>
                 <ul class="space-y-3 text-gray-400">
                     <li>
-                        <p>Address: Your address goes here, your demo address.</p>
+                        <p>Address: {{ $siteSettings['contact_address'] ?? 'Your address goes here, your demo address.' }}</p>
                     </li>
                     <li>
-                        <a href="tel:+888044338899" class="hover:text-white">Phone: +8880 44338899</a>
+                        <a href="tel:{{ $siteSettings['contact_phone'] ?? '+888044338899' }}" class="hover:text-white">
+                            Phone: {{ $siteSettings['contact_phone'] ?? '+8880 44338899' }}
+                        </a>
                     </li>
                     <li>
-                        <a href="mailto:info@colorlib.com" class="hover:text-white">Email: info@colorlib.com</a>
+                        <a href="mailto:{{ $siteSettings['contact_email'] ?? 'info@colorlib.com' }}" class="hover:text-white">
+                            Email: {{ $siteSettings['contact_email'] ?? 'info@colorlib.com' }}
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -60,28 +64,27 @@
                             class="h-12 w-auto"
                             alt="Site Logo">
                     </div>
-
                 @else
                     <span class="text-xl font-bold text-blue-600">
-                        {{ config('app.name') }}
+                        {{ $siteSettings['site_name'] ?? config('app.name') }}
                     </span>
                 @endif
             </a>
             
             <!-- Stats -->
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">5000+</div>
-                <div class="text-gray-400">Talented Hunter</div>
+                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalJobs }}</div>
+                <div class="text-gray-400">Available Jobs</div>
             </div>
             
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">451</div>
-                <div class="text-gray-400">Talented Hunter</div>
+                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalCompanies }}</div>
+                <div class="text-gray-400">Registered Companies</div>
             </div>
             
             <div>
-                <div class="text-4xl font-bold text-indigo-400 mb-2">568</div>
-                <div class="text-gray-400">Talented Hunter</div>
+                <div class="text-4xl font-bold text-indigo-400 mb-2">{{ $totalApplicants }}</div>
+                <div class="text-gray-400">Applicants</div>
             </div>
         </div>
 
@@ -89,7 +92,11 @@
         <div class="border-t border-gray-800 pt-8 mt-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="text-gray-400 text-center md:text-left mb-4 md:mb-0">
-                    <p>Copyright &copy; {{ date('Y') }} All rights reserved | <a href="#" class="text-indigo-400 hover:text-white">Job Portal</a></p>
+                    <p>Copyright &copy; {{ date('Y') }} All rights reserved | 
+                       <a href="{{ route('home') }}" class="text-indigo-400 hover:text-white">
+                           {{ $siteSettings['site_name'] ?? config('app.name') }}
+                       </a>
+                    </p>
                 </div>
                 <div class="flex space-x-4">
                     <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-indigo-600">

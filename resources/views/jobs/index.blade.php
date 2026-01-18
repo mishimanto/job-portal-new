@@ -277,7 +277,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                         <h3 class="text-base font-semibold text-gray-900 mb-1">No jobs found</h3>
-                        <p class="text-gray-600 text-sm mb-3">Try changing your filters</p>
+                        <!-- <p class="text-gray-600 text-sm mb-3">Try changing your filters</p> -->
                         <a href="{{ route('jobs.index') }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
                             Clear all filters
                         </a>

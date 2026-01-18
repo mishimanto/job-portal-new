@@ -96,11 +96,11 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        All Users
+                        All Users ({{ $users->total() }})
                     </h3>
-                    <p class="mt-1 text-sm text-gray-500">
+                    <!-- <p class="mt-1 text-sm text-gray-500">
                         Total {{ $users->total() }} users found
-                    </p>
+                    </p> -->
                 </div>
                 <div class="flex items-center space-x-3">
                     <!-- Search -->
@@ -118,30 +118,33 @@
                     </div>
                     
                     <!-- Filters -->
-                    <select x-model="selectedRole" 
+                    <select x-model="selectedRole"
                             @change="filterByRole"
-                            class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-48 border border-gray-300 rounded-md px-3 py-2 text-sm 
+                                focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Roles</option>
                         <option value="admin">Admins</option>
                         <option value="job_seeker">Job Seekers</option>
                     </select>
-                    
-                    <select x-model="selectedStatus" 
+
+                    <select x-model="selectedStatus"
                             @change="filterByStatus"
-                            class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-indigo-500 focus:border-indigo-500">
+                            class="w-48 border border-gray-300 rounded-md px-3 py-2 text-sm 
+                                focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">All Status</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>
+
                     
                     <!-- Add User Button -->
-                    <button @click="showCreateModal = true"
+                    <!-- <button @click="showCreateModal = true"
                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                         Add User
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -255,23 +258,23 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center space-x-3">
                                     <!-- View Button -->
-                                    <a :href="`/admin/users/${user.id}`" 
+                                    <!-- <a :href="`/admin/users/${user.id}`" 
                                        class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200"
                                        title="View Details">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
-                                    </a>
+                                    </a> -->
                                     
                                     <!-- Edit Button -->
-                                    <a :href="`/admin/users/${user.id}/edit`" 
+                                    <!-- <a :href="`/admin/users/${user.id}/edit`" 
                                        class="text-blue-600 hover:text-blue-900 transition-colors duration-200"
                                        title="Edit User">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                         </svg>
-                                    </a>
+                                    </a> -->
                                     
                                     <!-- Toggle Status Button -->
                                     <button @click="toggleUserStatus(user)"
@@ -316,36 +319,11 @@
         </div>
 
         <!-- Pagination -->
-        <div x-show="users.length > 0 && !loading" class="px-6 py-4 border-t border-gray-200">
-            <div class="flex items-center justify-between">
-                <div class="text-sm text-gray-700">
-                    Showing <span x-text="from"></span> to <span x-text="to"></span> of <span x-text="total"></span> results
-                </div>
-                <div class="flex space-x-2">
-                    <button @click="previousPage" 
-                            :disabled="currentPage === 1"
-                            :class="currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'"
-                            class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white">
-                        Previous
-                    </button>
-                    
-                    <template x-for="page in pages" :key="page">
-                        <button @click="goToPage(page)"
-                                :class="currentPage === page ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'"
-                                class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium">
-                            <span x-text="page"></span>
-                        </button>
-                    </template>
-                    
-                    <button @click="nextPage" 
-                            :disabled="currentPage === lastPage"
-                            :class="currentPage === lastPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'"
-                            class="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white">
-                        Next
-                    </button>
-                </div>
+        @if($users->hasPages())
+            <div class="px-6 py-4 border-t border-gray-200">
+                {{ $users->withQueryString()->links() }}
             </div>
-        </div>
+        @endif
     </div>
 </div>
 
@@ -490,6 +468,11 @@ function userManagement() {
             password: '',
             password_confirmation: ''
         },
+
+        // Add this computed property
+        get filteredUsers() {
+            return this.users.filter(user => user.role !== 'admin');
+        },
         
         init() {
             console.log('User Management Initialized');
@@ -500,6 +483,8 @@ function userManagement() {
                 phone: user.phone || '',
                 profile_photo: user.profile_photo || ''
             }));
+
+            this.users = this.users.filter(user => user.role !== 'admin');
         },
         
         get pages() {
@@ -572,6 +557,8 @@ function userManagement() {
                         phone: user.phone || '',
                         profile_photo: user.profile_photo || ''
                     }));
+
+                    this.users = allUsers.filter(user => user.role !== 'admin');
                     this.currentPage = data.users.current_page;
                     this.lastPage = data.users.last_page;
                     this.total = data.users.total;

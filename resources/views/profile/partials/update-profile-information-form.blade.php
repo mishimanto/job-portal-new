@@ -1,12 +1,12 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+            {{ __('Update Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
+        <!-- <p class="mt-1 text-sm text-gray-600">
             {{ __("Update your account's profile information and email address.") }}
-        </p>
+        </p> -->
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -47,8 +47,14 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <div class="flex items-center gap-6 pt-2">
+            <button
+                class="px-6 py-2 rounded-lg font-semibold shadow-sm hover:shadow-md bg-blue-600 hover:bg-blue-700 text-white
+                    focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                    transition-all duration-200"
+            >
+                {{ __('Save Changes') }}
+            <button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -56,9 +62,17 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                    class="flex items-center gap-1 text-sm font-medium text-green-600"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {{ __('Saved successfully') }}
+                </p>
             @endif
         </div>
+
     </form>
 </section>

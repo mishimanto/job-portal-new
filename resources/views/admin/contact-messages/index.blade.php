@@ -3,8 +3,8 @@
 @section('title', 'Contact Messages - Admin Panel')
 
 @section('content')
-<div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container-fluid">
+    <!-- <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="text-2xl font-bold text-gray-800">Contact Messages</h1>
         <div class="flex items-center space-x-4">
             @if($unreadCount > 0)
@@ -13,7 +13,7 @@
             </span>
             @endif
         </div>
-    </div>
+    </div> -->
 
     <!-- Stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -38,6 +38,11 @@
     <!-- Messages Table -->
     <div class="bg-white rounded-lg shadow overflow-hidden">
         <div class="overflow-x-auto">
+            <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-900">Contact Messages ({{ $messages->total() }})</h2>                    
+                </div>                
+            </div>
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>

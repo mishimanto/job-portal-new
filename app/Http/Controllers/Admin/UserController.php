@@ -39,7 +39,7 @@ class UserController extends Controller
         // Sort by latest
         $query->orderBy('created_at', 'desc');
         
-        $users = $query->paginate(20);
+        $users = $query->paginate(10);
         
         // Get statistics
         $totalUsers = User::count();
@@ -103,60 +103,60 @@ class UserController extends Controller
             ->with('success', 'User created successfully.');
     }
 
-    public function show(User $user)
-    {
-        $user->load([
-            'educations',
-            'experiences',
-            'skills',
-            'projects',
-            'certifications',
-            'socialLinks',
-            'jobApplications',
-            'postedJobs'
-        ]);
+    // public function show(User $user)
+    // {
+    //     $user->load([
+    //         'educations',
+    //         'experiences',
+    //         'skills',
+    //         'projects',
+    //         'certifications',
+    //         'socialLinks',
+    //         'jobApplications',
+    //         'postedJobs'
+    //     ]);
         
-        return view('admin.users.show', compact('user'));
-    }
+    //     return view('admin.users.show', compact('user'));
+    // }
 
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
-    }
+    // public function edit(User $user)
+    // {
+    //     return view('admin.users.edit', compact('user'));
+    // }
 
-    public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,job_seeker',
-            'is_active' => 'boolean',
-        ]);
+    // public function update(Request $request, User $user)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+    //         'role' => 'required|in:admin,job_seeker',
+    //         'is_active' => 'boolean',
+    //     ]);
 
-        if ($request->has('password') && $request->password) {
-            $request->validate([
-                'password' => ['confirmed', Rules\Password::defaults()],
-            ]);
-            $user->password = Hash::make($request->password);
-        }
+    //     if ($request->has('password') && $request->password) {
+    //         $request->validate([
+    //             'password' => ['confirmed', Rules\Password::defaults()],
+    //         ]);
+    //         $user->password = Hash::make($request->password);
+    //     }
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->role = $request->role;
-        $user->is_active = $request->boolean('is_active');
-        $user->save();
+    //     $user->name = $request->name;
+    //     $user->email = $request->email;
+    //     $user->role = $request->role;
+    //     $user->is_active = $request->boolean('is_active');
+    //     $user->save();
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User updated successfully',
-                'user' => $user
-            ]);
-        }
+    //     if ($request->ajax()) {
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'User updated successfully',
+    //             'user' => $user
+    //         ]);
+    //     }
 
-        return redirect()->route('admin.users.index')
-            ->with('success', 'User updated successfully.');
-    }
+    //     return redirect()->route('admin.users.index')
+    //         ->with('success', 'User updated successfully.');
+    // }
 
     public function destroy(User $user)
     {

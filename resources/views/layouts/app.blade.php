@@ -85,9 +85,6 @@
     <div id="preloader" class="preloader">
         <div class="preloader-inner">
             <div class="preloader-circle"></div>
-            <!-- <div class="preloader-img mt-4">
-                <img src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo" class="w-20 h-auto">
-            </div> -->
         </div>
     </div>
 
@@ -96,7 +93,71 @@
 
     <!-- Page Content -->
     <main class="min-h-screen">
-        @yield('content')
+        <div class="">
+            <!-- Success/Error Messages -->
+            @if(session('success'))
+                <div 
+                    x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 5000)"
+                    x-show="show"
+                    x-transition
+                    class="bg-green-50 border-l-4 border-green-500 p-4 mt-6 rounded-r mx-auto max-w-7xl"
+                >
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-green-700">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div 
+                    x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 5000)"
+                    x-show="show"
+                    x-transition
+                    class="bg-red-50 border-l-4 border-red-500 p-4 mt-6 rounded-r mx-auto max-w-7xl"
+                >
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-red-700">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div 
+                    x-data="{ show: true }"
+                    x-init="setTimeout(() => show = false, 5000)"
+                    x-show="show"
+                    x-transition
+                    class="bg-red-50 border-l-4 border-red-500 p-4 mt-6 rounded-r mx-auto max-w-7xl"
+                >
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <ul class="text-red-600 list-disc list-inside text-sm">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @yield('content')
+        </div>
     </main>
 
     <!-- Footer -->
@@ -117,7 +178,7 @@
                     setTimeout(() => {
                         preloader.style.display = 'none';
                     }, 500);
-                }, 1000);
+                }, 500);
             }
         });
 

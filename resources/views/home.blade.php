@@ -551,7 +551,7 @@
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     @auth
                         @if(auth()->user()->isJobSeeker())
-                        <a href="{{ route('job-seeker.profile.edit') }}" 
+                        <a href="{{ route('job-seeker.professional-profile.edit') }}" 
                         class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-3xl hover:-translate-y-1 min-w-[220px]">
                             <div class="absolute inset-0 bg-white/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -571,7 +571,7 @@
                     </a>
                     @endauth
                     
-                    <a href="http://127.0.0.1:8000/job-seeker/profile" 
+                    <a href="http://127.0.0.1:8000/job-seeker/professional-profile" 
                     class="group relative inline-flex items-center justify-center gap-3 bg-transparent border-2 border-white/30 hover:border-white text-white hover:bg-white/10 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 backdrop-blur-sm hover:backdrop-blur-md min-w-[220px]">
                         <div class="absolute inset-0 bg-gradient-to-r from-white/0 to-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

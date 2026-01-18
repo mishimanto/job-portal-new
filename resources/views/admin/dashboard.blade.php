@@ -2,14 +2,32 @@
 
 @section('title', 'Admin Dashboard - JobPortal')
 @section('page-title', 'Dashboard')
-@section('page-subtitle', 'Welcome back, {{ auth()->user()->name }}!')
+@section('page-subtitle', 'Welcome back, ' . auth()->user()->name . '!')
+
+@push('styles')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .chart-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    .stats-card {
+        transition: transform 0.2s;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-2px);
+    }
+</style>
+@endpush
 
 @section('content')
 <div class="space-y-6">
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <!-- Total Jobs Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <!-- Total Jobs -->
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -21,20 +39,16 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">
-                                Total Jobs
-                            </dt>
-                            <dd class="text-lg font-semibold text-gray-900">
-                                {{ $stats['total_jobs'] ?? 0 }}
-                            </dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Jobs</dt>
+                            <dd class="text-lg font-semibold text-gray-900">{{ $total_jobs }}</dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Pending Jobs Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <!-- Pending Jobs -->
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -46,20 +60,16 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">
-                                Pending Jobs
-                            </dt>
-                            <dd class="text-lg font-semibold text-gray-900">
-                                {{ $stats['pending_jobs'] ?? 0 }}
-                            </dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Pending Jobs</dt>
+                            <dd class="text-lg font-semibold text-gray-900">{{ $pending_jobs }}</dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Applications Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <!-- Total Applications -->
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -71,20 +81,16 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">
-                                Applications
-                            </dt>
-                            <dd class="text-lg font-semibold text-gray-900">
-                                {{ $stats['total_applications'] ?? 0 }}
-                            </dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Applications</dt>
+                            <dd class="text-lg font-semibold text-gray-900">{{ $total_applications }}</dd>
                         </dl>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Total Hires Card -->
-        <div class="bg-white overflow-hidden shadow rounded-lg">
+        <!-- Total Hires -->
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
@@ -96,12 +102,8 @@
                     </div>
                     <div class="ml-5 w-0 flex-1">
                         <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">
-                                Total Hires
-                            </dt>
-                            <dd class="text-lg font-semibold text-gray-900">
-                                {{ $stats['total_hires'] ?? 0 }}
-                            </dd>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Hires</dt>
+                            <dd class="text-lg font-semibold text-gray-900">{{ $total_hires }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -109,7 +111,103 @@
         </div>
     </div>
 
-    <!-- Recent Jobs & Applications -->
+    <!-- First Row of Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Job Status Distribution -->
+        <x-charts.pie-chart
+            chartId="jobStatusChart"
+            title="Job Status Distribution"
+            subtitle="Current status of job postings"
+            :labels="array_values($job_status_data['labels'])"
+            :data="array_values($job_status_data['data'])"
+            :colors="array_values($job_status_data['colors'])"
+            :borderColors="array_map(function($color) {
+                return str_replace('0.8', '1', $color);
+            }, array_values($job_status_data['colors']))"
+        />
+        
+        <!-- Experience Level Distribution -->
+        @if(!empty($experience_data['data']))
+        <x-charts.pie-chart
+            chartId="experienceChart"
+            title="Experience Level Distribution"
+            subtitle="Required experience for jobs"
+            :labels="array_keys($experience_data['data'])"
+            :data="array_values($experience_data['data'])"
+            :colors="array_values(array_intersect_key($experience_data['colors'], $experience_data['data']))"
+            :borderColors="array_map(function($color) {
+                return str_replace('0.8', '1', $color);
+            }, array_values(array_intersect_key($experience_data['colors'], $experience_data['data'])))"
+        />
+        @endif
+        
+    </div>
+
+    <!-- Second Row of Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Jobs by Category -->
+        @if(!empty($category_data))
+        <x-charts.bar-chart
+            chartId="categoryChart"
+            title="Jobs by Category"
+            subtitle="Distribution of jobs across categories"
+            :labels="array_column($category_data, 'name')"
+            :data="array_column($category_data, 'count')"
+            backgroundColor="rgba(59, 130, 246, 0.7)"
+            borderColor="rgb(59, 130, 246)"
+            datasetLabel="Jobs"
+            yAxisTitle="Number of Jobs"
+            xAxisTitle="Categories"
+            showLegend="false"
+        />
+        @endif
+
+        
+
+        <!-- Application Status Distribution -->
+        <x-charts.bar-chart
+            chartId="applicationStatusChart"
+            title="Application Status Distribution"
+            subtitle="Status of job applications"
+            :labels="array_values($app_status_data['labels'])"
+            :data="array_values($app_status_data['data'])"
+            :backgroundColor="array_values($app_status_data['colors'])"
+            :borderColor="array_map(function($color) {
+                return str_replace('0.8', '1', $color);
+            }, array_values($app_status_data['colors']))"
+            datasetLabel="Applications"
+            yAxisTitle="Number of Applications"
+            xAxisTitle="Status"
+        />
+    </div>
+
+    <!-- Monthly Statistics Chart -->
+    <x-charts.line-chart
+        chartId="monthlyStatsChart"
+        title="Monthly Statistics"
+        subtitle="Job postings and applications over time"
+        :labels="$monthly_stats['months']"
+        :datasets="[
+            [
+                'label' => 'Jobs Posted',
+                'data' => $monthly_stats['jobs'],
+                'borderColor' => 'rgb(59, 130, 246)',
+                'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
+                'tension' => 0.3
+            ],
+            [
+                'label' => 'Applications',
+                'data' => $monthly_stats['applications'],
+                'borderColor' => 'rgb(34, 197, 94)',
+                'backgroundColor' => 'rgba(34, 197, 94, 0.1)',
+                'tension' => 0.3
+            ]
+        ]"
+        yAxisTitle="Count"
+        xAxisTitle="Months"
+    />
+
+    <!-- Recent Data Tables -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Jobs -->
         <div class="bg-white shadow rounded-lg">
@@ -118,14 +216,14 @@
                     Recent Job Postings
                 </h3>
                 <p class="mt-1 text-sm text-gray-500">
-                    Jobs requiring approval
+                    Latest jobs awaiting approval
                 </p>
             </div>
             <div class="px-4 py-5 sm:p-6">
-                @if($recentJobs->count() > 0)
+                @if($recent_jobs->count() > 0)
                     <div class="flow-root">
                         <ul class="-mb-8">
-                            @foreach($recentJobs as $job)
+                            @foreach($recent_jobs as $job)
                             <li>
                                 <div class="relative pb-8">
                                     @if(!$loop->last)
@@ -147,14 +245,11 @@
                                                     </a>
                                                 </div>
                                                 <p class="mt-0.5 text-sm text-gray-500">
-                                                    Posted by {{ $job->company_name }} • {{ $job->location }}
+                                                    {{ $job->company_name }} • {{ $job->location }}
                                                 </p>
                                             </div>
                                             <div class="mt-2 text-sm">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                    @if($job->status == 'approved') bg-green-100 text-green-800
-                                                    @elseif($job->status == 'pending') bg-yellow-100 text-yellow-800
-                                                    @else bg-red-100 text-red-800 @endif">
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                                     {{ ucfirst($job->status) }}
                                                 </span>
                                                 <span class="ml-2 text-gray-500">
@@ -168,18 +263,13 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="mt-6">
-                        <a href="{{ route('admin.jobs.index') }}" class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            View all jobs
-                        </a>
-                    </div>
                 @else
                     <div class="text-center py-12">
                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs yet</h3>
-                        <p class="mt-1 text-sm text-gray-500">Start creating jobs to see them here.</p>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No pending jobs</h3>
+                        <p class="mt-1 text-sm text-gray-500">All jobs are approved.</p>
                     </div>
                 @endif
             </div>
@@ -196,10 +286,10 @@
                 </p>
             </div>
             <div class="px-4 py-5 sm:p-6">
-                @if($recentApplications->count() > 0)
+                @if($recent_applications->count() > 0)
                     <div class="flow-root">
                         <ul class="-mb-8">
-                            @foreach($recentApplications as $application)
+                            @foreach($recent_applications as $application)
                             <li>
                                 <div class="relative pb-8">
                                     @if(!$loop->last)
@@ -225,11 +315,17 @@
                                                 </p>
                                             </div>
                                             <div class="mt-2 text-sm">
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                                                    @if($application->status == 'hired') bg-green-100 text-green-800
-                                                    @elseif($application->status == 'shortlisted') bg-blue-100 text-blue-800
-                                                    @elseif($application->status == 'pending') bg-yellow-100 text-yellow-800
-                                                    @else bg-red-100 text-red-800 @endif">
+                                                @php
+                                                    $statusColors = [
+                                                        'hired' => 'bg-green-100 text-green-800',
+                                                        'shortlisted' => 'bg-blue-100 text-blue-800',
+                                                        'pending' => 'bg-yellow-100 text-yellow-800',
+                                                        'reviewed' => 'bg-indigo-100 text-indigo-800',
+                                                        'rejected' => 'bg-red-100 text-red-800'
+                                                    ];
+                                                    $colorClass = $statusColors[$application->status] ?? 'bg-gray-100 text-gray-800';
+                                                @endphp
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $colorClass }}">
                                                     {{ ucfirst($application->status) }}
                                                 </span>
                                                 <span class="ml-2 text-gray-500">
@@ -242,11 +338,6 @@
                             </li>
                             @endforeach
                         </ul>
-                    </div>
-                    <div class="mt-6">
-                        <a href="{{ route('admin.applications.index') }}" class="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            View all applications
-                        </a>
                     </div>
                 @else
                     <div class="text-center py-12">
@@ -322,26 +413,3 @@
     </div>
 </div>
 @endsection
-
-@push('styles')
-<style>
-    /* Custom scrollbar for sidebar */
-    .overflow-y-auto {
-        scrollbar-width: thin;
-        scrollbar-color: #4B5563 #1F2937;
-    }
-    
-    .overflow-y-auto::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    .overflow-y-auto::-webkit-scrollbar-track {
-        background: #1F2937;
-    }
-    
-    .overflow-y-auto::-webkit-scrollbar-thumb {
-        background-color: #4B5563;
-        border-radius: 4px;
-    }
-</style>
-@endpush

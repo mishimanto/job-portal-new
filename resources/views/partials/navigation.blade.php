@@ -75,7 +75,10 @@
                         @endif
 
 
-                        <span>{{ auth()->user()->name }}</span>
+                        <span class="max-w-[150px] truncate inline-block align-middle">
+                            {{ auth()->user()->name }}
+                        </span>
+
 
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                              viewBox="0 0 24 24">
@@ -97,9 +100,13 @@
                                class="block px-5 py-3 hover:bg-blue-50">
                                 Dashboard
                             </a>
-                            <a href="{{ route('job-seeker.profile.edit') }}"
+                            <a href="{{ route('job-seeker.professional-profile.edit') }}"
                                class="block px-5 py-3 hover:bg-blue-50">
                                 My Profile
+                            </a>
+                            <a href="{{ route('profile.edit') }}"
+                               class="block px-5 py-3 hover:bg-blue-50">
+                                Privacy Settings
                             </a>
                         @endif
 

@@ -21,45 +21,53 @@ class JobSeekerProfileController extends Controller
 {
     
     public function edit()
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-         // Get current active tab from session or default to basic-profile
-        $activeTab = session('active_profile_tab', 'basic-profile');
-        
-        // Get or create job seeker profile
-        $jobSeekerProfile = JobSeekerProfile::firstOrCreate(
-            ['user_id' => $user->id],
-            [
-                'title' => '',
-                'summary' => '',
-                'skills' => json_encode([]),
-                'experience_level' => '',
-                'education' => '',
-                'resume_file' => null,
-                'work_experience' => json_encode([]),
-                'education_history' => json_encode([]),
-                'personal_info_id' => $user->personalInformation->id ?? null
-            ]
-        );
-        
-        // Get personal information
-        $personalInfo = $user->personalInformation ?? new PersonalInformation();
-        
-        return view('jobseeker.profile.edit', [
-            'user' => $user,
-            'jobSeekerProfile' => $jobSeekerProfile,
-            'personalInfo' => $personalInfo,
-            'educations' => $user->educations,
-            'skills' => $user->skills,
-            'experiences' => $user->experiences,
-            'projects' => $user->projects,
-            'certifications' => $user->certifications,
-            'socialLinks' => $user->socialLinks,
-            'visibilitySettings' => $user->profileVisibilitySetting ?? new ProfileVisibilitySetting(),
-            'activeTab' => $activeTab, // Pass active tab to view
-        ]);
+    // Get current active tab from session or default to basic-profile
+    $activeTab = session('active_profile_tab', 'basic-profile');
+    
+    // Get or create job seeker profile
+    $jobSeekerProfile = JobSeekerProfile::firstOrCreate(
+        ['user_id' => $user->id],
+        [
+            'title' => '',
+            'summary' => '',
+            'skills' => json_encode([]),
+            'experience_level' => '',
+            'education' => '',
+            'resume_file' => null,
+            'work_experience' => json_encode([]),
+            'education_history' => json_encode([]),
+            'personal_info_id' => $user->personalInformation->id ?? null
+        ]
+    );
+    
+    // Get personal information - FIXED
+    $personalInfo = $user->personalInformation;
+    if (!$personalInfo) {
+        // If personal info doesn't exist, create an empty model instance
+        // but also try to load existing data from database
+        $personalInfo = PersonalInformation::where('user_id', $user->id)->first();
+        if (!$personalInfo) {
+            $personalInfo = new PersonalInformation(['user_id' => $user->id]);
+        }
     }
+    
+    return view('jobseeker.profile.edit', [
+        'user' => $user,
+        'jobSeekerProfile' => $jobSeekerProfile,
+        'personalInfo' => $personalInfo,
+        'educations' => $user->educations,
+        'skills' => $user->skills,
+        'experiences' => $user->experiences,
+        'projects' => $user->projects,
+        'certifications' => $user->certifications,
+        'socialLinks' => $user->socialLinks,
+        'visibilitySettings' => $user->profileVisibilitySetting ?? new ProfileVisibilitySetting(),
+        'activeTab' => $activeTab,
+    ]);
+}
 
     public function completeUpdate(Request $request)
     {

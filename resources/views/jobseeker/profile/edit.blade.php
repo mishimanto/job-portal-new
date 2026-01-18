@@ -3,7 +3,7 @@
 @section('title', 'Edit Profile')
 
 @section('content')
-<div class="container mx-auto px-4 py-8 max-w-7xl">
+<div class="container mx-auto py-8 max-w-7xl">
     <!-- Breadcrumb -->
     <!-- <nav class="mb-8">
         <ol class="flex items-center space-x-2 text-sm text-gray-600">
@@ -14,7 +14,7 @@
     </nav> -->
 
     <!-- Success/Error Messages -->
-    @if(session('success'))
+    <!-- @if(session('success'))
         <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-r">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif -->
 
     <!-- Main Layout -->
     <div class="flex flex-col lg:flex-row gap-8">
@@ -95,7 +95,7 @@
                 
                 <!-- Photo Upload Section -->
                 <div class="flex items-center justify-center p-3 space-y-3">
-                    <form id="photoUploadForm" action="{{ route('job-seeker.profile.photo.update') }}" method="POST" enctype="multipart/form-data" class="hidden">
+                    <form id="photoUploadForm" action="{{ route('job-seeker.professional-profile.photo.update') }}" method="POST" enctype="multipart/form-data" class="hidden">
                         @csrf
                         <input type="file" name="profile_photo" id="profile_photo" accept="image/*">
                     </form>
@@ -242,7 +242,7 @@
                     </div>
                     
                     <div class="p-6">
-                        <form action="{{ route('job-seeker.profile.complete-update') }}" method="POST">
+                        <form action="{{ route('job-seeker.professional-profile.complete-update') }}" method="POST">
                             @csrf
                             
                             <div class="space-y-6">
@@ -251,13 +251,13 @@
                                     <h3 class="text-sm font-medium text-gray-900 mb-4 pb-2 border-b border-gray-200">Personal Details</h3>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Display Name *</label>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Display Name<span class="text-lg text-red-600">*</span></label>
                                             <input type="text" name="name" value="{{ old('name', $user->name) }}" required
                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         </div>
                                         
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address<span class="text-lg text-red-600">*</span></label>
                                             <input type="email" name="email" value="{{ old('email', $user->email) }}" required
                                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         </div>
@@ -282,8 +282,9 @@
                                         
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-                                            <input type="date" name="date_of_birth" value="{{ old('date_of_birth', $personalInfo->date_of_birth ?? '') }}"
-                                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                            <input type="date" name="date_of_birth" 
+                                                value="{{ old('date_of_birth', $personalInfo->date_of_birth ? \Carbon\Carbon::parse($personalInfo->date_of_birth)->format('Y-m-d') : '') }}"
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                                         </div>
                                         
                                         <div>
@@ -432,20 +433,20 @@
                         <!-- Add/Edit Education Form -->
                         <div id="educationForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="educationFormTitle">Add New Education</h3>
-                            <form id="educationFormElement" method="POST" action="{{ route('job-seeker.profile.education.store') }}">
+                            <form id="educationFormElement" method="POST" action="{{ route('job-seeker.professional-profile.education.store') }}">
                                 @csrf
                                 <input type="hidden" id="education_id" name="education_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Institution *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Institution<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="institution" id="education_institution" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Degree *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Degree<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="degree" id="education_degree" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date<span class="text-lg text-red-600">*</span></label>
                                         <input type="date" name="start_date" id="education_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -489,7 +490,7 @@
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
-                                        <form action="{{ route('job-seeker.profile.education.destroy', $education) }}" method="POST" class="inline">
+                                        <form action="{{ route('job-seeker.professional-profile.education.destroy', $education) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Delete this education?')">
                                                 Delete
@@ -530,12 +531,12 @@
                         <!-- Add/Edit Skill Form -->
                         <div id="skillForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="skillFormTitle">Add New Skill</h3>
-                            <form id="skillFormElement" method="POST" action="{{ route('job-seeker.profile.skill.store') }}">
+                            <form id="skillFormElement" method="POST" action="{{ route('job-seeker.professional-profile.skill.store') }}">
                                 @csrf
                                 <input type="hidden" id="skill_id" name="skill_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Skill Name *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Skill Name<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="name" id="skill_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -572,7 +573,7 @@
                                         class="ml-2 text-blue-500 hover:text-blue-700 text-xs">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <form action="{{ route('job-seeker.profile.skill.destroy', $skill) }}" method="POST" class="ml-1">
+                                <form action="{{ route('job-seeker.professional-profile.skill.destroy', $skill) }}" method="POST" class="ml-1">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-blue-500 hover:text-blue-700 text-xs" onclick="return confirm('Remove this skill?')">
                                         <i class="fas fa-times"></i>
@@ -611,16 +612,16 @@
                         <!-- Add/Edit Experience Form -->
                         <div id="experienceForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="experienceFormTitle">Add New Experience</h3>
-                            <form id="experienceFormElement" method="POST" action="{{ route('job-seeker.profile.experience.store') }}">
+                            <form id="experienceFormElement" method="POST" action="{{ route('job-seeker.professional-profile.experience.store') }}">
                                 @csrf
                                 <input type="hidden" id="experience_id" name="experience_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Job Title *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Job Title<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="job_title" id="experience_job_title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Company Name<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="company_name" id="experience_company_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -639,7 +640,7 @@
                                         <input type="text" name="location" id="experience_location" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date<span class="text-lg text-red-600">*</span></label>
                                         <input type="date" name="start_date" id="experience_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -704,7 +705,7 @@
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
-                                        <form action="{{ route('job-seeker.profile.experience.destroy', $experience) }}" method="POST" class="inline">
+                                        <form action="{{ route('job-seeker.professional-profile.experience.destroy', $experience) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Delete this experience?')">
                                                 Delete
@@ -745,12 +746,12 @@
                         <!-- Add/Edit Project Form -->
                         <div id="projectForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="projectFormTitle">Add New Project</h3>
-                            <form id="projectFormElement" method="POST" action="{{ route('job-seeker.profile.project.store') }}">
+                            <form id="projectFormElement" method="POST" action="{{ route('job-seeker.professional-profile.project.store') }}">
                                 @csrf
                                 <input type="hidden" id="project_id" name="project_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Project Title *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Project Title<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="title" id="project_title" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -758,7 +759,7 @@
                                         <input type="text" name="role" id="project_role" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Start Date<span class="text-lg text-red-600">*</span></label>
                                         <input type="date" name="start_date" id="project_start_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -772,7 +773,7 @@
                                         </label>
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Description<span class="text-lg text-red-600">*</span></label>
                                         <textarea name="description" id="project_description" rows="3" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                                     </div>
                                     <div class="md:col-span-2">
@@ -815,7 +816,7 @@
                                             class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                         Edit
                                     </button>
-                                    <form action="{{ route('job-seeker.profile.project.destroy', $project) }}" method="POST" class="inline">
+                                    <form action="{{ route('job-seeker.professional-profile.project.destroy', $project) }}" method="POST" class="inline">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Delete this project?')">
                                             Delete
@@ -855,20 +856,20 @@
                         <!-- Add/Edit Certification Form -->
                         <div id="certificationForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="certificationFormTitle">Add New Certification</h3>
-                            <form id="certificationFormElement" method="POST" action="{{ route('job-seeker.profile.certification.store') }}">
+                            <form id="certificationFormElement" method="POST" action="{{ route('job-seeker.professional-profile.certification.store') }}">
                                 @csrf
                                 <input type="hidden" id="certification_id" name="certification_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Certification Name *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Certification Name<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="name" id="certification_name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Issuing Organization *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Issuing Organization<span class="text-lg text-red-600">*</span></label>
                                         <input type="text" name="issuing_organization" id="certification_issuing_organization" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Issue Date *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Issue Date<span class="text-lg text-red-600">*</span></label>
                                         <input type="date" name="issue_date" id="certification_issue_date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                     </div>
                                     <div>
@@ -927,7 +928,7 @@
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
-                                        <form action="{{ route('job-seeker.profile.certification.destroy', $certification) }}" method="POST" class="inline">
+                                        <form action="{{ route('job-seeker.professional-profile.certification.destroy', $certification) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Delete this certification?')">
                                                 Delete
@@ -968,12 +969,12 @@
                         <!-- Add/Edit Social Link Form -->
                         <div id="socialLinkForm" class="hidden mb-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <h3 class="text-sm font-medium text-gray-900 mb-4" id="socialLinkFormTitle">Add New Social Link</h3>
-                            <form id="socialLinkFormElement" method="POST" action="{{ route('job-seeker.profile.social-link.store') }}">
+                            <form id="socialLinkFormElement" method="POST" action="{{ route('job-seeker.professional-profile.social-link.store') }}">
                                 @csrf
                                 <input type="hidden" id="social_link_id" name="social_link_id">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Platform *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Platform<span class="text-lg text-red-600">*</span></label>
                                         <select name="platform" id="social_link_platform" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                             <option value="">Select Platform</option>
                                             <option value="linkedin">LinkedIn</option>
@@ -986,7 +987,7 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">URL *</label>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">URL<span class="text-lg text-red-600">*</span></label>
                                         <input type="url" name="url" id="social_link_url" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/username">
                                     </div>
                                     <div>
@@ -1047,7 +1048,7 @@
                                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                                             Edit
                                         </button>
-                                        <form action="{{ route('job-seeker.profile.social-link.destroy', $link) }}" method="POST" class="inline">
+                                        <form action="{{ route('job-seeker.professional-profile.social-link.destroy', $link) }}" method="POST" class="inline">
                                             @csrf @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium" onclick="return confirm('Delete this social link?')">
                                                 Delete
@@ -1081,7 +1082,7 @@
                     </div>
                     
                     <div class="p-6">
-                        <form action="{{ route('job-seeker.profile.visibility.update') }}" method="POST">
+                        <form action="{{ route('job-seeker.professional-profile.visibility.update') }}" method="POST">
                             @csrf
                             <div class="space-y-6">
                                 <!-- Profile Visibility -->
@@ -1180,26 +1181,27 @@
                                         <div class="mt-2 flex space-x-3">
                                             <a href="{{ asset('storage/' . $jobSeekerProfile->resume_file) }}" 
                                                target="_blank" 
-                                               class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                                <i class="fas fa-eye mr-1.5"></i> View Resume
+                                               class="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium mr-2">
+                                                <i class="fas fa-eye mr-1"></i> View Resume
                                             </a>
                                             <a href="{{ asset('storage/' . $jobSeekerProfile->resume_file) }}" 
                                                download 
-                                               class="inline-flex items-center text-green-600 hover:text-green-800 text-sm font-medium">
-                                                <i class="fas fa-download mr-1.5"></i> Download
+                                               class="inline-flex items-center text-green-600 hover:text-green-800 text-sm font-medium mr-2">
+                                                <i class="fas fa-download mr-1"></i> Download
                                             </a>
+                                             <form action="{{ route('job-seeker.professional-profile.resume.delete') }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        onclick="return confirm('Are you sure you want to delete your resume?')"
+                                                        class="text-red-600 hover:text-red-800 text-sm font-medium ml-2">
+                                                    <i class="fas fa-trash "></i> Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                                <form action="{{ route('job-seeker.profile.resume.delete') }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            onclick="return confirm('Are you sure you want to delete your resume?')"
-                                            class="text-red-600 hover:text-red-800 text-sm font-medium">
-                                        <i class="fas fa-trash mr-1"></i> Delete
-                                    </button>
-                                </form>
+                               
                             </div>
                         </div>
                         @endif
@@ -1214,7 +1216,7 @@
                                 @endif
                             </h3>
                             
-                            <form action="{{ route('job-seeker.profile.resume.upload') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('job-seeker.professional-profile.resume.upload') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 
                                 <div class="space-y-4">
@@ -1286,7 +1288,7 @@
 </div>
 
 <!-- Hidden Delete Form -->
-<form id="deletePhotoForm" action="{{ route('job-seeker.profile.photo.delete') }}" method="POST" class="hidden">
+<form id="deletePhotoForm" action="{{ route('job-seeker.professional-profile.photo.delete') }}" method="POST" class="hidden">
     @csrf
     @method('DELETE')
 </form>
@@ -1666,7 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('educationFormTitle').textContent = 'Add New Education';
         document.getElementById('educationSubmitBtn').textContent = 'Add Education';
         document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className.replace('bg-green-600', 'bg-blue-600').replace('hover:bg-green-700', 'hover:bg-blue-700');
-        document.getElementById('educationFormElement').action = '{{ route('job-seeker.profile.education.store') }}';
+        document.getElementById('educationFormElement').action = '{{ route('job-seeker.professional-profile.education.store') }}';
         
         const methodInput = document.getElementById('educationFormElement').querySelector('input[name="_method"]');
         if (methodInput) {

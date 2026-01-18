@@ -8,10 +8,10 @@
 <div class="bg-white shadow rounded-lg overflow-hidden">
     <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
         <div>
-            <h2 class="text-lg font-semibold text-gray-900">Company List</h2>
-            <p class="mt-1 text-sm text-gray-500">
+            <h2 class="text-lg font-semibold text-gray-900">Company List ({{ $companies->total() }})</h2>
+            <!-- <p class="mt-1 text-sm text-gray-500">
                 Total {{ $companies->total() }} companies found
-            </p>
+            </p> -->
         </div>
         
         <a href="{{ route('admin.companies.create') }}" 
