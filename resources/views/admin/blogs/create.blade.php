@@ -9,9 +9,9 @@
                 <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
                     Create New Blog Post
                 </h2>
-                <p class="mt-1 text-sm text-gray-500">
+                <!-- <p class="mt-1 text-sm text-gray-500">
                     Fill in the details below to create a new blog post.
-                </p>
+                </p> -->
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
                 <a href="{{ route('admin.blogs.index') }}" 
@@ -55,7 +55,7 @@
                         <!-- Title -->
                         <div>
                             <label for="title" class="block text-sm font-medium text-gray-700">
-                                Post Title <span class="text-red-500">*</span>
+                                Post Title <span class="text-lg text-red-500">*</span>
                             </label>
                             <input type="text" 
                                    name="title" 
@@ -86,16 +86,16 @@
                         <!-- Content -->
                         <div>
                             <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
-                                Content <span class="text-red-500">*</span>
+                                Content <span class="text-lg text-red-500">*</span>
                             </label>
                             <!-- Hidden textarea for form submission -->
                             <textarea id="content" 
                                       name="content" 
-                                      class="hidden">{{ old('content') }}</textarea>
+                                      class="hidden">{!! old('content') !!}</textarea>
                             
                             <!-- CKEditor container -->
                             <div id="editor-container">
-                                <textarea id="ckeditor">{{ old('content') }}</textarea>
+                                <textarea id="ckeditor">{!! old('content') !!}</textarea>
                             </div>
                             
                             <div id="contentError" class="text-red-500 text-sm mt-1 hidden">

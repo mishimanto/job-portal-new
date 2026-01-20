@@ -13,23 +13,165 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::published()
-            ->orderBy('published_at', 'desc')
-            ->paginate(12);
+        return $this->getBlogsData();
+    }
+
+    /**
+     * AJAX filter route for live filtering
+     */
+    public function filter(Request $request)
+    {
+        return $this->getBlogsData(true);
+    }
+
+    /**
+     * Get blogs data with filtering, sorting, and pagination
+     */
+    private function getBlogsData($isAjax = false)
+    {
+        try {
+            $query = Blog::published()->with('author');
             
-        $featuredBlogs = Blog::published()
-            ->featured()
-            ->orderBy('published_at', 'desc')
-            ->take(3)
-            ->get();
+            // Search functionality
+            $search = request('search');
+            if ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%")
+                      ->orWhere('author_name', 'like', "%{$search}%");
+                });
+            }
             
-        $categories = Blog::published()
-            ->whereNotNull('category')
-            ->select('category')
-            ->distinct()
-            ->pluck('category');
+            // Category filter
+            $category = request('category');
+            if ($category) {
+                $query->where('category', $category);
+            }
             
-        return view('blogs.index', compact('blogs', 'featuredBlogs', 'categories'));
+            // Sorting
+            $sort = request('sort', 'newest');
+            switch ($sort) {
+                case 'oldest':
+                    $query->orderBy('published_at', 'asc');
+                    break;
+                case 'views':
+                    $query->orderBy('views', 'desc');
+                    break;
+                case 'featured':
+                    $query->orderBy('is_featured', 'desc')->orderBy('published_at', 'desc');
+                    break;
+                default: // 'newest'
+                    $query->orderBy('published_at', 'desc');
+                    break;
+            }
+            
+            // Pagination
+            $blogs = $query->paginate(12)->withQueryString();
+            
+            // Get featured blogs (apply same filters)
+            $featuredQuery = Blog::published()->where('is_featured', true);
+            
+            if ($search) {
+                $featuredQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%");
+                });
+            }
+            
+            if ($category) {
+                $featuredQuery->where('category', $category);
+            }
+            
+            $featuredBlogs = $featuredQuery->orderBy('published_at', 'desc')->take(4)->get();
+            
+            // Get categories with counts (considering current filters)
+            $categoriesQuery = Blog::published();
+            
+            if ($search) {
+                $categoriesQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%");
+                });
+            }
+            
+            $categories = $categoriesQuery->select('category')
+                ->whereNotNull('category')
+                ->groupBy('category')
+                ->orderByRaw('COUNT(*) DESC')
+                ->pluck('category');
+            
+            // Get popular blogs (considering current filters)
+            $popularQuery = Blog::published();
+            
+            if ($search) {
+                $popularQuery->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%");
+                });
+            }
+            
+            if ($category) {
+                $popularQuery->where('category', $category);
+            }
+            
+            $popularBlogs = $popularQuery->orderBy('views', 'desc')->take(5)->get();
+            
+            // Get totals
+            $totalBlogs = Blog::published()->count();
+            $totalViews = Blog::published()->sum('views');
+            
+            // If AJAX request, return JSON response
+            if (request()->ajax() || $isAjax) {
+                return response()->json([
+                    'success' => true,
+                    'blogsHtml' => view('blogs.partials.list', compact('blogs'))->render(),
+                    'featuredHtml' => view('blogs.partials.featured', compact('featuredBlogs'))->render(),
+                    'popularHtml' => view('blogs.partials.popular', compact('popularBlogs'))->render(),
+                    'categoriesHtml' => view('blogs.partials.categories', compact('categories'))->render(),
+                    'stats' => [
+                        'totalBlogs' => $totalBlogs,
+                        'totalCategories' => $categories->count(),
+                        'totalFeatured' => $featuredBlogs->count(),
+                        'totalViews' => $totalViews
+                    ],
+                    'pagination' => [
+                        'current_page' => $blogs->currentPage(),
+                        'last_page' => $blogs->lastPage(),
+                        'per_page' => $blogs->perPage(),
+                        'total' => $blogs->total()
+                    ]
+                ]);
+            }
+            
+            // Regular request - return full view
+            return view('blogs.index', compact(
+                'blogs',
+                'featuredBlogs',
+                'categories',
+                'popularBlogs',
+                'totalBlogs',
+                'totalViews'
+            ));
+            
+        } catch (\Exception $e) {
+            // Log error for debugging
+            \Log::error('BlogController error: ' . $e->getMessage());
+            
+            // Return error response for AJAX
+            if (request()->ajax() || $isAjax) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while loading blogs. Please try again.'
+                ], 500);
+            }
+            
+            // For regular request, throw the exception
+            throw $e;
+        }
     }
 
     /**
@@ -47,7 +189,17 @@ class BlogController extends Controller
         // Increment view count
         $blog->incrementViews();
         
-        // Get related posts - fixed query
+        // Get related posts
+        $relatedBlogs = $this->getRelatedBlogs($blog);
+            
+        return view('blogs.show', compact('blog', 'relatedBlogs'));
+    }
+    
+    /**
+     * Get related blog posts
+     */
+    private function getRelatedBlogs($blog)
+    {
         $relatedBlogs = Blog::published()
             ->where('id', '!=', $blog->id)
             ->where(function ($query) use ($blog) {
@@ -78,6 +230,6 @@ class BlogController extends Controller
                 ->get();
         }
             
-        return view('blogs.show', compact('blog', 'relatedBlogs'));
+        return $relatedBlogs;
     }
 }

@@ -1,47 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Breadcrumb -->
-<div class="bg-gray-100 py-4">
-    <div class="container mx-auto px-4">
-        <nav class="flex" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('home') }}" class="inline-flex items-center text-sm text-gray-700 hover:text-[#1C4D8D]">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                        </svg>
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                        </svg>
-                        <a href="{{ route('blogs.index') }}" class="ml-1 text-sm text-gray-700 hover:text-[#1C4D8D] md:ml-2">Blog</a>
-                    </div>
-                </li>
-                <li aria-current="page">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                        </svg>
-                        <span class="ml-1 text-sm text-gray-500 md:ml-2">{{ Str::limit($blog->title, 50) }}</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
 <!-- Blog Content -->
 <article class="py-12">
-    <div class="container mx-auto px-4 max-w-4xl">
+    <div class="container mx-auto px-4 max-w-7xl">
         <!-- Header -->
         <header class="mb-8">
             <div class="flex items-center text-sm text-gray-500 mb-4">
-                <span class="bg-[#BDE8F5] text-[#1C4D8D] px-3 py-1 rounded-full text-xs font-medium">
+                <span class=" text-[#1C4D8D] py-1 rounded-full text-xs font-bold">
                     {{ $blog->category ?? 'Career Tips' }}
                 </span>
                 <span class="mx-3">•</span>
@@ -74,13 +40,13 @@
         </header>
 
         <!-- Featured Image -->
-        @if($blog->featured_image)
-        <div class="mb-8 rounded-xl overflow-hidden">
-            <img src="{{ asset('storage/' . $blog->featured_image) }}" 
-                 alt="{{ $blog->title }}" 
-                 class="w-full h-auto">
+        <div class="mb-8 overflow-hidden">
+            <img 
+                src="{{ $blog->featured_image ? asset('storage/' . $blog->featured_image) : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}" 
+                alt="{{ $blog->title }}"
+                class="w-full h-auto object-cover"
+            >
         </div>
-        @endif
 
         <!-- Excerpt -->
         @if($blog->excerpt)
@@ -146,13 +112,13 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach($relatedBlogs as $related)
                 <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    @if($related->featured_image)
                     <div class="h-40 overflow-hidden">
-                        <img src="{{ asset('storage/' . $related->featured_image) }}" 
-                             alt="{{ $related->title }}" 
-                             class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                        <img 
+                            src="{{ $related->featured_image ? asset('storage/' . $related->featured_image) : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' }}" 
+                            alt="{{ $related->title }}" 
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        >
                     </div>
-                    @endif
                     <div class="p-5">
                         <div class="flex items-center text-xs text-gray-500 mb-2">
                             <span class="bg-gray-100 text-gray-700 px-2 py-1 rounded">
@@ -179,15 +145,17 @@
         @endif
 
         <!-- Back to Blogs -->
-        <div class="text-center">
+        <div class="text-right">
             <a href="{{ route('blogs.index') }}" 
-               class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] text-white font-medium rounded-lg hover:bg-[#4988C4] transition-colors">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="inline-flex items-center text-blue-700 font-medium underline underline-offset-4
+                    hover:text-blue-900 transition-colors">
+                <!-- <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                </svg>
+                </svg> -->
                 Back to All Articles
             </a>
         </div>
+
     </div>
 </article>
 @endsection

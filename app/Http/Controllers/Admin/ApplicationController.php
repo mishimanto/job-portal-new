@@ -142,4 +142,37 @@ class ApplicationController extends Controller
         return redirect()->route('admin.applications.index')
             ->with('success', 'Application deleted successfully.');
     }
+
+    public function resumePreview(JobApplication $application)
+    {
+    
+        // if (!auth()->user()->is_admin) {
+        //     abort(403);
+        // }
+        
+        if (!$application->resume) {
+            abort(404, 'Resume not found');
+        }
+        
+        $filename = $application->resume;
+        
+        if (!str_starts_with($filename, 'resumes/')) {
+            $filename = 'resumes/' . $filename;
+        }
+        
+        $path = public_path('storage/' . $filename);
+        
+        if (!file_exists($path)) {
+            \Log::error('Resume file not found at: ' . $path);
+            abort(404, 'Resume file not found at: ' . $path);
+        }
+        
+        \Log::info('Resume found at: ' . $path);
+        
+        return response()->file($path, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="resume_' . $application->user->name . '.pdf"',
+            'X-Frame-Options' => 'SAMEORIGIN',
+        ]);
+    }
 }

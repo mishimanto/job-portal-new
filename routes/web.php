@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ApplicationController as AdminApplicationControll
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CompanyController as AdminCompanyController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\JobSeeker\DashboardController as JobSeekerDashboardController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
+use App\Models\JobApplication;
 use Illuminate\Support\Facades\Route;
 
 // ----------------- Public routes -----------------
@@ -24,10 +26,11 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
-// Public blog routes
-Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
-Route::get('/blogs/{blog:slug}', [BlogController::class, 'show'])->name('blogs.show');
 
+// Blog routes
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blogs/filter', [BlogController::class, 'filter'])->name('blogs.filter');
+Route::get('/blogs/{blog:slug}', [BlogController::class, 'show'])->name('blogs.show');
 // ----------------- Auth routes -----------------
 require __DIR__.'/auth.php';
 
@@ -113,6 +116,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/applications/{application}', [AdminApplicationController::class, 'show'])->name('applications.show');
         Route::post('/applications/{application}/status', [AdminApplicationController::class, 'updateStatus'])->name('applications.update-status');
         Route::delete('/applications/{application}', [AdminApplicationController::class, 'destroy'])->name('applications.destroy');
+        Route::get('/applications/{application}/resume-preview', [AdminApplicationController::class, 'resumePreview'])->name('applications.resume-preview');
 
         // Users
         Route::resource('users', AdminUserController::class);
@@ -140,5 +144,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/contact-messages/{id}/reply', [PageController::class, 'replyContactMessage'])->name('contact.reply');
         Route::put('/contact-messages/{id}', [PageController::class, 'updateContactMessage'])->name('contact.update');
         Route::delete('/contact-messages/{id}', [PageController::class, 'deleteContactMessage'])->name('contact.delete');
+
+         Route::patch('users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])
+         ->name('users.verify-email');
+    
+        Route::post('users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])
+         ->name('users.resend-verification');
+
+        Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])
+        ->name('users.verify-email');
+
+        // Route::get('/admin/applications/{application}/resume-preview', function($id) {
+        //     $application = JobApplication::findOrFail($id);
+            
+        //     // চেক করুন ইউজারের permission আছে কিনা
+        //     if (!auth()->user()->is_admin) {
+        //         abort(403);
+        //     }
+            
+        //     $path = storage_path('app/' . $application->resume);
+            
+        //     // ফাইল চেক করুন
+        //     if (!file_exists($path)) {
+        //         abort(404, 'Resume file not found');
+        //     }
+            
+        //     return response()->file($path, [
+        //         'Content-Type' => 'application/pdf',
+        //         'Content-Disposition' => 'inline; filename="resume_' . $application->user->name . '.pdf"',
+        //         'X-Frame-Options' => 'SAMEORIGIN', // Allow iframe from same origin
+        //     ]);
+        // })->name('admin.applications.resume-preview');
+    });
+
+    // Super Admin Routes
+    Route::middleware(['auth', 'super_admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Admin Management
+        Route::resource('admins', AdminController::class)->except(['show']);
+        Route::patch('admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
+        
+        // System Logs 
+        Route::get('logs', function () {
+            return view('admin.logs.index');
+        })->name('logs.index');
     });
 });

@@ -741,269 +741,407 @@
         </div>
 
         <!-- Sidebar -->
-        <div class="space-y-6">
-            <!-- Application Notes -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        Application Notes
-                    </h3>
-                </div>
-                <div class="px-4 py-5 sm:p-6">
-                    <form method="POST" action="{{ route('admin.applications.update-status', $application) }}" id="statusForm">
-                        @csrf
-                        @method('POST')
-                        <div class="space-y-4">
-                            <div>
-                                <label for="notes" class="block text-sm font-medium text-gray-700">
-                                    Internal Notes
-                                </label>
-                                <textarea name="notes" id="notes" rows="4"
-                                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                          placeholder="Add internal notes about this application...">{{ $application->notes }}</textarea>
-                            </div>
-                            
-                            <div>
-                                <label for="status_select" class="block text-sm font-medium text-gray-700">
-                                    Update Status
-                                </label>
-                                <select name="status" id="status_select" 
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                        onchange="toggleAdditionalFields()">
-                                    <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="reviewed" {{ $application->status == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
-                                    <option value="shortlisted" {{ $application->status == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
-                                    <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                    <option value="hired" {{ $application->status == 'hired' ? 'selected' : '' }}>Hired</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Interview Time Field (for shortlisted) -->
-                            <div id="interview_time_field" style="display: none;">
-                                <label for="interview_time" class="block text-sm font-medium text-gray-700">
-                                    Interview Time & Date <span class="text-red-500">*</span>
-                                </label>
-                                <input type="datetime-local" 
-                                       name="interview_time" 
-                                       id="interview_time"
-                                       value="{{ $interviewTime ?? '' }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                <p class="mt-1 text-xs text-gray-500">
-                                    Required for shortlisted status. Candidate will receive email with this time.
-                                </p>
-                            </div>
-                            
-                            <!-- Joining Date Field (for hired) -->
-                            <div id="joining_date_field" style="display: none;">
-                                <label for="joining_date" class="block text-sm font-medium text-gray-700">
-                                    Joining Date *
-                                </label>
-                                <input type="date" 
-                                       name="joining_date" 
-                                       id="joining_date"
-                                       value="{{ $joiningDate ?? '' }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                                <p class="mt-1 text-xs text-gray-500">
-                                    Required for hired status. Candidate will receive email with this date.
-                                </p>
-                            </div>
-                            
-                            <button type="submit" 
-                                    class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                                Save Updates
-                            </button>
-
-                        </div>
-                    </form>
+        <!-- Sidebar -->
+<div class="space-y-6">
+    <!-- Application Notes -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Application Notes
+            </h3>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <form method="POST" action="{{ route('admin.applications.update-status', $application) }}" id="statusForm">
+                @csrf
+                @method('POST')
+                <div class="space-y-4">
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-700">
+                            Internal Notes
+                        </label>
+                        <textarea name="notes" id="notes" rows="4"
+                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  placeholder="Add internal notes about this application...">{{ $application->notes }}</textarea>
+                    </div>
                     
-                    <!-- Delete Button -->
-                    <form action="{{ route('admin.applications.destroy', $application) }}" method="POST" class="mt-4">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                onclick="return confirm('Are you sure you want to delete this application?')"
-                                class="w-full inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    <div>
+                        <label for="status_select" class="block text-sm font-medium text-gray-700">
+                            Update Status
+                        </label>
+                        <select name="status" id="status_select" 
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                onchange="toggleAdditionalFields()">
+                            <option value="pending" {{ $application->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="reviewed" {{ $application->status == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                            <option value="shortlisted" {{ $application->status == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
+                            <option value="rejected" {{ $application->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="hired" {{ $application->status == 'hired' ? 'selected' : '' }}>Hired</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Interview Time Field (for shortlisted) -->
+                    <div id="interview_time_field" style="display: none;">
+                        <label for="interview_time" class="block text-sm font-medium text-gray-700">
+                            Interview Time & Date <span class="text-red-500">*</span>
+                        </label>
+                        <input type="datetime-local" 
+                               name="interview_time" 
+                               id="interview_time"
+                               value="{{ $interviewTime ?? '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <p class="mt-1 text-xs text-gray-500">
+                            Required for shortlisted status. Candidate will receive email with this time.
+                        </p>
+                    </div>
+                    
+                    <!-- Joining Date Field (for hired) -->
+                    <div id="joining_date_field" style="display: none;">
+                        <label for="joining_date" class="block text-sm font-medium text-gray-700">
+                            Joining Date *
+                        </label>
+                        <input type="date" 
+                               name="joining_date" 
+                               id="joining_date"
+                               value="{{ $joiningDate ?? '' }}"
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <p class="mt-1 text-xs text-gray-500">
+                            Required for hired status. Candidate will receive email with this date.
+                        </p>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        Save Updates
+                    </button>
+
+                </div>
+            </form>
+            
+            <!-- Delete Button -->
+            <form action="{{ route('admin.applications.destroy', $application) }}" method="POST" class="mt-4">
+                @csrf
+                @method('DELETE')
+                <button type="submit" 
+                        onclick="return confirm('Are you sure you want to delete this application?')"
+                        class="w-full inline-flex justify-center py-2 px-4 border border-red-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Application
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Application Timeline
+            </h3>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <div class="space-y-6">
+                <!-- Applied -->
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
-                            Delete Application
-                        </button>
-                    </form>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Applied for the job</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ $application->applied_at->format('M d, Y h:i A') }}
+                        </p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Timeline -->
-            <div class="bg-white shadow rounded-lg">
-                <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                        Application Timeline
-                    </h3>
+                <!-- Reviewed -->
+                @if($application->reviewed_at)
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Reviewed by admin</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ \Carbon\Carbon::parse($application->reviewed_at)->format('M d, Y h:i A') }}
+                        </p>
+                    </div>
                 </div>
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="space-y-6">
-                        <!-- Applied -->
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Applied for the job</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ $application->applied_at->format('M d, Y h:i A') }}
-                                </p>
-                            </div>
-                        </div>
+                @endif
 
-                        <!-- Reviewed -->
-                        @if($application->reviewed_at)
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Reviewed by admin</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ \Carbon\Carbon::parse($application->reviewed_at)->format('M d, Y h:i A') }}
-                                </p>
-                            </div>
+                <!-- Shortlisted -->
+                @if($application->status == 'shortlisted' || $application->status == 'hired')
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                         </div>
-                        @endif
-
-                        <!-- Shortlisted -->
-                        @if($application->status == 'shortlisted' || $application->status == 'hired')
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Shortlisted</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ $application->updated_at->format('M d, Y h:i A') }}
-                                </p>
-                                @if($application->interview_notes && isset($application->interview_notes['interview_time']))
-                                <p class="text-xs text-blue-600 mt-2 font-medium">
-                                    Interview: {{ \Carbon\Carbon::parse($application->interview_notes['interview_time'])->format('M d, Y h:i A') }}
-                                </p>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        <!-- Interview Scheduled -->
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Shortlisted</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ $application->updated_at->format('M d, Y h:i A') }}
+                        </p>
                         @if($application->interview_notes && isset($application->interview_notes['interview_time']))
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Interview Scheduled</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ \Carbon\Carbon::parse($application->interview_notes['interview_time'])->format('M d, Y h:i A') }}
-                                </p>
-                                @if(isset($application->interview_notes['email_sent_at']))
-                                <p class="text-xs text-green-600 mt-2 font-medium">
-                                    Email sent: {{ \Carbon\Carbon::parse($application->interview_notes['email_sent_at'])->format('M d, Y h:i A') }}
-                                </p>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        <!-- Hired -->
-                        @if($application->status == 'hired')
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Hired</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ $application->updated_at->format('M d, Y h:i A') }}
-                                </p>
-                                @if($application->interview_notes && isset($application->interview_notes['joining_date']))
-                                <p class="text-xs text-green-600 mt-2 font-medium">
-                                    Joining Date: {{ \Carbon\Carbon::parse($application->interview_notes['joining_date'])->format('M d, Y') }}
-                                </p>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        <!-- Rejected -->
-                        @if($application->status == 'rejected')
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Rejected</p>
-                                <p class="text-sm text-gray-500 mt-1">
-                                    {{ $application->updated_at->format('M d, Y h:i A') }}
-                                </p>
-                            </div>
-                        </div>
-                        @endif
-
-                        <!-- Current Status -->
-                        @if(!in_array($application->status, ['hired', 'rejected']))
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 mr-4">
-                                <div class="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-medium text-gray-900">Current Status</p>
-                                <div class="flex items-center space-x-2 mt-1">
-                                    <span class="px-3 py-1 text-xs font-medium rounded-full
-                                        @if($application->status == 'pending') bg-gray-100 text-gray-800
-                                        @elseif($application->status == 'reviewed') bg-blue-100 text-blue-800
-                                        @elseif($application->status == 'shortlisted') bg-yellow-100 text-yellow-800
-                                        @else bg-gray-100 text-gray-800 @endif">
-                                        {{ ucfirst($application->status) }}
-                                    </span>
-                                    @if($application->status == 'pending')
-                                    <span class="text-xs text-gray-500">Awaiting review</span>
-                                    @elseif($application->status == 'reviewed')
-                                    <span class="text-xs text-gray-500">Next steps pending</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                        <p class="text-xs text-blue-600 mt-2 font-medium">
+                            Interview: {{ \Carbon\Carbon::parse($application->interview_notes['interview_time'])->format('M d, Y h:i A') }}
+                        </p>
                         @endif
                     </div>
                 </div>
+                @endif
+
+                <!-- Interview Scheduled -->
+                @if($application->interview_notes && isset($application->interview_notes['interview_time']))
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-orange-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Interview Scheduled</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ \Carbon\Carbon::parse($application->interview_notes['interview_time'])->format('M d, Y h:i A') }}
+                        </p>
+                        @if(isset($application->interview_notes['email_sent_at']))
+                        <p class="text-xs text-green-600 mt-2 font-medium">
+                            Email sent: {{ \Carbon\Carbon::parse($application->interview_notes['email_sent_at'])->format('M d, Y h:i A') }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- Hired -->
+                @if($application->status == 'hired')
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Hired</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ $application->updated_at->format('M d, Y h:i A') }}
+                        </p>
+                        @if($application->interview_notes && isset($application->interview_notes['joining_date']))
+                        <p class="text-xs text-green-600 mt-2 font-medium">
+                            Joining Date: {{ \Carbon\Carbon::parse($application->interview_notes['joining_date'])->format('M d, Y') }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- Rejected -->
+                @if($application->status == 'rejected')
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-red-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Rejected</p>
+                        <p class="text-sm text-gray-500 mt-1">
+                            {{ $application->updated_at->format('M d, Y h:i A') }}
+                        </p>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Current Status -->
+                @if(!in_array($application->status, ['hired', 'rejected']))
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">Current Status</p>
+                        <div class="flex items-center space-x-2 mt-1">
+                            <span class="px-3 py-1 text-xs font-medium rounded-full
+                                @if($application->status == 'pending') bg-gray-100 text-gray-800
+                                @elseif($application->status == 'reviewed') bg-blue-100 text-blue-800
+                                @elseif($application->status == 'shortlisted') bg-yellow-100 text-yellow-800
+                                @else bg-gray-100 text-gray-800 @endif">
+                                {{ ucfirst($application->status) }}
+                            </span>
+                            @if($application->status == 'pending')
+                            <span class="text-xs text-gray-500">Awaiting review</span>
+                            @elseif($application->status == 'reviewed')
+                            <span class="text-xs text-gray-500">Next steps pending</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
+        </div>
+    </div>
+
+    <!-- Resume Preview -->
+        @if($application->resume)
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                        Resume Preview
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <a href="{{ route('admin.applications.resume-preview', $application) }}" 
+                        target="_blank"
+                        class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            Open New Tab
+                        </a>
+                        <a href="{{ Storage::url($application->resume) }}" 
+                        download
+                        class="text-sm font-medium text-green-600 hover:text-green-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+                <div class="border border-gray-200 rounded-lg overflow-hidden bg-gray-50" style="height: 500px;">
+                    <iframe 
+                        src="{{ route('admin.applications.resume-preview', $application) }}"
+                        id="resume-iframe"
+                        class="w-full h-full"
+                        frameborder="0"
+                        title="Resume Preview"
+                        allow="autoplay">
+                        <div class="flex flex-col items-center justify-center h-full p-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            <h4 class="text-lg font-medium text-gray-700 mb-2">Resume Preview Unavailable</h4>
+                            <p class="text-gray-500 text-center mb-4">
+                                Your browser doesn't support PDF preview. Please download the resume.
+                            </p>
+                            <div class="flex space-x-3">
+                                <a href="{{ route('admin.applications.resume-preview', $application) }}" 
+                                target="_blank"
+                                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                Open in New Tab
+                                </a>
+                                <a href="{{ Storage::url($application->resume) }}" 
+                                download
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Download Resume
+                                </a>
+                            </div>
+                        </div>
+                    </iframe>
+                </div>
+                
+                <!-- PDF Controls -->
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="flex items-center text-sm text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        <span>PDF Viewer</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-1">
+                        <button onclick="zoomOutResume()" 
+                                class="p-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
+                                title="Zoom Out">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+                            </svg>
+                        </button>
+                        
+                        <span id="zoom-level" class="text-sm text-gray-700 font-medium px-2">100%</span>
+                        
+                        <button onclick="zoomInResume()" 
+                                class="p-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded"
+                                title="Zoom In">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                        </button>
+                        
+                        <button onclick="resetZoomResume()" 
+                                class="ml-2 px-2 py-1 text-xs border border-gray-300 text-gray-700 hover:bg-gray-50 rounded"
+                                title="Reset Zoom">
+                            Reset
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs text-gray-500">
+                            Page: 
+                            <select id="page-select" onchange="goToPage(this.value)" class="ml-1 border-gray-300 rounded text-xs">
+                                <option value="1">1</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- File Info -->
+                <div class="mt-2 pt-2 border-t border-gray-100">
+                    <div class="flex items-center justify-between text-xs text-gray-500">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span>Uploaded: {{ $application->applied_at->format('M d, Y') }}</span>
+                        </div>
+                        <!-- <div>
+                            <span id="file-size">Loading...</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+
+        <div class="bg-white shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="text-center py-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p class="text-gray-500">No resume uploaded</p>
+                    <p class="text-gray-400 text-sm mt-1">Candidate didn't attach a resume</p>
+                </div>
+            </div>
+        </div>
+        @endif
         </div>
     </div>
 </div>
@@ -1121,5 +1259,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize status form fields
     toggleAdditionalFields();
 });
+
+// Resume zoom functionality
+let resumeZoom = 100;
+
+function zoomInResume() {
+    const iframe = document.querySelector('#resume-iframe');
+    resumeZoom = Math.min(resumeZoom + 20, 200);
+    iframe.style.transform = `scale(${resumeZoom / 100})`;
+    iframe.style.transformOrigin = 'top left';
+}
+
+function zoomOutResume() {
+    const iframe = document.querySelector('#resume-iframe');
+    resumeZoom = Math.max(resumeZoom - 20, 50);
+    iframe.style.transform = `scale(${resumeZoom / 100})`;
+    iframe.style.transformOrigin = 'top left';
+}
+
+// Iframe-এ id যোগ করুন
+document.addEventListener('DOMContentLoaded', function() {
+    const iframe = document.querySelector('iframe[title="Resume Preview"]');
+    if (iframe) {
+        iframe.id = 'resume-iframe';
+    }
+});
 </script>
+
+
 @endsection

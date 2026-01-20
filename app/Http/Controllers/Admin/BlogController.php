@@ -51,14 +51,14 @@ class BlogController extends Controller
         
         $validated['slug'] = $slug;
         
-        // Handle tags - PROPERLY store as JSON string
+        // Handle tags - FIXED: Don't JSON encode, Laravel Model will handle it
         if ($request->has('tags') && !empty($request->tags)) {
             $tags = explode(',', $request->tags);
             $tags = array_map('trim', $tags);
             // Filter out empty tags
             $tags = array_filter($tags);
-            // Store as JSON
-            $validated['tags'] = !empty($tags) ? json_encode(array_values($tags)) : null;
+            // Store as array, Laravel will automatically cast to JSON
+            $validated['tags'] = !empty($tags) ? array_values($tags) : null;
         } else {
             $validated['tags'] = null;
         }
@@ -80,7 +80,7 @@ class BlogController extends Controller
             $validated['published_at'] = now();
         }
         
-        // Create blog - content is already clean from CKEditor
+        // Create blog
         Blog::create($validated);
         
         return redirect()->route('admin.blogs.index')
@@ -129,14 +129,14 @@ class BlogController extends Controller
             $validated['slug'] = $slug;
         }
         
-        // Handle tags - PROPERLY store as JSON string
+        // Handle tags - FIXED: Don't JSON encode, Laravel Model will handle it
         if ($request->has('tags') && !empty($request->tags)) {
             $tags = explode(',', $request->tags);
             $tags = array_map('trim', $tags);
             // Filter out empty tags
             $tags = array_filter($tags);
-            // Store as JSON
-            $validated['tags'] = !empty($tags) ? json_encode(array_values($tags)) : null;
+            // Store as array, Laravel will automatically cast to JSON
+            $validated['tags'] = !empty($tags) ? array_values($tags) : null;
         } else {
             $validated['tags'] = null;
         }

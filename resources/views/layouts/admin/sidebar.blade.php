@@ -4,7 +4,6 @@
         <!-- Logo -->
         <div class="flex items-center flex-shrink-0 px-6 mb-8">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3">
-                
                 <div>
                     <span class="text-xl mx-auto p-5 font-bold text-white">Admin Panel</span>
                 </div>
@@ -26,7 +25,48 @@
                     @endif
                 </a>
 
-                 <!-- Categories -->
+                <!-- Super Admin Section (Only visible to super admins) -->
+                @if(auth()->user()->isSuperAdmin())
+                <div class="pt-4 pb-2 px-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-semibold text-blue-300 uppercase tracking-wider">Super Admin</span>
+                        <div class="flex-grow h-px bg-gray-600"></div>                        
+                        <div class="flex-grow h-px bg-gray-600"></div>
+                    </div>
+                </div>
+
+                <!-- Admin Management -->
+                <a href="{{ route('admin.admins.index') }}" 
+                   class="{{ request()->routeIs('admin.admins.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
+                    <svg class="{{ request()->routeIs('admin.admins.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+
+                    Manage Admins
+                    @if(request()->routeIs('admin.admins.*'))
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                    @endif
+                </a>
+
+                <!-- System Logs -->
+                <!-- <a href="{{ route('admin.logs.index') }}" 
+                   class="{{ request()->routeIs('admin.logs.*') ? 'bg-gradient-to-r from-yellow-500 to-orange-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
+                    <svg class="{{ request()->routeIs('admin.logs.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    System Logs
+                    @if(request()->routeIs('admin.logs.*'))
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                    @endif
+                </a> -->
+
+                <div class="pt-2 pb-4 px-2">
+                    <div class="flex-grow h-px bg-gray-600"></div>
+                </div>
+                @endif
+                <!-- End Super Admin Section -->
+
+                <!-- Categories -->
                 <a href="{{ route('admin.categories.index') }}" 
                    class="{{ request()->routeIs('admin.categories.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
                     <svg
@@ -116,7 +156,7 @@
 
                 
                 <!-- Companies -->
-                <a href="{{ route('admin.companies.index') }}" 
+                <!-- <a href="{{ route('admin.companies.index') }}" 
                    class="{{ request()->routeIs('admin.companies.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
                     <svg class="{{ request()->routeIs('admin.companies.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
@@ -125,33 +165,9 @@
                     @if(request()->routeIs('admin.companies.*'))
                     <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
                     @endif
-                </a>
+                </a> -->
                 
                 <!-- Contact Messages -->
-                <!-- <a href="{{ route('admin.contact.messages') }}" 
-                   class="{{ request()->routeIs('admin.contact.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
-                    <svg class="{{ request()->routeIs('admin.contact.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
-                    </svg>
-                    Contact Messages
-                    @if(request()->routeIs('admin.contact.*'))
-                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
-                    @endif
-                </a> -->
-
-                <!-- Blogs -->
-                <a href="{{ route('admin.blogs.index') }}" 
-                    class="{{ request()->routeIs('admin.blogs.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
-                    <svg class="{{ request()->routeIs('admin.blogs.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                    </svg>
-                    Blog Management
-                    @if(request()->routeIs('admin.blogs.*'))
-                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
-                    @endif
-                </a>
-
-                <!-- Contact Messages with badge-->
                 <a href="{{ route('admin.contact.messages') }}" 
                     class="{{ request()->routeIs('admin.contact.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
                     <svg class="{{ request()->routeIs('admin.contact.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -173,6 +189,18 @@
                     <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
                     @endif
                 </a>
+
+                <!-- Blogs -->
+                <a href="{{ route('admin.blogs.index') }}" 
+                    class="{{ request()->routeIs('admin.blogs.*') ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }} group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200">
+                    <svg class="{{ request()->routeIs('admin.blogs.*') ? 'text-white' : 'text-gray-400 group-hover:text-white' }} mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                    Blog Management
+                    @if(request()->routeIs('admin.blogs.*'))
+                    <span class="ml-auto w-2 h-2 bg-white rounded-full"></span>
+                    @endif
+                </a>
                 
                 <!-- Settings -->
                 <a href="{{ route('admin.settings.index') }}" 
@@ -188,7 +216,7 @@
             </nav>
         </div>
         
-        <!-- User Profile (Without Logout Button) -->
+        <!-- User Profile with Role Badge -->
         <!-- <div class="flex-shrink-0 p-4 border-t border-gray-700 mt-auto">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
@@ -200,7 +228,18 @@
                 </div>
                 <div class="ml-3 flex-1 min-w-0">
                     <p class="text-sm font-medium text-white truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-gray-300 truncate">{{ auth()->user()->email }}</p>
+                    <div class="flex items-center space-x-2">
+                        <p class="text-xs text-gray-300 truncate">{{ auth()->user()->email }}</p>
+                        @if(auth()->user()->isSuperAdmin())
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500 text-white">
+                            Super
+                        </span>
+                        @elseif(auth()->user()->isNormalAdmin())
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                            Admin
+                        </span>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div> -->
@@ -270,6 +309,25 @@
                             'admin.contact.*' => ['route' => 'admin.contact.messages', 'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z', 'text' => 'Contact Messages'],
                             'admin.settings*' => ['route' => 'admin.settings.index', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z', 'text' => 'Settings'],
                         ];
+
+                        // Add Super Admin routes if user is super admin
+                        if (auth()->user()->isSuperAdmin()) {
+                            $mobileRoutes = array_merge([
+                                'admin.admins.*' => [
+                                    'route' => 'admin.admins.index',
+                                    'icon'  => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5 0c-.667.916-1.583 1.5-2.6 1.5h-1.3c-1.02 0-1.9-.592-2.6-1.5',
+                                    'text'  => 'Manage Admins'
+                                ],
+
+                                // 'admin.logs.*' => [
+                                //     'route' => 'admin.logs.index',
+                                //     'icon'  => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+                                //     'text'  => 'System Logs'
+                                // ],
+
+                            ], $mobileRoutes);
+                        }
+
                     @endphp
 
                     @foreach($mobileRoutes as $routePattern => $item)
@@ -286,8 +344,8 @@
                     @endforeach
                 </nav>
             </div>
-            <!-- Mobile User Profile -->
-            <div class="flex-shrink-0 p-4 border-t border-gray-700">
+            <!-- Mobile User Profile with Role Badge -->
+            <!-- <div class="flex-shrink-0 p-4 border-t border-gray-700">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
@@ -298,10 +356,21 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-base font-medium text-white">{{ auth()->user()->name }}</p>
-                        <p class="text-sm text-gray-300">{{ auth()->user()->email }}</p>
+                        <div class="flex items-center space-x-2">
+                            <p class="text-sm text-gray-300">{{ auth()->user()->email }}</p>
+                            @if(auth()->user()->isSuperAdmin())
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500 text-white">
+                                Super
+                            </span>
+                            @elseif(auth()->user()->isNormalAdmin())
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                                Admin
+                            </span>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="flex-shrink-0 w-14"></div>
     </div>

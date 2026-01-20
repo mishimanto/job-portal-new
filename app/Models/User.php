@@ -19,6 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'is_super_admin',
         'phone',
         'address',
         'profile_photo',
@@ -33,11 +34,22 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
+        'is_super_admin' => 'boolean',
     ];
 
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->isAdmin() && $this->is_super_admin;
+    }
+
+    public function isNormalAdmin()
+    {
+        return $this->isAdmin() && !$this->is_super_admin;
     }
 
     public function isJobSeeker()

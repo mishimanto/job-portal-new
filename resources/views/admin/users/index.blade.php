@@ -237,21 +237,35 @@
                                     <span x-text="user.is_active ? 'Active' : 'Inactive'"></span>
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span :class="{
-                                    'bg-green-100 text-green-800': user.email_verified_at,
-                                    'bg-yellow-100 text-yellow-800': !user.email_verified_at
-                                }" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
-                                    <svg class="mr-1.5 h-4 w-4" :class="{
-                                        'text-green-400': user.email_verified_at,
-                                        'text-yellow-400': !user.email_verified_at
-                                    }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path x-show="user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                        <path x-show="!user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                    </svg>
-                                    <span x-text="user.email_verified_at ? 'Verified' : 'Unverified'"></span>
-                                </span>
-                            </td>
+                            <!-- Email Verification Status -->
+<td class="px-6 py-4 whitespace-nowrap">
+    <div class="flex items-center">
+        <span :class="{
+            'bg-green-100 text-green-800': user.email_verified_at,
+            'bg-yellow-100 text-yellow-800': !user.email_verified_at
+        }" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+            <svg class="mr-1.5 h-4 w-4" :class="{
+                'text-green-400': user.email_verified_at,
+                'text-yellow-400': !user.email_verified_at
+            }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path x-show="user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                <path x-show="!user.email_verified_at" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <span x-text="user.email_verified_at ? 'Verified' : 'Unverified'"></span>
+        </span>
+        
+        <!-- Verify Button (Show only for unverified users) -->
+        <button x-show="!user.email_verified_at" 
+                @click="verifyUserEmail(user)"
+                class="ml-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                title="Verify Email">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </button>
+    </div>
+</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 <span x-text="formatDate(user.created_at)"></span>
                             </td>
@@ -446,6 +460,7 @@
 
 @push('scripts')
 <script>
+    
 function userManagement() {
     return {
         loading: false,
@@ -469,7 +484,6 @@ function userManagement() {
             password_confirmation: ''
         },
 
-        // Add this computed property
         get filteredUsers() {
             return this.users.filter(user => user.role !== 'admin');
         },
@@ -558,7 +572,8 @@ function userManagement() {
                         profile_photo: user.profile_photo || ''
                     }));
 
-                    this.users = allUsers.filter(user => user.role !== 'admin');
+                    // Filter out admin users
+                    this.users = this.users.filter(user => user.role !== 'admin');
                     this.currentPage = data.users.current_page;
                     this.lastPage = data.users.last_page;
                     this.total = data.users.total;
@@ -625,6 +640,38 @@ function userManagement() {
             }
         },
         
+        async verifyUserEmail(user) {
+            if (await this.confirmAction(
+                'Verify Email?',
+                `Are you sure you want to verify ${user.email}? This will mark the email as verified without sending any email to the user.`,
+                'question',
+                'Yes, verify it!',
+                '#28a745'
+            )) {
+                try {
+                    const response = await fetch(`/admin/users/${user.id}/verify-email`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        user.email_verified_at = data.email_verified_at;
+                        this.showAlert('Success', 'Email verified successfully', 'success');
+                    } else {
+                        throw new Error(data.message || 'Failed to verify email');
+                    }
+                } catch (error) {
+                    this.showAlert('Error', error.message || 'Failed to verify email', 'error');
+                }
+            }
+        },
+        
         async deleteUser(user) {
             if (await this.confirmAction(
                 'Delete User?',
@@ -638,15 +685,14 @@ function userManagement() {
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'X-Requested-With': 'XMLHttpRequest', // এই header টি add করো
-                            'Accept': 'application/json' // JSON response expect করছে
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
                         }
                     });
                     
                     const data = await response.json();
                     
                     if (response.ok) {
-                        // Remove user from the list
                         this.users = this.users.filter(u => u.id !== user.id);
                         this.total--;
                         this.showAlert('Success', 'User deleted successfully', 'success');
@@ -661,7 +707,6 @@ function userManagement() {
         },
         
         async submitCreateForm() {
-            // Basic validation
             if (this.createForm.password !== this.createForm.password_confirmation) {
                 this.showAlert('Error', 'Passwords do not match', 'error');
                 return;
@@ -689,7 +734,6 @@ function userManagement() {
                 if (response.ok) {
                     this.showCreateModal = false;
                     
-                    // Reset form
                     this.createForm = {
                         name: '',
                         email: '',
@@ -700,7 +744,6 @@ function userManagement() {
                     
                     this.showAlert('Success', 'User created successfully', 'success');
                     
-                    // Refresh the user list
                     await this.fetchUsers();
                 } else {
                     let errorMessage = 'Failed to create user';
@@ -746,6 +789,11 @@ function userManagement() {
         }
     }
 }
+
+// Alpine.js component registration
+document.addEventListener('alpine:init', () => {
+    Alpine.data('userManagement', userManagement);
+});
 </script>
 @endpush
 

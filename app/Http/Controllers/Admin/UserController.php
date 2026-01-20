@@ -201,4 +201,32 @@ class UserController extends Controller
         return redirect()->back()
             ->with('success', 'User status updated successfully.');
     }
+    public function verifyEmail(User $user)
+    {
+        if ($user->email_verified_at) {
+            if (request()->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User email is already verified.'
+                ], 400);
+            }
+            return redirect()->back()
+                ->with('error', 'User email is already verified.');
+        }
+
+        $user->email_verified_at = now();
+        $user->save();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Email verified successfully',
+                'email_verified_at' => $user->email_verified_at
+            ]);
+        }
+
+        return redirect()->back()
+            ->with('success', 'Email verified successfully.');
+    }
+
 }

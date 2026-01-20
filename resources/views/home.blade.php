@@ -736,13 +736,13 @@
             @endforeach
         </div>
         
-        <div class="text-center mt-10">
+        <div class="text-right mt-10">
             <a href="{{ route('blogs.index') }}" 
-               class="inline-flex items-center px-6 py-3 bg-[#1C4D8D] text-white font-medium rounded-lg hover:bg-[#4988C4] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1C4D8D] transition-colors">
+               class="inline-flex items-center text-blue-700 font-medium underline underline-offset-4 hover:text-blue-900 transition-colors">
                 View All Articles
-                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
+                </svg> -->
             </a>
         </div>
     </div>

@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register your custom middleware
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'super_admin' => \App\Http\Middleware\SuperAdminMiddleware::class,
         ]);
 
         // Global middleware
