@@ -220,12 +220,22 @@
                 if($experiences->count() > 0) $completedFields++;
                 if($jobSeekerProfile->resume_file) $completedFields++;
                 $completionPercentage = ($completedFields / $totalFields) * 100;
+
+                if ($completionPercentage < 50) {
+                    $barColor = 'bg-red-500';
+                } elseif ($completionPercentage < 100) {
+                    $barColor = 'bg-yellow-500';
+                } else {
+                    $barColor = 'bg-green-500';
+                }
+
             @endphp
             
             <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                 <h4 class="text-sm font-medium text-gray-900 mb-2">Profile Completion</h4>
                 <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-blue-600 h-2 rounded-full" style="width: {{ $completionPercentage }}%"></div>
+                    <div class="{{ $barColor }} h-2 rounded-full" style="width: {{ $completionPercentage }}%"></div>
+
                 </div>
                 <p class="text-xs text-gray-500 mt-2">{{ round($completionPercentage) }}% Complete • {{ $completedFields }}/{{ $totalFields }} fields</p>
             </div>
@@ -1455,7 +1465,7 @@ function editEducation(id, institution, degree, startDate, endDate, isCurrent) {
     document.getElementById('educationSubmitBtn').className = document.getElementById('educationSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('educationFormElement').action = `/job-seeker/profile/education/${id}`;
+    document.getElementById('educationFormElement').action = `/job-seeker/professional-profile/education/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('educationFormElement');
@@ -1490,7 +1500,7 @@ function editSkill(id, name, level) {
     document.getElementById('skillSubmitBtn').className = document.getElementById('skillSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('skillFormElement').action = `/job-seeker/profile/skill/${id}`;
+    document.getElementById('skillFormElement').action = `/job-seeker/professional-profile/skill/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('skillFormElement');
@@ -1528,7 +1538,7 @@ function editExperience(id, jobTitle, companyName, employmentType, location, sta
     document.getElementById('experienceSubmitBtn').className = document.getElementById('experienceSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('experienceFormElement').action = `/job-seeker/profile/experience/${id}`;
+    document.getElementById('experienceFormElement').action = `/job-seeker/professional-profile/experience/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('experienceFormElement');
@@ -1568,7 +1578,7 @@ function editProject(id, title, role, startDate, endDate, isOngoing, description
     document.getElementById('projectSubmitBtn').className = document.getElementById('projectSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('projectFormElement').action = `/job-seeker/profile/project/${id}`;
+    document.getElementById('projectFormElement').action = `/job-seeker/professional-profile/project/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('projectFormElement');
@@ -1607,7 +1617,7 @@ function editCertification(id, name, issuingOrganization, issueDate, expirationD
     document.getElementById('certificationSubmitBtn').className = document.getElementById('certificationSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('certificationFormElement').action = `/job-seeker/profile/certification/${id}`;
+    document.getElementById('certificationFormElement').action = `/job-seeker/professional-profile/certification/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('certificationFormElement');
@@ -1641,7 +1651,7 @@ function editSocialLink(id, platform, url, username, isPublic) {
     document.getElementById('socialLinkSubmitBtn').className = document.getElementById('socialLinkSubmitBtn').className.replace('bg-blue-600', 'bg-green-600').replace('hover:bg-blue-700', 'hover:bg-green-700');
     
     // Update form action
-    document.getElementById('socialLinkFormElement').action = `/job-seeker/profile/social-link/${id}`;
+    document.getElementById('socialLinkFormElement').action = `/job-seeker/professional-profile/social-link/${id}`;
     
     // Add method spoofing for PUT
     const form = document.getElementById('socialLinkFormElement');
@@ -1694,7 +1704,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Reset action to store route
                 const baseRoute = formId.replace('FormElement', '').replace(/([A-Z])/g, '-$1').toLowerCase();
-                form.action = `/job-seeker/profile/${baseRoute}`;
+                form.action = `/job-seeker/professional-profile/${baseRoute}`;
                 
                 const methodInput = form.querySelector('input[name="_method"]');
                 if (methodInput) {

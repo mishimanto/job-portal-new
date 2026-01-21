@@ -224,13 +224,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Basic profile information updated successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to update profile: ' . $e->getMessage())
                 ->withInput();
         }
@@ -296,13 +296,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
 
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Personal information updated successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to update personal information: ' . $e->getMessage())
                 ->withInput();
         }
@@ -331,7 +331,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->educations()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')
+        return redirect()->route('job-seeker.professional-profile.edit')
             ->with('success', 'Education added successfully.');
     }
 
@@ -359,7 +359,7 @@ class JobSeekerProfileController extends Controller
 
         $education->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Education updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Education updated successfully.');
     }
 
     public function destroyEducation(Education $education)
@@ -372,7 +372,7 @@ class JobSeekerProfileController extends Controller
         
         $education->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Education deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Education deleted successfully.');
     }
 
     // Skill methods
@@ -390,7 +390,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->skills()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Skill added successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Skill added successfully.');
     }
 
     public function updateSkill(Request $request, Skill $skill)
@@ -410,7 +410,7 @@ class JobSeekerProfileController extends Controller
 
         $skill->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Skill updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Skill updated successfully.');
     }
 
     public function destroySkill(Skill $skill)
@@ -423,7 +423,7 @@ class JobSeekerProfileController extends Controller
         
         $skill->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Skill deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Skill deleted successfully.');
     }
 
     // Experience methods
@@ -450,7 +450,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->experiences()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Experience added successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Experience added successfully.');
     }
 
     public function updateExperience(Request $request, Experience $experience)
@@ -478,7 +478,7 @@ class JobSeekerProfileController extends Controller
 
         $experience->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Experience updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Experience updated successfully.');
     }
 
     public function destroyExperience(Experience $experience)
@@ -491,7 +491,7 @@ class JobSeekerProfileController extends Controller
         
         $experience->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Experience deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Experience deleted successfully.');
     }
 
     // Project methods
@@ -517,7 +517,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->projects()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Project added successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Project added successfully.');
     }
 
     public function updateProject(Request $request, Project $project)
@@ -544,7 +544,7 @@ class JobSeekerProfileController extends Controller
 
         $project->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Project updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Project updated successfully.');
     }
 
     public function destroyProject(Project $project)
@@ -557,7 +557,7 @@ class JobSeekerProfileController extends Controller
         
         $project->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Project deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Project deleted successfully.');
     }
 
     // Certification methods
@@ -578,7 +578,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->certifications()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Certification added successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Certification added successfully.');
     }
 
     public function updateCertification(Request $request, Certification $certification)
@@ -601,7 +601,7 @@ class JobSeekerProfileController extends Controller
 
         $certification->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Certification updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Certification updated successfully.');
     }
 
     public function destroyCertification(Certification $certification)
@@ -614,7 +614,7 @@ class JobSeekerProfileController extends Controller
         
         $certification->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Certification deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Certification deleted successfully.');
     }
 
     // Social Link methods
@@ -632,7 +632,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         $user->socialLinks()->create($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Social link added successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Social link added successfully.');
     }
 
     public function updateSocialLink(Request $request, SocialLink $socialLink)
@@ -652,7 +652,7 @@ class JobSeekerProfileController extends Controller
 
         $socialLink->update($validated);
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Social link updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Social link updated successfully.');
     }
 
     public function destroySocialLink(SocialLink $socialLink)
@@ -665,7 +665,7 @@ class JobSeekerProfileController extends Controller
         
         $socialLink->delete();
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Social link deleted successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Social link deleted successfully.');
     }
 
     // Visibility Settings method
@@ -690,7 +690,7 @@ class JobSeekerProfileController extends Controller
             $validated
         );
 
-        return redirect()->route('job-seeker.profile.edit')->with('success', 'Visibility settings updated successfully.');
+        return redirect()->route('job-seeker.professional-profile.edit')->with('success', 'Visibility settings updated successfully.');
     }
 
     // Profile Stats method
@@ -737,13 +737,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Profile photo updated successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to update profile photo: ' . $e->getMessage());
         }
     }
@@ -753,7 +753,7 @@ class JobSeekerProfileController extends Controller
         $user = Auth::user();
         
         if (!$user->profile_photo) {
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'No profile photo to delete.');
         }
         
@@ -773,13 +773,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Profile photo deleted successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to delete profile photo: ' . $e->getMessage());
         }
     }
@@ -821,13 +821,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Resume uploaded successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to upload resume: ' . $e->getMessage());
         }
     }
@@ -843,7 +843,7 @@ class JobSeekerProfileController extends Controller
             $jobSeekerProfile = JobSeekerProfile::where('user_id', $user->id)->first();
             
             if (!$jobSeekerProfile || !$jobSeekerProfile->resume_file) {
-                return redirect()->route('job-seeker.profile.edit')
+                return redirect()->route('job-seeker.professional-profile.edit')
                     ->with('error', 'No resume to delete.');
             }
             
@@ -861,13 +861,13 @@ class JobSeekerProfileController extends Controller
             
             DB::commit();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('success', 'Resume deleted successfully.');
                 
         } catch (\Exception $e) {
             DB::rollBack();
             
-            return redirect()->route('job-seeker.profile.edit')
+            return redirect()->route('job-seeker.professional-profile.edit')
                 ->with('error', 'Failed to delete resume: ' . $e->getMessage());
         }
     }    

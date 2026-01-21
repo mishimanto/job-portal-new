@@ -238,4 +238,9 @@ class JobApplication extends Model
             self::STATUS_HIRED
         ]);
     }
+
+    public function emails()
+    {
+        return $this->hasMany(ApplicationEmail::class);
+    }
 }

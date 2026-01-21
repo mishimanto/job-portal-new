@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\JobApplication;
 use App\Models\Job;
+use App\Models\ApplicationEmail;
 use App\Notifications\ApplicationStatusUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class ApplicationController extends Controller
 {
@@ -135,6 +137,52 @@ class ApplicationController extends Controller
             ->with('success', 'Application status updated successfully.');
     }
 
+    public function sendCustomEmail(Request $request, JobApplication $application)
+    {
+        $validator = Validator::make($request->all(), [
+            'message' => 'required|string|min:10',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            // Get user and job details
+            $user = $application->user;
+            $job = $application->job;
+            $admin = auth()->user();
+            
+            // Send email using Laravel Mail
+            Mail::send('emails.custom-message', [
+                'user' => $user,
+                'application' => $application,
+                'job' => $job,
+                'customMessage' => $request->message,
+                'adminName' => $admin->name,
+            ], function ($message) use ($user, $admin) {
+                $message->to($user->email, $user->name)
+                        ->subject('Update on Your Job Application')
+                        ->from(config('mail.from.address'), config('mail.from.name'));
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Custom message sent successfully to ' . $user->email
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Failed to send custom email: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send email: ' . $e->getMessage()
+            ], 500);
+        }
+    }
     public function destroy(JobApplication $application)
     {
         $application->delete();

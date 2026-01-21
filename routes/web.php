@@ -145,14 +145,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/contact-messages/{id}', [PageController::class, 'updateContactMessage'])->name('contact.update');
         Route::delete('/contact-messages/{id}', [PageController::class, 'deleteContactMessage'])->name('contact.delete');
 
-         Route::patch('users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])
-         ->name('users.verify-email');
+        Route::patch('users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
     
-        Route::post('users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])
-         ->name('users.resend-verification');
+        Route::post('users/{user}/resend-verification', [AdminUserController::class, 'resendVerification'])->name('users.resend-verification');
 
-        Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])
-        ->name('users.verify-email');
+        Route::patch('/users/{user}/verify-email', [AdminUserController::class, 'verifyEmail'])->name('users.verify-email');
+
+        Route::post('/applications/{application}/send-custom-email', [AdminApplicationController::class, 'sendCustomEmail'])->name('applications.send-custom-email');
+
+        // Queue routes
+        Route::post('/applications/process-queue', [AdminApplicationController::class, 'processQueue'])
+            ->name('admin.applications.process-queue');
+
+        Route::post('/applications/{application}/test-email', [AdminApplicationController::class, 'testEmail'])
+            ->name('admin.applications.test-email');
 
         // Route::get('/admin/applications/{application}/resume-preview', function($id) {
         //     $application = JobApplication::findOrFail($id);
