@@ -22,68 +22,74 @@ class AppServiceProvider extends ServiceProvider
     }
 
     public function boot(): void
-    {
-        if (Schema::hasTable('site_settings')) {
-            $siteLogo = DB::table('site_settings')
-                ->where('key', 'site_logo')
-                ->value('value');
+{
+    // Site logo
+    try {
+        $siteLogo = DB::table('site_settings')
+            ->where('key', 'site_logo')
+            ->value('value');
 
-            view()->share('siteLogo', $siteLogo);
-        }
-
-        // Admin Layout - Unread Messages and Notifications
-        View::composer('layouts.admin', function ($view) {
-            if (auth()->check() && auth()->user()->role === 'admin') {
-                $unreadMessagesCount = ContactMessage::unread()->count();
-                
-                // Add notification count for admin
-                $user = auth()->user();
-                $notificationCount = 0;
-                $notifications = collect();
-                
-                try {
-                    // Check if notifications table exists
-                    if (Schema::hasTable('notifications')) {
-                        $notificationCount = $user->unreadNotifications()->count();
-                        $notifications = $user->notifications()
-                            ->orderBy('created_at', 'desc')
-                            ->take(10)
-                            ->get();
-                    }
-                } catch (\Exception $e) {
-                    // Table doesn't exist yet, use empty collection
-                    $notificationCount = 0;
-                    $notifications = collect();
-                }
-                
-                $view->with([
-                    'unreadMessagesCount' => $unreadMessagesCount,
-                    'notifications' => $notifications,
-                    'notificationCount' => $notificationCount,
-                ]);
-            }
-        });
-
-        // Register blade directives
-        Blade::directive('removeFilter', function ($expression) {
-            return "<?php echo \App\Helpers\FilterHelper::removeFilter($expression); ?>";
-        });
-
-        // Footer info
-        $siteSettings = SiteSetting::all()->pluck('value', 'key')->toArray();
-        View::share('siteSettings', $siteSettings);
-
-        // Footer stats
-        $totalJobs = Job::where('is_active', 1)
-                           ->where('status', 'approved')
-                           ->count();
-        
-        $totalCompanies = Company::where('is_active', 1)->count();
-        
-        $totalApplicants = JobApplication::distinct('user_id')->count();
-        
-        View::share('totalJobs', $totalJobs);
-        View::share('totalCompanies', $totalCompanies);
-        View::share('totalApplicants', $totalApplicants);
+        View::share('siteLogo', $siteLogo);
+    } catch (\Throwable $e) {
+        // table not exists yet
     }
+
+    // Admin Layout - Unread Messages and Notifications
+    View::composer('layouts.admin', function ($view) {
+        if (auth()->check() && auth()->user()->role === 'admin') {
+
+            $unreadMessagesCount = 0;
+            $notificationCount = 0;
+            $notifications = collect();
+
+            try {
+                $unreadMessagesCount = ContactMessage::unread()->count();
+            } catch (\Throwable $e) {}
+
+            try {
+                $user = auth()->user();
+                $notificationCount = $user->unreadNotifications()->count();
+                $notifications = $user->notifications()
+                    ->latest()
+                    ->take(10)
+                    ->get();
+            } catch (\Throwable $e) {}
+
+            $view->with(compact(
+                'unreadMessagesCount',
+                'notifications',
+                'notificationCount'
+            ));
+        }
+    });
+
+    // Blade directive
+    Blade::directive('removeFilter', function ($expression) {
+        return "<?php echo \\App\\Helpers\\FilterHelper::removeFilter($expression); ?>";
+    });
+
+    // Footer info
+    try {
+        $siteSettings = SiteSetting::pluck('value', 'key')->toArray();
+        View::share('siteSettings', $siteSettings);
+    } catch (\Throwable $e) {}
+
+    // Footer stats
+    try {
+        View::share('totalJobs',
+            Job::where('is_active', 1)
+                ->where('status', 'approved')
+                ->count()
+        );
+
+        View::share('totalCompanies',
+            Company::where('is_active', 1)->count()
+        );
+
+        View::share('totalApplicants',
+            JobApplication::distinct('user_id')->count()
+        );
+    } catch (\Throwable $e) {}
+}
+
 }
