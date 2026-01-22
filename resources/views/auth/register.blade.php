@@ -51,9 +51,9 @@
                     Sign Up
                 </h2>
                 
-                <p class="mt-2 text-sm text-gray-600">
+                <!-- <p class="mt-2 text-sm text-gray-600">
                     Create your account to start your career journey
-                </p>
+                </p> -->
             </div>
 
             <!-- FORM -->
