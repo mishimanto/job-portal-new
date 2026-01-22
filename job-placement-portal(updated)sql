@@ -1,0 +1,1453 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jan 22, 2026 at 11:23 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `job-placement-portal`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `application_emails`
+--
+
+CREATE TABLE `application_emails` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `job_application_id` bigint(20) UNSIGNED NOT NULL,
+  `sent_by` bigint(20) UNSIGNED NOT NULL,
+  `type` enum('status_update','custom_message','interview_schedule','offer_letter','other') NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `metadata` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`metadata`)),
+  `sent_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blogs`
+--
+
+CREATE TABLE `blogs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `excerpt` text DEFAULT NULL,
+  `content` longtext NOT NULL,
+  `author_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `author_name` varchar(255) DEFAULT NULL,
+  `featured_image` varchar(255) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  `tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`tags`)),
+  `is_published` tinyint(1) NOT NULL DEFAULT 1,
+  `is_featured` tinyint(1) NOT NULL DEFAULT 0,
+  `views` int(11) NOT NULL DEFAULT 0,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL,
+  `meta_keywords` text DEFAULT NULL,
+  `published_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `blogs`
+--
+
+INSERT INTO `blogs` (`id`, `title`, `slug`, `excerpt`, `content`, `author_id`, `author_name`, `featured_image`, `category`, `tags`, `is_published`, `is_featured`, `views`, `meta_title`, `meta_description`, `meta_keywords`, `published_at`, `created_at`, `updated_at`) VALUES
+(1, '5 Essential Tips for Building a Winning Resume in 2024', 'essential-tips-for-building-winning-resume-2024', 'Learn how to create a resume that stands out to recruiters and gets you more interview calls.', '<p>In today\'s competitive job market, having a standout resume is more important than ever. Here are 5 essential tips to help you create a winning resume:</p><h2>1. Tailor Your Resume for Each Job ok</h2><p>Customize your resume for every position you apply for. Use keywords from the job description and highlight relevant experience.</p><h2>2. Quantify Your Achievements</h2><p>Instead of just listing duties, show your impact with numbers. For example: \"Increased sales by 30%\" or \"Reduced costs by 15%\".</p><h2>3. Keep it Clean and Professional</h2><p>Use a clean, easy-to-read format. Stick to professional fonts like Arial or Calibri, and keep it to 1-2 pages maximum.</p><h2>4. Include Relevant Skills</h2><p>Highlight both technical and soft skills that are relevant to the position you\'re applying for.</p><h2>5. Proofread Multiple Times</h2><p>Spelling and grammar errors can instantly disqualify you. Have someone else review your resume before sending it out.</p>', 1, 'Admin', 'blogs/EQagUfjepjSUFOi0yuLGmuAaYqYYfRgea4TyLWgp.png', 'Career Tips', '[\"resume\",\"career\",\"job-search\",\"professional\"]', 1, 1, 175, 'Resume Building Tips for 2024 | Job Portal', 'Learn 5 essential tips for creating a winning resume that stands out to recruiters and gets you more interview calls in 2024.', 'resume tips, career advice, job search, professional resume', '2026-01-16 09:15:00', '2026-01-15 09:15:32', '2026-01-20 09:30:55'),
+(2, 'Ace Your Next Job Interview: Common Questions & Best Answers', 'ace-your-next-job-interview-questions-answers', 'Prepare for success with our guide to the most common interview questions and expert-approved answers.', '<p>Job interviews can be nerve-wracking, but proper preparation can make all the difference. Here\'s your comprehensive guide to acing your next interview:</p>\r\n                \r\n                <h2>Most Common Interview Questions</h2>\r\n                \r\n                <h3>1. \"Tell me about yourself\"</h3>\r\n                <p><strong>Best Approach:</strong> Give a 60-90 second summary focusing on your professional background and what makes you a great fit for this specific role.</p>\r\n                \r\n                <h3>2. \"Why do you want to work here?\"</h3>\r\n                <p><strong>Best Approach:</strong> Show you\'ve done your research. Mention specific things about the company that appeal to you and align with your career goals.</p>\r\n                \r\n                <h3>3. \"What is your greatest weakness?\"</h3>\r\n                <p><strong>Best Approach:</strong> Choose a real weakness you\'ve been working on. Show self-awareness and your commitment to improvement.</p>\r\n                \r\n                <h3>4. \"Where do you see yourself in 5 years?\"</h3>\r\n                <p><strong>Best Approach:</strong> Focus on growing with the company and developing skills that will make you more valuable in your role.</p>\r\n                \r\n                <h3>5. \"Why should we hire you?\"</h3>\r\n                <p><strong>Best Approach:</strong> This is your chance to sell yourself. Connect your skills and experience directly to the company\'s needs.</p>\r\n                \r\n                <h2>Interview Preparation Tips</h2>\r\n                <ul>\r\n                    <li>Research the company thoroughly</li>\r\n                    <li>Practice your answers out loud</li>\r\n                    <li>Prepare questions to ask the interviewer</li>\r\n                    <li>Dress professionally</li>\r\n                    <li>Arrive 10-15 minutes early</li>\r\n                </ul>', 1, 'Admin', 'blogs/kQYDcWXWTZMbp8h7VE7wrs9F65WGMu7MflZCr9gr.webp', NULL, '[\"interview\",\"job\",\"career\",\"preparation\"]', 1, 1, 93, 'Job Interview Questions and Answers Guide | Career Tips', 'Learn how to answer common interview questions and prepare effectively for your next job interview with expert tips and strategies.', 'interview questions, job interview, career tips, interview preparation', '2026-01-12 09:15:00', '2026-01-11 09:15:32', '2026-01-20 08:49:15'),
+(3, 'The Ultimate Guide to Succeeding in Remote Work Environments', 'ultimate-guide-to-succeeding-in-remote-work', 'Master the skills and habits needed to excel in remote work settings and maintain work-life balance.', '<p>Remote work has become increasingly common, but succeeding in a remote environment requires specific skills and strategies. Here\'s your complete guide:</p>\r\n                \r\n                <h2>Essential Remote Work Skills</h2>\r\n                \r\n                <h3>1. Self-Motivation and Discipline</h3>\r\n                <p>Working from home requires strong self-discipline. Create a routine and stick to it, just like you would in an office.</p>\r\n                \r\n                <h3>2. Communication Skills</h3>\r\n                <p>Clear, concise communication is crucial when you\'re not in the same physical space. Over-communicate rather than under-communicate.</p>\r\n                \r\n                <h3>3. Time Management</h3>\r\n                <p>Use tools and techniques like time blocking, Pomodoro technique, or digital calendars to stay organized and productive.</p>\r\n                \r\n                <h3>4. Tech Savviness</h3>\r\n                <p>Become proficient with collaboration tools like Zoom, Slack, Microsoft Teams, Google Workspace, and project management software.</p>\r\n                \r\n                <h2>Setting Up Your Remote Workspace</h2>\r\n                \r\n                <h3>1. Dedicated Workspace</h3>\r\n                <p>Create a specific area for work that\'s separate from your living space. This helps mentally separate work from personal life.</p>\r\n                \r\n                <h3>2. Ergonomic Setup</h3>\r\n                <p>Invest in a good chair, proper desk height, and adequate lighting to prevent physical strain.</p>\r\n                \r\n                <h3>3. Reliable Technology</h3>\r\n                <p>Ensure you have a fast, reliable internet connection and backup options for when technology fails.</p>\r\n                \r\n                <h2>Maintaining Work-Life Balance</h2>\r\n                <ul>\r\n                    <li>Set clear boundaries for work hours</li>\r\n                    <li>Take regular breaks throughout the day</li>\r\n                    <li>Create end-of-day rituals to signal work is done</li>\r\n                    <li>Make time for social interaction (virtual or in-person)</li>\r\n                    <li>Prioritize physical activity and movement</li>\r\n                </ul>', 1, 'Admin', 'blogs/McqRKnNXaZRpWhRwpJNeQAvcOS9h79oUBt8nZia1.jpg', NULL, '[\"remote work\",\"work from home\",\"digital nomad\",\"productivity\"]', 1, 1, 126, 'Remote Work Success Guide: Tips for Working from Home', 'Learn essential skills, tools, and habits for succeeding in remote work environments and maintaining work-life balance.', 'remote work, work from home, productivity, virtual office', '2026-01-09 09:15:00', '2026-01-08 09:15:32', '2026-01-20 05:11:38'),
+(4, 'How to Negotiate Your Salary Like a Pro', 'how-to-negotiate-your-salary-like-pro', 'Learn proven strategies for salary negotiation that can increase your earnings significantly.', '<p>Salary negotiation is a crucial skill that can significantly impact your lifetime earnings. Here\'s how to do it effectively:</p>\n                \n                <h2>Preparation is Key</h2>\n                <p>Research industry standards, company salary ranges, and your market value before entering any negotiation.</p>\n                \n                <h2>Timing Matters</h2>\n                <p>Choose the right moment - usually after you\'ve received an offer but before you accept it.</p>\n                \n                <h2>Focus on Value</h2>\n                <p>Frame your request around the value you bring to the company, not just what you want or need.</p>\n                \n                <h2>Practice Your Pitch</h2>\n                <p>Rehearse your talking points so you can present them confidently and professionally.</p>', 1, 'Admin', NULL, 'Career Tips', '[\"salary\",\"negotiation\",\"career\",\"compensation\"]', 1, 0, 69, 'Salary Negotiation Tips: How to Get Paid What You\'re Worth', 'Learn professional salary negotiation strategies to increase your earnings and get paid what you deserve.', 'salary negotiation, career growth, compensation, job offer', '2026-01-04 09:15:32', '2026-01-03 09:15:32', '2026-01-20 05:10:13'),
+(5, 'The Future of Work: Top 10 In-Demand Skills for 2025', 'future-of-work-top-in-demand-skills-2025', 'Discover the skills that will be most valuable in the job market of tomorrow.', '<p>The job market is evolving rapidly. Here are the top skills that will be in high demand in 2025:</p><ol><li><strong>AI and Machine Learning:</strong> Understanding of AI tools and applications</li><li><strong>Data Analysis:</strong> Ability to interpret and work with data</li><li><strong>Digital Marketing:</strong> Skills in online customer acquisition</li><li><strong>Cybersecurity:</strong> Protecting digital assets and information</li><li><strong>Cloud Computing:</strong> Working with cloud platforms and services</li><li><strong>Emotional Intelligence:</strong> Understanding and managing emotions</li><li><strong>Adaptability:</strong> Ability to learn and adjust quickly</li><li><strong>Creative Problem Solving:</strong> Innovative approaches to challenges</li><li><strong>Collaboration Tools:</strong> Proficiency with digital collaboration</li><li><strong>Sustainability Knowledge:</strong> Understanding of green practices</li></ol><p>Start developing these skills now to future-proof your career.</p>', 1, 'Admin', 'blogs/ypyWp4ecXtvZG13DYppZjlnY5o5ae4oPJWD1Hent.webp', 'Industry News', '[\"future skills\",\"career development\",\"technology\",\"trends\"]', 1, 1, 101, 'Future Skills: Top 10 In-Demand Job Skills for 2025', 'Discover the most valuable skills for the future job market and learn how to develop them for career success.', 'future skills, career development, job market trends, in-demand skills', '2025-12-30 09:15:00', '2025-12-29 09:15:32', '2026-01-20 08:49:20'),
+(6, 'Building a Personal Brand for Career Advancement', 'building-personal-brand-for-career-advancement', 'Learn how to create a strong personal brand that opens doors to new opportunities.', '<p>A strong personal brand can accelerate your career growth. Here\'s how to build one:</p>\n                \n                <h2>Define Your Unique Value Proposition</h2>\n                <p>What makes you different? Identify your unique strengths, skills, and perspectives.</p>\n                \n                <h2>Create Consistent Online Presence</h2>\n                <p>Use platforms like LinkedIn, Twitter, and professional blogs to share your expertise.</p>\n                \n                <h2>Network Strategically</h2>\n                <p>Build genuine relationships with people in your industry, both online and offline.</p>\n                \n                <h2>Share Your Knowledge</h2>\n                <p>Write articles, give talks, or create content that demonstrates your expertise.</p>\n                \n                <h2>Get Recommendations and Testimonials</h2>\n                <p>Collect endorsements from colleagues, managers, and clients who can vouch for your work.</p>', 1, 'Admin', NULL, 'Career Tips', '[\"personal brand\",\"networking\",\"career growth\",\"professional\"]', 1, 0, 55, 'Personal Branding Guide for Career Success', 'Learn how to build a strong personal brand that helps you stand out and advance your career.', 'personal branding, career advancement, professional development, networking', '2025-12-25 09:15:32', '2025-12-24 09:15:32', '2026-01-20 08:49:23'),
+(7, 'lkjikjikjjikjiji', 'lkjikjikjjikjiji', NULL, '<p>&lt;p&gt;huihuihyuihyuih&lt;/p&gt;</p>', 1, 'Admin', 'blogs/GAQRkfyp2q7IePnEGGLnVN9fbXx36T4pln8s3yhW.webp', 'Career Tips', '[\"resume\",\"career\",\"job-search\",\"professional\"]', 1, 0, 21, NULL, NULL, NULL, '2026-01-19 10:26:00', '2026-01-19 10:26:56', '2026-01-20 10:48:49'),
+(10, 'lorem title', 'lorem-title', NULL, '<p>lorem ipsum dollar&nbsp;</p>', 1, 'Admin', NULL, NULL, '[\"resume\",\"career\",\"job-search\",\"professional\"]', 1, 0, 21, NULL, NULL, NULL, '2026-01-20 04:02:47', '2026-01-20 04:02:47', '2026-01-20 09:19:54');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cache`
+--
+
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('job-placement-portal-cache-356a192b7913b04c54574d18c28d46e6395428ab', 'i:1;', 1768718795),
+('job-placement-portal-cache-356a192b7913b04c54574d18c28d46e6395428ab:timer', 'i:1768718795;', 1768718795),
+('job-placement-portal-cache-7b52009b64fd0a2a49e6d8a939753077792b0554', 'i:1;', 1768720694),
+('job-placement-portal-cache-7b52009b64fd0a2a49e6d8a939753077792b0554:timer', 'i:1768720694;', 1768720694),
+('job-placement-portal-cache-admin@gmaill.com|127.0.0.1', 'i:1;', 1768705331),
+('job-placement-portal-cache-admin@gmaill.com|127.0.0.1:timer', 'i:1768705331;', 1768705331),
+('job-placement-portal-cache-b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f', 'i:1;', 1769060462),
+('job-placement-portal-cache-b3f0c7f6bb763af1be91d9e74eabfeb199dc1f1f:timer', 'i:1769060462;', 1769060462),
+('job-placement-portal-cache-f1abd670358e036c31296e66b3b66c382ac00812', 'i:2;', 1768720972),
+('job-placement-portal-cache-f1abd670358e036c31296e66b3b66c382ac00812:timer', 'i:1768720972;', 1768720972),
+('job-placement-portal-cache-fa35e192121eabf3dabf9f5ea6abdbcbc107ac3b', 'i:2;', 1768720908),
+('job-placement-portal-cache-fa35e192121eabf3dabf9f5ea6abdbcbc107ac3b:timer', 'i:1768720908;', 1768720908),
+('laravel-cache-jhon@gmail.com|127.0.0.1', 'i:3;', 1768123288),
+('laravel-cache-jhon@gmail.com|127.0.0.1:timer', 'i:1768123288;', 1768123288);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `icon` varchar(1000) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `order` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `icon`, `is_active`, `order`, `created_at`, `updated_at`) VALUES
+(1, 'Demo Categroy', 'demo-categroy', 'Lorem ipsum', NULL, 1, 0, '2026-01-09 22:29:26', '2026-01-09 22:29:26'),
+(4, 'Lorem 1', 'lorem slug 1', 'lorem ipsum ', NULL, 1, 0, NULL, NULL),
+(5, 'Lorem 2', 'lorem slug 2', 'lorem ipsum ', NULL, 1, 0, NULL, NULL),
+(6, 'Lorem 3', 'lorem slug 14', 'lorem ispsum code ', NULL, 1, 0, NULL, NULL),
+(7, 'Lorem 4', 'lorem code ', 'lorem ipsum ', NULL, 1, 0, NULL, NULL),
+(10, 'Lorem 5', 'lorem slug 7', 'Lorem ipsum ', NULL, 1, 0, NULL, NULL),
+(11, 'Lorem 6', 'lorem slug ', 'lorem ipsum ', NULL, 1, 0, NULL, NULL),
+(16, 'Lorem 45', 'Lorem slug x', 'kiren code', NULL, 1, 0, NULL, NULL),
+(17, 'lorem 8', 'lorem slum 4', 'noe moere kdsi', NULL, 1, 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `certifications`
+--
+
+CREATE TABLE `certifications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `issuing_organization` varchar(255) NOT NULL,
+  `issue_date` date NOT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `credential_id` varchar(255) DEFAULT NULL,
+  `credential_url` varchar(255) DEFAULT NULL,
+  `skills` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`skills`)),
+  `attachments` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`attachments`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `certifications`
+--
+
+INSERT INTO `certifications` (`id`, `user_id`, `name`, `issuing_organization`, `issue_date`, `expiration_date`, `credential_id`, `credential_url`, `skills`, `attachments`, `created_at`, `updated_at`) VALUES
+(1, 12, 'Demo certificate', 'Demo organization', '2026-01-08', '2026-01-20', NULL, 'https://shimzo.xyz', NULL, '[{\"name\":\"image.png\",\"path\":\"certification-attachments\\/jYVK1cLnxnRY6MKJL3vWqeZERSFhnPk2mke5r1IJ.png\",\"mime_type\":\"image\\/png\",\"size\":154096},{\"name\":\"Logins MOLAHOP.COM.pdf\",\"path\":\"certification-attachments\\/798seyvuFWdnLQkpUOq5c0S1Qgst5bHqNMvkHAJl.pdf\",\"mime_type\":\"application\\/pdf\",\"size\":46046},{\"name\":\"original-02fe881d5eba11b4f1cf4a524cb0bfc6.PNG\",\"path\":\"certification-attachments\\/TfUvjRYyoEMv0QBAhc5pIYLA2UvSUUQZeUq3mkgw.png\",\"mime_type\":\"image\\/png\",\"size\":489145}]', '2026-01-21 05:40:54', '2026-01-22 10:14:24'),
+(2, 12, 'Lorem certificate', 'Lorem ispsum', '2025-12-28', '2026-01-08', '12584545', 'https://shimzo.xyz', NULL, '[{\"name\":\"image(1).png\",\"path\":\"certification-attachments\\/NTNUKNY6p8E5771TTRedOBOhkZEOD0aJ3YT1Hu0J.png\",\"mime_type\":\"image\\/png\",\"size\":154096},{\"name\":\"8564f3b78c98aeb3ffc064636420d4741b652d0e.jpg\",\"path\":\"certification-attachments\\/YBqjWtJ0aoG9duVDyTiJDkIwxtJX4u0a2pGbjQVp.jpg\",\"mime_type\":\"image\\/jpeg\",\"size\":782937}]', '2026-01-22 09:13:37', '2026-01-22 10:15:39'),
+(3, 12, 'ICT Application', 'DYD', '2025-10-07', '2026-01-07', NULL, NULL, NULL, '[{\"name\":\"photo-1484480974693-6ca0a78fb36b.jpg\",\"path\":\"certification-attachments\\/1j654Y2SS0y300edF8ugurF0zaiVbdRAJ5nN1hOd.jpg\",\"mime_type\":\"image\\/jpeg\",\"size\":363408}]', '2026-01-22 10:17:50', '2026-01-22 10:17:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companies`
+--
+
+CREATE TABLE `companies` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `website` varchar(255) DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `industry` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `size` int(11) DEFAULT NULL,
+  `founded_date` date DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `companies`
+--
+
+INSERT INTO `companies` (`id`, `name`, `email`, `phone`, `website`, `logo`, `description`, `industry`, `location`, `size`, `founded_date`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Demo Company', 'john@gmail.com', '+8801900000000', 'https://demo.xyz/', NULL, NULL, 'none', 'Dhaka', NULL, '2026-01-20', 1, '2026-01-09 22:28:58', '2026-01-09 22:28:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_messages`
+--
+
+CREATE TABLE `contact_messages` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `status` enum('unread','read','replied','closed') NOT NULL DEFAULT 'unread',
+  `admin_notes` text DEFAULT NULL,
+  `ip_address` varchar(255) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `admin_reply` text DEFAULT NULL,
+  `replied_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `contact_messages`
+--
+
+INSERT INTO `contact_messages` (`id`, `name`, `email`, `subject`, `message`, `status`, `admin_notes`, `ip_address`, `user_agent`, `admin_reply`, `replied_at`, `created_at`, `updated_at`) VALUES
+(1, 'Tonmoy Mirza', 'moynulislamshimanto24@gmail.com', 'General Inquiry', 'no one kjdhdkksjfkldsjfklsjdkfj', 'read', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', NULL, NULL, '2026-01-15 10:01:17', '2026-01-15 10:24:33'),
+(2, 'Tonmoy Mirza', 'moynulislamshimanto24@gmail.com', 'General Inquiry', 'kjdhfkdsfkjklfdsjfkldsjlfk', 'read', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', NULL, NULL, '2026-01-15 10:19:48', '2026-01-17 08:54:07'),
+(3, 'Tonmoy Mirza', 'moynulislamshimanto24@gmail.com', 'General Inquiry', 'osdknfsnfkdsf', 'read', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', NULL, NULL, '2026-01-15 10:23:31', '2026-01-15 10:47:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `educations`
+--
+
+CREATE TABLE `educations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `institution` varchar(255) NOT NULL,
+  `degree` varchar(255) NOT NULL,
+  `field_of_study` varchar(255) DEFAULT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `is_current` tinyint(1) NOT NULL DEFAULT 0,
+  `description` text DEFAULT NULL,
+  `grade` varchar(255) DEFAULT NULL,
+  `activities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`activities`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `educations`
+--
+
+INSERT INTO `educations` (`id`, `user_id`, `institution`, `degree`, `field_of_study`, `start_date`, `end_date`, `is_current`, `description`, `grade`, `activities`, `created_at`, `updated_at`) VALUES
+(2, 12, 'National University', 'BSc', NULL, '2020-07-15', '2024-08-12', 0, NULL, NULL, NULL, '2026-01-12 02:58:34', '2026-01-21 06:14:34'),
+(3, 12, 'National University', 'MSc', NULL, '2025-06-13', '2026-01-14', 0, NULL, NULL, NULL, '2026-01-13 08:25:00', '2026-01-21 06:14:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `experiences`
+--
+
+CREATE TABLE `experiences` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `job_title` varchar(255) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `employment_type` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `is_current` tinyint(1) NOT NULL DEFAULT 0,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `responsibilities` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`responsibilities`)),
+  `industry` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `experiences`
+--
+
+INSERT INTO `experiences` (`id`, `user_id`, `job_title`, `company_name`, `employment_type`, `location`, `is_current`, `start_date`, `end_date`, `description`, `responsibilities`, `industry`, `created_at`, `updated_at`) VALUES
+(1, 12, 'MPO', 'ACME', 'full-time', 'Dhaka', 0, '2025-02-14', '2025-12-31', 'No work', NULL, NULL, '2026-01-11 11:10:20', '2026-01-11 11:10:20'),
+(2, 12, 'BPO', 'Moore-Pouros', 'full-time', NULL, 0, '2026-01-08', '2026-01-14', NULL, NULL, NULL, '2026-01-13 10:09:01', '2026-01-21 06:11:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `failed_jobs`
+--
+
+INSERT INTO `failed_jobs` (`id`, `uuid`, `connection`, `queue`, `payload`, `exception`, `failed_at`) VALUES
+(1, 'e433ddb9-8e64-4f6a-9bd7-c1f9b8f54a3a', 'database', 'emails', '{\"uuid\":\"e433ddb9-8e64-4f6a-9bd7-c1f9b8f54a3a\",\"displayName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"command\":\"O:32:\\\"App\\\\Jobs\\\\SendApplicationEmailJob\\\":8:{s:4:\\\"user\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:15:\\\"App\\\\Models\\\\User\\\";s:2:\\\"id\\\";i:12;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:11:\\\"application\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:25:\\\"App\\\\Models\\\\JobApplication\\\";s:2:\\\"id\\\";i:9;s:9:\\\"relations\\\";a:2:{i:0;s:4:\\\"user\\\";i:1;s:3:\\\"job\\\";}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:3:\\\"job\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:14:\\\"App\\\\Models\\\\Job\\\";s:2:\\\"id\\\";i:7;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:9:\\\"emailType\\\";s:14:\\\"custom_message\\\";s:13:\\\"customMessage\\\";s:19:\\\"no more work please\\\";s:7:\\\"subject\\\";s:30:\\\"Update on Your Job Application\\\";s:9:\\\"adminName\\\";s:5:\\\"Admin\\\";s:5:\\\"queue\\\";s:6:\\\"emails\\\";}\"},\"createdAt\":1768986231,\"delay\":null}', 'ErrorException: Undefined property: Illuminate\\Queue\\Jobs\\DatabaseJob::$title in C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php:180\nStack trace:\n#0 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#1 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(180): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#2 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(62): App\\Jobs\\SendApplicationEmailJob->generateEmailContent()\n#3 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Jobs\\SendApplicationEmailJob->handle()\n#4 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#5 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#6 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#7 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#8 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(129): Illuminate\\Container\\Container->call(Array)\n#9 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Bus\\Dispatcher->Illuminate\\Bus\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#10 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#11 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(133): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#12 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(134): Illuminate\\Bus\\Dispatcher->dispatchNow(Object(App\\Jobs\\SendApplicationEmailJob), false)\n#13 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Queue\\CallQueuedHandler->Illuminate\\Queue\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#14 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#15 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(127): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#16 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(68): Illuminate\\Queue\\CallQueuedHandler->dispatchThroughMiddleware(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(App\\Jobs\\SendApplicationEmailJob))\n#17 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Jobs\\Job.php(102): Illuminate\\Queue\\CallQueuedHandler->call(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Array)\n#18 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(487): Illuminate\\Queue\\Jobs\\Job->fire()\n#19 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(437): Illuminate\\Queue\\Worker->process(\'database\', Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(Illuminate\\Queue\\WorkerOptions))\n#20 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(201): Illuminate\\Queue\\Worker->runJob(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), \'database\', Object(Illuminate\\Queue\\WorkerOptions))\n#21 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(148): Illuminate\\Queue\\Worker->daemon(\'database\', \'emails\', Object(Illuminate\\Queue\\WorkerOptions))\n#22 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(131): Illuminate\\Queue\\Console\\WorkCommand->runWorker(\'database\', \'emails\')\n#23 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Queue\\Console\\WorkCommand->handle()\n#24 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#25 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#26 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#27 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#28 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)\n#29 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Command\\Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#30 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#31 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#32 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\WorkCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#33 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#34 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#35 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#36 C:\\xampp\\htdocs\\job-placement-portal\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))\n#37 {main}', '2026-01-21 09:37:32'),
+(2, '63cab0bd-c7f3-4c35-8059-7b2487121787', 'database', 'emails', '{\"uuid\":\"63cab0bd-c7f3-4c35-8059-7b2487121787\",\"displayName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"command\":\"O:32:\\\"App\\\\Jobs\\\\SendApplicationEmailJob\\\":8:{s:4:\\\"user\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:15:\\\"App\\\\Models\\\\User\\\";s:2:\\\"id\\\";i:12;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:11:\\\"application\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:25:\\\"App\\\\Models\\\\JobApplication\\\";s:2:\\\"id\\\";i:9;s:9:\\\"relations\\\";a:2:{i:0;s:4:\\\"user\\\";i:1;s:3:\\\"job\\\";}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:3:\\\"job\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:14:\\\"App\\\\Models\\\\Job\\\";s:2:\\\"id\\\";i:7;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:9:\\\"emailType\\\";s:14:\\\"custom_message\\\";s:13:\\\"customMessage\\\";s:27:\\\"ok or not ok please tell me\\\";s:7:\\\"subject\\\";s:30:\\\"Update on Your Job Application\\\";s:9:\\\"adminName\\\";s:5:\\\"Admin\\\";s:5:\\\"queue\\\";s:6:\\\"emails\\\";}\"},\"createdAt\":1768986320,\"delay\":null}', 'ErrorException: Undefined property: Illuminate\\Queue\\Jobs\\DatabaseJob::$title in C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php:180\nStack trace:\n#0 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#1 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(180): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#2 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(62): App\\Jobs\\SendApplicationEmailJob->generateEmailContent()\n#3 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Jobs\\SendApplicationEmailJob->handle()\n#4 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#5 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#6 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#7 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#8 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(129): Illuminate\\Container\\Container->call(Array)\n#9 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Bus\\Dispatcher->Illuminate\\Bus\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#10 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#11 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(133): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#12 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(134): Illuminate\\Bus\\Dispatcher->dispatchNow(Object(App\\Jobs\\SendApplicationEmailJob), false)\n#13 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Queue\\CallQueuedHandler->Illuminate\\Queue\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#14 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#15 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(127): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#16 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(68): Illuminate\\Queue\\CallQueuedHandler->dispatchThroughMiddleware(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(App\\Jobs\\SendApplicationEmailJob))\n#17 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Jobs\\Job.php(102): Illuminate\\Queue\\CallQueuedHandler->call(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Array)\n#18 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(487): Illuminate\\Queue\\Jobs\\Job->fire()\n#19 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(437): Illuminate\\Queue\\Worker->process(\'database\', Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(Illuminate\\Queue\\WorkerOptions))\n#20 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(201): Illuminate\\Queue\\Worker->runJob(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), \'database\', Object(Illuminate\\Queue\\WorkerOptions))\n#21 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(148): Illuminate\\Queue\\Worker->daemon(\'database\', \'emails\', Object(Illuminate\\Queue\\WorkerOptions))\n#22 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(131): Illuminate\\Queue\\Console\\WorkCommand->runWorker(\'database\', \'emails\')\n#23 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Queue\\Console\\WorkCommand->handle()\n#24 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#25 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#26 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#27 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#28 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)\n#29 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Command\\Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#30 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#31 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#32 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\WorkCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#33 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#34 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#35 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#36 C:\\xampp\\htdocs\\job-placement-portal\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))\n#37 {main}', '2026-01-21 09:37:32'),
+(3, '1577423f-1636-42c9-9694-a3e7ffb1d0d5', 'database', 'emails', '{\"uuid\":\"1577423f-1636-42c9-9694-a3e7ffb1d0d5\",\"displayName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"command\":\"O:32:\\\"App\\\\Jobs\\\\SendApplicationEmailJob\\\":8:{s:4:\\\"user\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:15:\\\"App\\\\Models\\\\User\\\";s:2:\\\"id\\\";i:12;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:11:\\\"application\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:25:\\\"App\\\\Models\\\\JobApplication\\\";s:2:\\\"id\\\";i:9;s:9:\\\"relations\\\";a:2:{i:0;s:4:\\\"user\\\";i:1;s:3:\\\"job\\\";}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:3:\\\"job\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:14:\\\"App\\\\Models\\\\Job\\\";s:2:\\\"id\\\";i:7;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:9:\\\"emailType\\\";s:14:\\\"custom_message\\\";s:13:\\\"customMessage\\\";s:18:\\\"ok message here go\\\";s:7:\\\"subject\\\";s:30:\\\"Update on Your Job Application\\\";s:9:\\\"adminName\\\";s:5:\\\"Admin\\\";s:5:\\\"queue\\\";s:6:\\\"emails\\\";}\"},\"createdAt\":1768987988,\"delay\":null}', 'ErrorException: Undefined property: Illuminate\\Queue\\Jobs\\DatabaseJob::$title in C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php:180\nStack trace:\n#0 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#1 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(180): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#2 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(62): App\\Jobs\\SendApplicationEmailJob->generateEmailContent()\n#3 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Jobs\\SendApplicationEmailJob->handle()\n#4 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#5 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#6 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#7 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#8 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(129): Illuminate\\Container\\Container->call(Array)\n#9 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Bus\\Dispatcher->Illuminate\\Bus\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#10 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#11 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(133): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#12 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(134): Illuminate\\Bus\\Dispatcher->dispatchNow(Object(App\\Jobs\\SendApplicationEmailJob), false)\n#13 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Queue\\CallQueuedHandler->Illuminate\\Queue\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#14 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#15 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(127): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#16 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(68): Illuminate\\Queue\\CallQueuedHandler->dispatchThroughMiddleware(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(App\\Jobs\\SendApplicationEmailJob))\n#17 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Jobs\\Job.php(102): Illuminate\\Queue\\CallQueuedHandler->call(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Array)\n#18 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(487): Illuminate\\Queue\\Jobs\\Job->fire()\n#19 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(437): Illuminate\\Queue\\Worker->process(\'database\', Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(Illuminate\\Queue\\WorkerOptions))\n#20 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(201): Illuminate\\Queue\\Worker->runJob(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), \'database\', Object(Illuminate\\Queue\\WorkerOptions))\n#21 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(148): Illuminate\\Queue\\Worker->daemon(\'database\', \'emails\', Object(Illuminate\\Queue\\WorkerOptions))\n#22 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(131): Illuminate\\Queue\\Console\\WorkCommand->runWorker(\'database\', \'emails\')\n#23 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Queue\\Console\\WorkCommand->handle()\n#24 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#25 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#26 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#27 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#28 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)\n#29 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Command\\Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#30 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#31 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#32 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\WorkCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#33 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#34 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#35 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#36 C:\\xampp\\htdocs\\job-placement-portal\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))\n#37 {main}', '2026-01-21 09:37:32'),
+(4, '9f3907a4-ad1a-4e6d-bf64-4e2156a8c171', 'database', 'emails', '{\"uuid\":\"9f3907a4-ad1a-4e6d-bf64-4e2156a8c171\",\"displayName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"command\":\"O:32:\\\"App\\\\Jobs\\\\SendApplicationEmailJob\\\":8:{s:4:\\\"user\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:15:\\\"App\\\\Models\\\\User\\\";s:2:\\\"id\\\";i:12;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:11:\\\"application\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:25:\\\"App\\\\Models\\\\JobApplication\\\";s:2:\\\"id\\\";i:9;s:9:\\\"relations\\\";a:2:{i:0;s:4:\\\"user\\\";i:1;s:3:\\\"job\\\";}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:3:\\\"job\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:14:\\\"App\\\\Models\\\\Job\\\";s:2:\\\"id\\\";i:7;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:9:\\\"emailType\\\";s:14:\\\"custom_message\\\";s:13:\\\"customMessage\\\";s:13:\\\"No more today\\\";s:7:\\\"subject\\\";s:30:\\\"Update on Your Job Application\\\";s:9:\\\"adminName\\\";s:5:\\\"Admin\\\";s:5:\\\"queue\\\";s:6:\\\"emails\\\";}\"},\"createdAt\":1768988492,\"delay\":null}', 'ErrorException: Undefined property: Illuminate\\Queue\\Jobs\\DatabaseJob::$title in C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php:180\nStack trace:\n#0 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#1 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(180): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#2 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(62): App\\Jobs\\SendApplicationEmailJob->generateEmailContent()\n#3 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Jobs\\SendApplicationEmailJob->handle()\n#4 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#5 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#6 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#7 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#8 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(129): Illuminate\\Container\\Container->call(Array)\n#9 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Bus\\Dispatcher->Illuminate\\Bus\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#10 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#11 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(133): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#12 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(134): Illuminate\\Bus\\Dispatcher->dispatchNow(Object(App\\Jobs\\SendApplicationEmailJob), false)\n#13 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Queue\\CallQueuedHandler->Illuminate\\Queue\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#14 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#15 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(127): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#16 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(68): Illuminate\\Queue\\CallQueuedHandler->dispatchThroughMiddleware(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(App\\Jobs\\SendApplicationEmailJob))\n#17 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Jobs\\Job.php(102): Illuminate\\Queue\\CallQueuedHandler->call(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Array)\n#18 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(487): Illuminate\\Queue\\Jobs\\Job->fire()\n#19 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(437): Illuminate\\Queue\\Worker->process(\'database\', Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(Illuminate\\Queue\\WorkerOptions))\n#20 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(201): Illuminate\\Queue\\Worker->runJob(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), \'database\', Object(Illuminate\\Queue\\WorkerOptions))\n#21 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(148): Illuminate\\Queue\\Worker->daemon(\'database\', \'emails\', Object(Illuminate\\Queue\\WorkerOptions))\n#22 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(131): Illuminate\\Queue\\Console\\WorkCommand->runWorker(\'database\', \'emails\')\n#23 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Queue\\Console\\WorkCommand->handle()\n#24 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#25 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#26 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#27 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#28 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)\n#29 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Command\\Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#30 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#31 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#32 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\WorkCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#33 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#34 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#35 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#36 C:\\xampp\\htdocs\\job-placement-portal\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))\n#37 {main}', '2026-01-21 09:41:59');
+INSERT INTO `failed_jobs` (`id`, `uuid`, `connection`, `queue`, `payload`, `exception`, `failed_at`) VALUES
+(5, '9f776fc9-f41c-49a8-84d4-f85b0f6f2104', 'database', 'emails', '{\"uuid\":\"9f776fc9-f41c-49a8-84d4-f85b0f6f2104\",\"displayName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"failOnTimeout\":false,\"backoff\":null,\"timeout\":null,\"retryUntil\":null,\"data\":{\"commandName\":\"App\\\\Jobs\\\\SendApplicationEmailJob\",\"command\":\"O:32:\\\"App\\\\Jobs\\\\SendApplicationEmailJob\\\":8:{s:4:\\\"user\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:15:\\\"App\\\\Models\\\\User\\\";s:2:\\\"id\\\";i:12;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:11:\\\"application\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:25:\\\"App\\\\Models\\\\JobApplication\\\";s:2:\\\"id\\\";i:9;s:9:\\\"relations\\\";a:2:{i:0;s:4:\\\"user\\\";i:1;s:3:\\\"job\\\";}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:3:\\\"job\\\";O:45:\\\"Illuminate\\\\Contracts\\\\Database\\\\ModelIdentifier\\\":5:{s:5:\\\"class\\\";s:14:\\\"App\\\\Models\\\\Job\\\";s:2:\\\"id\\\";i:7;s:9:\\\"relations\\\";a:0:{}s:10:\\\"connection\\\";s:5:\\\"mysql\\\";s:15:\\\"collectionClass\\\";N;}s:9:\\\"emailType\\\";s:14:\\\"custom_message\\\";s:13:\\\"customMessage\\\";s:13:\\\"No more today\\\";s:7:\\\"subject\\\";s:30:\\\"Update on Your Job Application\\\";s:9:\\\"adminName\\\";s:5:\\\"Admin\\\";s:5:\\\"queue\\\";s:6:\\\"emails\\\";}\"},\"createdAt\":1768988509,\"delay\":null}', 'ErrorException: Undefined property: Illuminate\\Queue\\Jobs\\DatabaseJob::$title in C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php:180\nStack trace:\n#0 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(258): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#1 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(180): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}(2, \'Undefined prope...\', \'C:\\\\xampp\\\\htdocs...\', 180)\n#2 C:\\xampp\\htdocs\\job-placement-portal\\app\\Jobs\\SendApplicationEmailJob.php(62): App\\Jobs\\SendApplicationEmailJob->generateEmailContent()\n#3 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): App\\Jobs\\SendApplicationEmailJob->handle()\n#4 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#5 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#6 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#7 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#8 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(129): Illuminate\\Container\\Container->call(Array)\n#9 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Bus\\Dispatcher->Illuminate\\Bus\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#10 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#11 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Bus\\Dispatcher.php(133): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#12 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(134): Illuminate\\Bus\\Dispatcher->dispatchNow(Object(App\\Jobs\\SendApplicationEmailJob), false)\n#13 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(180): Illuminate\\Queue\\CallQueuedHandler->Illuminate\\Queue\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#14 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(137): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(App\\Jobs\\SendApplicationEmailJob))\n#15 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(127): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))\n#16 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\CallQueuedHandler.php(68): Illuminate\\Queue\\CallQueuedHandler->dispatchThroughMiddleware(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(App\\Jobs\\SendApplicationEmailJob))\n#17 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Jobs\\Job.php(102): Illuminate\\Queue\\CallQueuedHandler->call(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Array)\n#18 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(487): Illuminate\\Queue\\Jobs\\Job->fire()\n#19 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(437): Illuminate\\Queue\\Worker->process(\'database\', Object(Illuminate\\Queue\\Jobs\\DatabaseJob), Object(Illuminate\\Queue\\WorkerOptions))\n#20 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Worker.php(201): Illuminate\\Queue\\Worker->runJob(Object(Illuminate\\Queue\\Jobs\\DatabaseJob), \'database\', Object(Illuminate\\Queue\\WorkerOptions))\n#21 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(148): Illuminate\\Queue\\Worker->daemon(\'database\', \'emails\', Object(Illuminate\\Queue\\WorkerOptions))\n#22 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Queue\\Console\\WorkCommand.php(131): Illuminate\\Queue\\Console\\WorkCommand->runWorker(\'database\', \'emails\')\n#23 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(36): Illuminate\\Queue\\Console\\WorkCommand->handle()\n#24 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php(43): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()\n#25 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(96): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))\n#26 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))\n#27 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(799): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)\n#28 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(211): Illuminate\\Container\\Container->call(Array)\n#29 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Command\\Command.php(341): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#30 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(180): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))\n#31 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(1102): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#32 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(356): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Queue\\Console\\WorkCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#33 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#34 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#35 C:\\xampp\\htdocs\\job-placement-portal\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1235): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))\n#36 C:\\xampp\\htdocs\\job-placement-portal\\artisan(16): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))\n#37 {main}', '2026-01-21 09:41:59');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_applications`
+--
+
+CREATE TABLE `job_applications` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `cover_letter` text DEFAULT NULL,
+  `resume` varchar(255) DEFAULT NULL,
+  `status` enum('pending','reviewed','shortlisted','rejected','hired') NOT NULL DEFAULT 'pending',
+  `interview_notes` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`interview_notes`)),
+  `applied_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `reviewed_at` timestamp NULL DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `job_applications`
+--
+
+INSERT INTO `job_applications` (`id`, `job_id`, `user_id`, `cover_letter`, `resume`, `status`, `interview_notes`, `applied_at`, `reviewed_at`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 41, 13, 'Printers in the 1500s scrambled the words from Cicero\'s \"De Finibus Bonorum et Malorum\'\' after mixing the words in each sentence. The familiar \"lorem ipsum dolor sit amet\" text emerged when 16th-century printers adapted Cicero\'s original work, beginning with the phrase \"dolor sit amet consectetur.\"\r\n\r\nThey abbreviated \"dolorem\" (meaning \"pain\") to \"lorem,\" which carries no meaning in Latin. \"Ipsum\" translates to \"itself,\" and the text frequently includes phrases such as \"consectetur adipiscing elit\" and \"ut labore et dolore.\" These Latin fragments, derived from Cicero\'s philosophical treatise, were rearranged to create the standard dummy text that has become a fundamental tool in design and typography across generations.\r\n\r\nThe short answer is that lorem ipsum text doesn\'t actually \"say\" anything meaningful. It\'s deliberately scrambled Latin that doesn\'t form coherent sentences. While it comes from Cicero\'s \"De Finibus Bonorum et Malorum,\" the text has been modified so extensively that it\'s nonsensical.\r\n\r\nWhy scrambled text? That\'s exactly the point. By using text that\'s unreadable but maintains the general pattern of regular writing — including normal word length, spacing, and punctuation — designers can focus on the visual elements of a layout without the actual content getting in the way. The pseudo-Latin appearance gives it a natural feel while ensuring it won\'t distract from the design itself.', NULL, 'pending', NULL, '2026-01-11 06:17:37', NULL, NULL, '2026-01-11 07:42:36', '2026-01-11 06:20:42'),
+(2, 56, 13, NULL, 'resumes/ubTQofMVg23QvlVBcPrQCcEeu0XzWV3IHnCR4FC7.pdf', 'reviewed', NULL, '2026-01-11 08:56:52', '2026-01-12 03:11:20', NULL, '2026-01-11 08:56:52', '2026-01-12 03:11:20'),
+(3, 3, 13, NULL, 'resumes/fkVoYNp9hzqeccTBBmHXB1dWT0j8FA1gokMFedol.pdf', 'rejected', '{\"interview_time\":\"2026-01-13T02:25\",\"email_sent_at\":\"2026-01-12 09:55:00\"}', '2026-01-11 08:57:19', '2026-01-12 03:14:43', NULL, '2026-01-11 08:57:19', '2026-01-12 03:55:00'),
+(4, 56, 12, NULL, 'resumes/ntkTkBEtkP7jc2hudEcpiA8hq4RR5okbpEsuWycG.pdf', 'reviewed', '{\"interview_time\":\"2026-01-14T02:25\",\"email_sent_at\":\"2026-01-12 10:03:12\",\"joining_date\":\"2026-01-13\"}', '2026-01-12 03:55:54', '2026-01-12 04:23:48', NULL, '2026-01-12 03:55:54', '2026-01-12 04:23:48'),
+(5, 1, 12, NULL, 'resumes/43h9aZJc4GeiHvBPAdx24FawR49MWhzYyZl2T46Z.pdf', 'shortlisted', '{\"interview_time\":\"2026-02-01T10:05\",\"email_sent_at\":\"2026-01-12 10:48:40\"}', '2026-01-12 04:37:43', '2026-01-12 04:38:53', NULL, '2026-01-12 04:37:43', '2026-01-12 04:48:40'),
+(6, 8, 12, NULL, 'resumes/2O3ORbI0bxj4VTcnY8DlU6CIy5ey242OMtPI9BRu.pdf', 'shortlisted', '{\"interview_time\":\"2026-01-13T16:45\",\"email_sent_at\":\"2026-01-12 10:49:14\"}', '2026-01-12 04:48:11', NULL, NULL, '2026-01-12 04:48:11', '2026-01-12 04:49:14'),
+(7, 6, 12, NULL, NULL, 'hired', '{\"interview_time\":\"2026-12-12T02:25\",\"email_sent_at\":\"2026-01-12 11:02:54\"}', '2026-01-12 05:01:51', NULL, NULL, '2026-01-12 05:01:51', '2026-01-12 05:02:54'),
+(9, 7, 12, NULL, 'resumes/VBJ6S2GCHlr4VihdYX2zCUJxekO13U22FbgIN7tz.pdf', 'shortlisted', '{\"interview_time\":\"2026-01-12T18:07\",\"email_sent_at\":\"2026-01-21 15:44:09\"}', '2026-01-18 04:15:45', NULL, NULL, '2026-01-18 04:15:45', '2026-01-21 09:44:09'),
+(10, 4, 12, NULL, 'resumes/Ve1f5Qm9pta2DTWvqktcBniKhIYBRrVoWyWwoygZ.pdf', 'pending', NULL, '2026-01-22 03:24:56', NULL, NULL, '2026-01-22 03:24:56', '2026-01-22 03:24:56'),
+(11, 9, 12, NULL, 'resumes/OShQ3uTrlZ4GeCq12Eupo7enNQdOUkihmXSNkCiu.pdf', 'pending', NULL, '2026-01-22 03:26:42', NULL, NULL, '2026-01-22 03:26:42', '2026-01-22 03:26:42'),
+(12, 12, 12, NULL, 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', 'pending', NULL, '2026-01-22 03:29:49', NULL, NULL, '2026-01-22 03:29:49', '2026-01-22 03:29:49'),
+(13, 18, 12, NULL, 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', 'pending', NULL, '2026-01-22 03:31:13', NULL, NULL, '2026-01-22 03:31:13', '2026-01-22 03:31:13'),
+(14, 21, 12, NULL, 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', 'pending', NULL, '2026-01-22 03:32:43', NULL, NULL, '2026-01-22 03:32:43', '2026-01-22 03:32:43'),
+(15, 23, 12, NULL, 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', 'pending', NULL, '2026-01-22 03:50:23', NULL, NULL, '2026-01-22 03:50:23', '2026-01-22 03:50:23'),
+(16, 22, 12, NULL, 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', 'pending', NULL, '2026-01-22 03:50:52', NULL, NULL, '2026-01-22 03:50:52', '2026-01-22 03:50:52');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_seeker_profiles`
+--
+
+CREATE TABLE `job_seeker_profiles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `summary` text DEFAULT NULL,
+  `skills` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`skills`)),
+  `experience_level` varchar(255) DEFAULT NULL,
+  `education` varchar(255) DEFAULT NULL,
+  `resume_file` varchar(255) DEFAULT NULL,
+  `work_experience` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`work_experience`)),
+  `education_history` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`education_history`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `personal_info_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `job_seeker_profiles`
+--
+
+INSERT INTO `job_seeker_profiles` (`id`, `user_id`, `title`, `summary`, `skills`, `experience_level`, `education`, `resume_file`, `work_experience`, `education_history`, `created_at`, `updated_at`, `personal_info_id`) VALUES
+(1, 12, 'Developer', 'lorem code', '\"[]\"', 'entry', 'high_school', 'resumes/kaeVrz7lNldHoxU1KqlCppJCcaemzHQQyzWPU8km.pdf', '\"[]\"', '\"[]\"', '2026-01-10 22:30:30', '2026-01-21 06:35:48', NULL),
+(2, 13, '', '', '\"[]\"', '', '', NULL, '\"[]\"', '\"[]\"', '2026-01-10 22:38:21', '2026-01-10 22:38:21', NULL),
+(3, 15, '', '', '\"[]\"', '', '', NULL, '\"[]\"', '\"[]\"', '2026-01-18 07:30:41', '2026-01-18 07:30:41', NULL),
+(4, 19, '', '', '\"[]\"', '', '', NULL, '\"[]\"', '\"[]\"', '2026-01-22 08:28:33', '2026-01-22 08:28:33', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_views`
+--
+
+CREATE TABLE `job_views` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  `viewed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `job_views`
+--
+
+INSERT INTO `job_views` (`id`, `job_id`, `ip_address`, `viewed_at`) VALUES
+(1, 56, '127.0.0.1', '2026-01-10 05:36:20'),
+(2, 4, '127.0.0.1', '2026-01-10 05:39:57'),
+(3, 1, '127.0.0.1', '2026-01-10 06:43:06'),
+(4, 56, '127.0.0.1', '2026-01-11 06:40:56'),
+(5, 3, '127.0.0.1', '2026-01-11 08:57:12'),
+(6, 4, '127.0.0.1', '2026-01-11 09:00:47'),
+(7, 11, '127.0.0.1', '2026-01-11 09:03:50'),
+(8, 56, '127.0.0.1', '2026-01-12 03:55:21'),
+(9, 1, '127.0.0.1', '2026-01-12 04:37:18'),
+(10, 8, '127.0.0.1', '2026-01-12 04:48:02'),
+(11, 6, '127.0.0.1', '2026-01-12 05:01:44'),
+(12, 3, '127.0.0.1', '2026-01-12 05:30:54'),
+(13, 6, '127.0.0.1', '2026-01-13 06:26:23'),
+(14, 3, '127.0.0.1', '2026-01-17 08:55:12'),
+(15, 56, '127.0.0.1', '2026-01-17 09:48:11'),
+(16, 10, '127.0.0.1', '2026-01-17 10:09:48'),
+(17, 7, '127.0.0.1', '2026-01-18 04:15:36'),
+(18, 56, '127.0.0.1', '2026-01-18 04:16:58'),
+(19, 2, '127.0.0.1', '2026-01-18 07:28:49'),
+(20, 5, '127.0.0.1', '2026-01-18 07:29:24'),
+(21, 56, '127.0.0.1', '2026-01-21 06:43:24'),
+(22, 56, '127.0.0.1', '2026-01-22 03:22:51'),
+(23, 4, '127.0.0.1', '2026-01-22 03:22:57'),
+(24, 1, '127.0.0.1', '2026-01-22 03:26:11'),
+(25, 9, '127.0.0.1', '2026-01-22 03:26:29'),
+(26, 12, '127.0.0.1', '2026-01-22 03:29:41'),
+(27, 18, '127.0.0.1', '2026-01-22 03:31:08'),
+(28, 21, '127.0.0.1', '2026-01-22 03:32:30'),
+(29, 23, '127.0.0.1', '2026-01-22 03:50:20'),
+(30, 22, '127.0.0.1', '2026-01-22 03:50:48'),
+(31, 2, '127.0.0.1', '2026-01-22 03:59:25'),
+(32, 10, '127.0.0.1', '2026-01-22 03:59:29'),
+(33, 5, '127.0.0.1', '2026-01-22 03:59:37'),
+(34, 7, '127.0.0.1', '2026-01-22 03:59:42'),
+(35, 11, '127.0.0.1', '2026-01-22 06:59:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
+(1, '0001_01_01_000000_create_users_table', 1),
+(2, '0001_01_01_000001_create_cache_table', 1),
+(3, '0001_01_01_000002_create_jobs_table', 1),
+(4, '2026_01_04_083900_create_personal_access_tokens_table', 1),
+(5, '2026_01_04_083901_create_job_seeker_profiles_table', 1),
+(6, '2026_01_04_083918_create_open_jobs_table', 1),
+(7, '2026_01_04_083931_create_job_applications_table', 1),
+(8, '2026_01_04_083959_create_job_views_table', 1),
+(9, '2026_01_04_084012_create_site_settings_table', 1),
+(10, '2026_01_04_105451_create_sessions_table', 1),
+(11, '2026_01_05_092511_create_job_seeker_profile_details', 1),
+(12, '2026_01_05_105312_create_companies_table', 1),
+(13, '2026_01_08_055913_create_categories_table', 1),
+(14, '2026_01_08_055958_add_category_id_to_open_jobs_table', 1),
+(15, '2026_01_08_072126_increase_icon_column_size_in_categories_table', 1),
+(16, '2026_01_09_041502_update_salary_column_in_open_jobs_table', 2),
+(17, '2026_01_09_041711_add_salary_fields_to_open_jobs_table', 2),
+(18, '2026_01_09_042153_add_company_id_to_open_jobs_table', 2),
+(19, '2026_01_09_063110_add_is_negotiable_to_open_jobs_table', 2),
+(20, '2026_01_11_034016_add_logo_to_site_settings_table', 3),
+(22, '2026_01_15_152539_create_contact_messages_table', 4),
+(23, '2026_01_17_164733_add_marital_status_to_personal_information_table', 5),
+(24, '2026_01_18_113835_create_password_reset_tokens_table', 6),
+(25, '2026_01_19_145107_create_blogs_table', 7),
+(26, '2026_01_20_101512_add_is_super_admin_to_users_table', 8),
+(27, '2026_01_21_131116_create_application_emails_table', 9),
+(28, '2026_01_22_091852_create_notifications_table', 10),
+(29, '2026_01_22_102834_add_favicon_to_site_settings_table', 11),
+(30, '2026_01_22_102855_add_favicon_to_site_settings_table', 11),
+(31, '2026_01_22_122434_add_slug_to_open_jobs_table', 11),
+(32, '2026_01_22_143730_add_attachments_to_certifications_table', 12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` char(36) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `notifiable_type` varchar(255) NOT NULL,
+  `notifiable_id` bigint(20) UNSIGNED NOT NULL,
+  `data` text NOT NULL,
+  `read_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('05150006-f632-4a5c-a648-09cbe853b947', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 1, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Fitter\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":13,\"job_id\":18,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/13\"}', NULL, '2026-01-22 03:31:13', '2026-01-22 03:31:13'),
+('0f621aa3-d109-4118-acd5-3fd60af11f81', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 1, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Engine Assembler\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":15,\"job_id\":23,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/15\"}', NULL, '2026-01-22 03:50:23', '2026-01-22 03:50:23'),
+('3f9e64bd-a256-47b9-907a-e7ec559f49a0', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 1, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Molder\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":14,\"job_id\":21,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/14\"}', '2026-01-22 03:49:57', '2026-01-22 03:32:43', '2026-01-22 03:49:57'),
+('4fdc245e-73dc-47a6-aef6-26e146c31dab', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 17, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Payroll Clerk\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":16,\"job_id\":22,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/16\"}', NULL, '2026-01-22 03:50:52', '2026-01-22 03:50:52'),
+('8a77a239-2d86-4ebd-ad58-707e6ff51ad8', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 1, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Electrical Sales Representative\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":12,\"job_id\":12,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/12\"}', '2026-01-22 03:30:02', '2026-01-22 03:29:51', '2026-01-22 03:30:02'),
+('8c2c3120-aae5-4855-b05c-2278a8e6f6a3', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 17, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Engine Assembler\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":15,\"job_id\":23,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/15\"}', NULL, '2026-01-22 03:50:23', '2026-01-22 03:50:23'),
+('968ca542-22c0-4ebe-b1b2-b3384cae5097', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 17, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Fitter\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":13,\"job_id\":18,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/13\"}', NULL, '2026-01-22 03:31:13', '2026-01-22 03:31:13'),
+('eb3c4547-2718-48ff-997a-3d7a727934c3', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 17, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Electrical Sales Representative\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":12,\"job_id\":12,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/12\"}', NULL, '2026-01-22 03:29:51', '2026-01-22 03:29:51'),
+('f314800f-60c5-40d5-9f8b-af02ded90435', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 1, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Payroll Clerk\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":16,\"job_id\":22,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/16\"}', NULL, '2026-01-22 03:50:52', '2026-01-22 03:50:52'),
+('f38fb67f-000e-4a20-9688-37b2aa0f1c0d', 'App\\Notifications\\NewJobApplicationNotification', 'App\\Models\\User', 17, '{\"title\":\"New Job Application\",\"message\":\"Moynul Islam Shimanto applied for \'Molder\'\",\"icon\":\"fas fa-briefcase\",\"color\":\"primary\",\"application_id\":14,\"job_id\":21,\"user_id\":12,\"url\":\"http:\\/\\/127.0.0.1:8000\\/admin\\/applications\\/14\"}', NULL, '2026-01-22 03:32:43', '2026-01-22 03:32:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `open_jobs`
+--
+
+CREATE TABLE `open_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `company_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `description` text NOT NULL,
+  `company_name` varchar(255) DEFAULT NULL,
+  `company_logo` varchar(255) DEFAULT NULL,
+  `location` varchar(255) NOT NULL,
+  `salary` varchar(255) DEFAULT NULL,
+  `is_negotiable` tinyint(1) NOT NULL DEFAULT 0,
+  `salary_min` decimal(10,2) DEFAULT NULL,
+  `salary_max` decimal(10,2) DEFAULT NULL,
+  `salary_type` varchar(255) DEFAULT NULL,
+  `salary_currency` varchar(255) NOT NULL DEFAULT 'USD',
+  `job_type` varchar(255) NOT NULL,
+  `experience_level` varchar(255) NOT NULL,
+  `skills_required` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`skills_required`)),
+  `benefits` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`benefits`)),
+  `application_deadline` date DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `views` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `category_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `open_jobs`
+--
+
+INSERT INTO `open_jobs` (`id`, `title`, `slug`, `user_id`, `company_id`, `description`, `company_name`, `company_logo`, `location`, `salary`, `is_negotiable`, `salary_min`, `salary_max`, `salary_type`, `salary_currency`, `job_type`, `experience_level`, `skills_required`, `benefits`, `application_deadline`, `is_active`, `status`, `views`, `created_at`, `updated_at`, `category_id`) VALUES
+(1, 'Farmworker', 'farmworker', 1, NULL, 'Vel pariatur consectetur iste aut sed quibusdam. Assumenda quam laboriosam nemo soluta molestiae repellat asperiores. Natus possimus aut quia praesentium aut. Quaerat mollitia voluptatem natus libero assumenda ex laboriosam dolores.', 'Hackett and Sons', NULL, 'Helmerton', '88450.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'junior', '[\"JavaScript\",\"React\",\"Vue\"]', '[\"Bonus\",\"Paid Leave\"]', '2026-01-20', 1, 'approved', 3, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(2, 'Occupational Health Safety Technician', 'occupational-health-safety-technician', 1, NULL, 'Unde doloribus magnam non aperiam. Quo deleniti pariatur necessitatibus quis recusandae at eos. Consectetur dolorem ea laborum officia sit. Voluptatem et dolores eum at molestias voluptatum.', 'Hegmann-Schumm', NULL, 'Cassintown', '72538.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'mid', '[\"PHP\",\"JavaScript\",\"Laravel\"]', '[\"Remote Work\",\"Bonus\"]', '2026-02-04', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(3, 'Nursery Worker', 'nursery-worker', 1, NULL, 'Quaerat recusandae nobis ratione animi rerum consequatur. Nam atque quia harum nulla numquam. Maiores ipsum perferendis officia blanditiis quis.', 'Hessel Inc', NULL, 'South Taliahaven', '44518.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'junior', '[\"PHP\",\"React\",\"JavaScript\"]', '[\"Paid Leave\",\"Health Insurance\"]', '2026-01-21', 1, 'approved', 3, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(4, 'Photographic Reproduction Technician', 'photographic-reproduction-technician', 1, NULL, 'Fuga veniam occaecati expedita optio laudantium et ad facilis. Sequi omnis atque est molestiae.', 'Haley-Auer', NULL, 'Mayertmouth', '47971.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"Laravel\",\"Vue\",\"React\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-01-17', 1, 'approved', 3, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(5, 'Woodworker', 'woodworker', 1, NULL, 'Qui ut harum non dolore odio fugit repudiandae fugiat. Eaque consequatur iure consequatur amet nihil. Explicabo mollitia tenetur doloremque fugit inventore dolor.', 'Collier-Wilderman', NULL, 'North Herbertfort', '78073.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'mid', '[\"Vue\",\"React\",\"PHP\"]', '[\"Bonus\",\"Paid Leave\"]', '2026-01-23', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(6, 'Set Designer', 'set-designer', 1, NULL, 'Qui nihil voluptatem nobis et. Ut sequi expedita earum non. Ad consequuntur dicta id quo quam assumenda.', 'Wintheiser-Hammes', NULL, 'Helenstad', '71313.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'junior', '[\"JavaScript\",\"Laravel\",\"Vue\"]', '[\"Remote Work\",\"Bonus\"]', '2026-01-21', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(7, 'Occupational Therapist Assistant', 'occupational-therapist-assistant', 1, NULL, 'Ratione unde nemo possimus minus nam. Incidunt reprehenderit a et blanditiis. Atque explicabo facilis odit repellat minus. Ratione fuga dolorem accusantium qui impedit quis expedita.', 'Doyle-Graham', NULL, 'Matteomouth', '28185.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"PHP\",\"JavaScript\",\"React\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-02-06', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(8, 'Tire Builder', 'tire-builder', 1, NULL, 'Aperiam quia dolor doloribus est. Pariatur sint ipsa rerum dolorem veritatis.', 'Shields-Grady', NULL, 'Port Coyville', '29670.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"JavaScript\",\"Laravel\",\"React\"]', '[\"Remote Work\",\"Bonus\"]', '2026-01-14', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(9, 'TSA', 'tsa', 1, NULL, 'Suscipit ipsa veritatis necessitatibus suscipit voluptatem culpa dolore. Enim et velit nemo quam velit ad. Quas asperiores reprehenderit enim ab tempore praesentium rerum. Saepe voluptatem fugit omnis autem exercitationem quod aut nihil.', 'Kerluke, Dickens and Kunze', NULL, 'North Athena', '31330.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'senior', '[\"JavaScript\",\"React\",\"PHP\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-01-31', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(10, 'Data Processing Equipment Repairer', 'data-processing-equipment-repairer', 1, NULL, 'Et debitis voluptatibus ipsum corporis rerum quam eos. Deleniti nihil tempora nobis nostrum. Officiis neque molestias alias eius voluptatibus. Impedit unde veniam sed ut.', 'Pfeffer-Reinger', NULL, 'Port Cierraborough', '50184.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'junior', '[\"Vue\",\"Laravel\",\"JavaScript\"]', '[\"Paid Leave\",\"Health Insurance\"]', '2026-01-26', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(11, 'Nursing Aide', 'nursing-aide', 1, NULL, 'Mollitia est dicta ut sunt nobis quae quis. Iure qui sunt nemo aut harum necessitatibus illo. Mollitia itaque deserunt error sint officia repellat molestias. Consequuntur id quo officiis et quia fugit fugit sapiente.', 'Gutmann, Gerlach and Brakus', NULL, 'New Mackfurt', '83379.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'junior', '[\"JavaScript\",\"React\",\"PHP\"]', '[\"Bonus\",\"Paid Leave\"]', '2026-02-06', 1, 'approved', 2, '2026-01-08 05:58:53', '2026-01-22 06:59:14', NULL),
+(12, 'Electrical Sales Representative', 'electrical-sales-representative', 1, NULL, 'Omnis ut tempore veritatis et. Sapiente sunt dolor qui. Accusantium consequatur voluptatem officiis ducimus in nulla dolorem non. Id ab aut id optio et neque officia.', 'Effertz-Breitenberg', NULL, 'West Roxanne', '29396.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'junior', '[\"PHP\",\"Laravel\",\"Vue\"]', '[\"Remote Work\",\"Health Insurance\"]', '2026-01-29', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(13, 'Counseling Psychologist', 'counseling-psychologist', 1, NULL, 'Quidem et rem voluptas et eius tenetur. Ipsam earum quam dolor. Earum ducimus nihil sit provident.', 'Swift Group', NULL, 'Lake Misael', '48908.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"Vue\",\"PHP\",\"Laravel\"]', '[\"Paid Leave\",\"Remote Work\"]', '2026-01-18', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(14, 'Furniture Finisher', 'furniture-finisher', 1, NULL, 'Voluptas minima ipsam molestiae soluta vel quae velit. Fugit aut nihil sequi ut tenetur vel. Omnis aut numquam voluptas voluptatibus maxime velit. Maiores non maxime beatae est officiis.', 'Davis Ltd', NULL, 'West Rosaleeborough', '49607.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'mid', '[\"React\",\"Laravel\",\"Vue\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-02-07', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:51:57', NULL),
+(15, 'Graduate Teaching Assistant', 'graduate-teaching-assistant', 1, NULL, 'Qui voluptatem repudiandae vel quas eveniet explicabo nulla. Voluptatem soluta mollitia et ut quam officia. Reiciendis aut autem eveniet aut recusandae.', 'Ziemann LLC', NULL, 'Lucilefort', '66347.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'senior', '[\"PHP\",\"Vue\",\"Laravel\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-01-25', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(16, 'Printing Press Machine Operator', 'printing-press-machine-operator', 1, NULL, 'Assumenda ab nesciunt et odio. Facere aut ut et rerum animi minus. Porro quod ipsa rerum sed corporis sint facere. Aspernatur omnis non eligendi et animi reprehenderit.', 'Von-Reichert', NULL, 'Raynorberg', '26310.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'senior', '[\"Laravel\",\"Vue\",\"React\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-26', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(17, 'Geographer', 'geographer', 1, NULL, 'Suscipit at quia tempore ratione inventore assumenda. Consequatur placeat sed similique vel esse. Repudiandae rem molestiae maxime aut ducimus voluptas.', 'Kautzer, Bartoletti and Buckridge', NULL, 'New Queenie', '91425.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'senior', '[\"PHP\",\"Laravel\",\"React\"]', '[\"Bonus\",\"Remote Work\"]', '2026-01-18', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(18, 'Fitter', 'fitter', 1, NULL, 'Omnis eos accusamus quis et aliquid et occaecati. Sunt sunt quo natus est a. Unde quia nam culpa quaerat. Aut iure fugiat reiciendis rerum illum quibusdam voluptatem.', 'Zieme-Bode', NULL, 'South Johnnie', '99787.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"React\",\"JavaScript\",\"PHP\"]', '[\"Paid Leave\",\"Health Insurance\"]', '2026-02-02', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(19, 'Medical Secretary', 'medical-secretary', 1, NULL, 'Consectetur saepe in ab cupiditate. Nemo reprehenderit aut aut rem tempora voluptatem. Est praesentium nobis voluptate ut voluptas.', 'DuBuque Group', NULL, 'Lake Steveshire', '53835.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'mid', '[\"Vue\",\"Laravel\",\"JavaScript\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-01-24', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(20, 'Multi-Media Artist', 'multi-media-artist', 1, NULL, 'Nobis illo qui modi. Molestiae facere nihil rem omnis maiores illo rerum. Est et sed sint officiis sed nostrum. Rem quo vel voluptatem quasi ea voluptas.', 'Lesch, Muller and Zulauf', NULL, 'New Gerardton', '43882.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"React\",\"Laravel\",\"JavaScript\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-02-02', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(21, 'Molder', 'molder', 1, NULL, 'Deserunt id nostrum culpa. Qui velit quibusdam inventore quia non fugit dolores. Porro ratione quos distinctio velit et.', 'O\'Keefe, Langosh and Sauer', NULL, 'North Barrett', '79147.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"JavaScript\",\"Laravel\",\"Vue\"]', '[\"Paid Leave\",\"Health Insurance\"]', '2026-01-10', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(22, 'Payroll Clerk', 'payroll-clerk', 1, NULL, 'Est voluptates veritatis cupiditate qui nobis qui. Et praesentium sint quasi. Voluptatum sunt voluptatem modi repudiandae sit.', 'King-Baumbach', NULL, 'South Eino', '82248.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'mid', '[\"PHP\",\"Vue\",\"React\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-24', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(23, 'Engine Assembler', 'engine-assembler', 1, NULL, 'At autem nesciunt enim dolores ducimus et et. Illum dolore illum ab enim. Aliquam occaecati quasi ea id voluptas quaerat neque. Ea maiores fugit natus commodi.', 'Macejkovic-Barton', NULL, 'Collierburgh', '21730.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"JavaScript\",\"PHP\",\"React\"]', '[\"Bonus\",\"Health Insurance\"]', '2026-01-10', 1, 'approved', 1, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(24, 'Decorator', 'decorator', 1, NULL, 'Sit sit sint animi doloremque. Ducimus maxime vel dolor possimus. Fugit fugit asperiores veritatis. Quas ipsum et hic qui non quidem. Rerum inventore voluptate iste omnis.', 'Labadie, Wiza and Emard', NULL, 'Wilmerton', '22921.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'junior', '[\"Laravel\",\"React\",\"PHP\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-29', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(25, 'Community Service Manager', 'community-service-manager', 1, NULL, 'Quia nihil sed aliquid explicabo ut quo. Non quia enim dolore delectus ut voluptatem. Saepe velit a laboriosam est. Vero magnam omnis illo adipisci aspernatur sit.', 'Wunsch, Mayer and DuBuque', NULL, 'Wiegandland', '56083.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'mid', '[\"PHP\",\"Laravel\",\"React\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-01-24', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(26, 'Hairdresser OR Cosmetologist', 'hairdresser-or-cosmetologist', 1, NULL, 'Quisquam facere aperiam animi sed atque dolores. Pariatur ab molestias inventore suscipit sed ut. Sequi ducimus numquam natus eveniet cum et iusto.', 'Zieme PLC', NULL, 'Lake Janiestad', '53926.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"Vue\",\"Laravel\",\"PHP\"]', '[\"Bonus\",\"Remote Work\"]', '2026-01-29', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(27, 'Program Director', 'program-director', 1, NULL, 'Et officia atque cumque fugiat sint neque. Dicta quisquam sit quia eos rem magnam id. Hic quasi blanditiis qui est cumque est. Quos velit magnam repudiandae aut asperiores illo.', 'Wilkinson-Yundt', NULL, 'Port Williamland', '73453.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"PHP\",\"JavaScript\",\"Vue\"]', '[\"Health Insurance\",\"Remote Work\"]', '2026-01-27', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(28, 'Law Enforcement Teacher', 'law-enforcement-teacher', 1, NULL, 'Quod omnis voluptas iusto quo sapiente nam. Et vitae temporibus doloremque tempore dolor. Qui fugit dignissimos quibusdam voluptatem occaecati.', 'Stehr and Sons', NULL, 'South Porterbury', '23960.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'senior', '[\"Vue\",\"Laravel\",\"JavaScript\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-02-04', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(29, 'Counseling Psychologist', 'counseling-psychologist-1', 1, NULL, 'Et dignissimos modi iusto rem quis minima eos. Placeat sit sed quia. Debitis maxime non qui recusandae voluptatem ducimus. Debitis aspernatur nihil impedit voluptatem.', 'Lubowitz-Nitzsche', NULL, 'East Adrianaberg', '34668.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'mid', '[\"Vue\",\"JavaScript\",\"React\"]', '[\"Health Insurance\",\"Remote Work\"]', '2026-02-05', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(30, 'Farm and Home Management Advisor', 'farm-and-home-management-advisor', 1, NULL, 'Aut nobis ut qui quia sunt rerum officia nulla. Aut ex eum autem aut eius aspernatur optio doloribus. Numquam molestiae provident vel quis. Laudantium aspernatur ut dolores assumenda fugit aut.', 'Swaniawski and Sons', NULL, 'Lake Jammie', '82284.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'mid', '[\"JavaScript\",\"React\",\"PHP\"]', '[\"Remote Work\",\"Health Insurance\"]', '2026-01-09', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(31, 'Forest Fire Inspector', 'forest-fire-inspector', 1, NULL, 'Magni et ut voluptatem ut sunt voluptates. Praesentium amet porro maxime voluptatum ullam nihil veniam. Voluptatem impedit aliquid consequatur est eum.', 'Bashirian Group', NULL, 'Port Werner', '26271.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'junior', '[\"PHP\",\"JavaScript\",\"Laravel\"]', '[\"Bonus\",\"Health Insurance\"]', '2026-01-14', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(32, 'Butcher', 'butcher', 1, NULL, 'Quasi qui nam odio illo repellendus. Aut consequuntur earum at sed. Sunt amet commodi porro eos deleniti libero doloribus adipisci.', 'Schmeler, Dietrich and Schuster', NULL, 'West Rickyshire', '73237.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"React\",\"Laravel\",\"Vue\"]', '[\"Remote Work\",\"Health Insurance\"]', '2026-01-11', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(33, 'Postmasters', 'postmasters', 1, NULL, 'Voluptas magni sequi nisi. Totam mollitia saepe ut ut. Cum in dolorem non sed. Voluptate ut quos totam repellat et et.', 'Stiedemann-Treutel', NULL, 'Sauerland', '99650.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"React\",\"Vue\",\"Laravel\"]', '[\"Paid Leave\",\"Remote Work\"]', '2026-01-16', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(34, 'Dot Etcher', 'dot-etcher', 1, NULL, 'Error hic laboriosam id velit repellat. Voluptatibus voluptas voluptatem ullam dignissimos occaecati. Voluptates est velit officia possimus in. Et cupiditate qui est nisi.', 'Carroll PLC', NULL, 'Lake Orrinchester', '80648.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"Vue\",\"JavaScript\",\"React\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-02-01', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(35, 'Boilermaker', 'boilermaker', 1, NULL, 'Reprehenderit impedit ad maiores sapiente maxime expedita non ut. Numquam quis modi porro magnam accusamus est et. Fugiat velit molestias labore voluptatem. Aut voluptas aut sed necessitatibus.', 'DuBuque Group', NULL, 'Joyside', '94072.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'senior', '[\"React\",\"Laravel\",\"Vue\"]', '[\"Remote Work\",\"Bonus\"]', '2026-01-18', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(36, 'Textile Machine Operator', 'textile-machine-operator', 1, NULL, 'Aut ipsam explicabo ullam porro officiis. Debitis enim sunt voluptatem repellendus. Tenetur nostrum a facilis maiores dolorem aut nisi.', 'Orn, Toy and O\'Connell', NULL, 'Smithton', '62174.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"Laravel\",\"Vue\",\"PHP\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-12', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(37, 'Decorator', 'decorator-1', 1, NULL, 'Nobis sit vitae accusamus temporibus qui aperiam. Repellat aut ea vitae aut aliquam quibusdam. Eligendi sit eos ut a laudantium quis quas. Omnis ad delectus maxime optio asperiores.', 'Williamson, Fritsch and Wyman', NULL, 'East Nicoleborough', '32734.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'mid', '[\"Laravel\",\"Vue\",\"PHP\"]', '[\"Remote Work\",\"Paid Leave\"]', '2026-02-02', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(38, 'Patternmaker', 'patternmaker', 1, NULL, 'Consequuntur porro eius repellendus accusantium incidunt harum maiores. Incidunt blanditiis corporis expedita. Sint perferendis autem odio explicabo nulla praesentium. Delectus eum ullam eos adipisci.', 'Mitchell, Mueller and Graham', NULL, 'South Lindsey', '59181.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'junior', '[\"React\",\"Vue\",\"PHP\"]', '[\"Bonus\",\"Health Insurance\"]', '2026-01-31', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(39, 'PR Manager', 'pr-manager', 1, NULL, 'In nam dolorem aut hic et. Voluptate id non ut sapiente fugit quasi reiciendis. Maxime qui ratione veritatis exercitationem quo est ipsum. Dolor error tempore repudiandae in ratione.', 'Wintheiser Group', NULL, 'Port Dangelotown', '64781.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"JavaScript\",\"Laravel\",\"React\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-01-13', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(40, 'Heaters', 'heaters', 1, NULL, 'Qui culpa qui et dicta quisquam doloribus. Omnis quae at et similique. Assumenda illo eveniet ipsam nesciunt ut ab quos officia.', 'Thompson-Bernier', NULL, 'West Sydnie', '42092.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"React\",\"Laravel\",\"JavaScript\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-29', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(41, 'Air Crew Officer', 'air-crew-officer', 1, NULL, 'Commodi beatae voluptatem aut est. Ea asperiores sint nemo commodi. Qui repudiandae recusandae maiores consequatur quam.', 'Ledner-Fisher', NULL, 'West Edwina', '79780.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"Laravel\",\"Vue\",\"PHP\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-28', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(42, 'Press Machine Setter, Operator', 'press-machine-setter-operator', 1, NULL, 'Temporibus nemo aut aspernatur id. In sit quo facilis officiis. Mollitia nulla debitis ut. Omnis ullam molestiae sit sint impedit ut at.', 'Beatty-Bartell', NULL, 'North Royside', '41886.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'junior', '[\"React\",\"JavaScript\",\"Vue\"]', '[\"Remote Work\",\"Bonus\"]', '2026-02-04', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(43, 'Municipal Court Clerk', 'municipal-court-clerk', 1, NULL, 'Ab iste ratione sequi excepturi rerum et consequuntur amet. Ut impedit reprehenderit iste ut doloremque nobis. Eveniet hic vitae atque inventore.', 'Rau, Hirthe and Boyle', NULL, 'Kuvalisshire', '27040.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"Laravel\",\"PHP\",\"Vue\"]', '[\"Health Insurance\",\"Paid Leave\"]', '2026-01-09', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(44, 'Bicycle Repairer', 'bicycle-repairer', 1, NULL, 'Sunt assumenda officiis et non consequatur amet voluptas. Modi ab ut dolorem voluptatibus porro. Nihil praesentium est vel. Laboriosam minus quo sit doloribus nihil velit eveniet. Ea sed iusto est et necessitatibus aut illo.', 'Rogahn-Frami', NULL, 'South Napoleonport', '85590.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'mid', '[\"Vue\",\"PHP\",\"JavaScript\"]', '[\"Paid Leave\",\"Health Insurance\"]', '2026-01-10', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(45, 'Office Clerk', 'office-clerk', 1, NULL, 'Quis ducimus aliquid quidem eveniet ipsa. Et et nihil facilis provident sed et voluptatem tempore. Sit voluptates quam minima dolorem ullam. Aliquam totam consequatur aut aut.', 'Bins, Nader and Gerhold', NULL, 'Mariannachester', '59105.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'mid', '[\"React\",\"Laravel\",\"JavaScript\"]', '[\"Health Insurance\",\"Paid Leave\"]', '2026-02-01', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(46, 'Home Entertainment Equipment Installer', 'home-entertainment-equipment-installer', 1, NULL, 'Perferendis amet sed error dolor. Explicabo praesentium maiores sequi. Consequuntur est fugiat molestiae.', 'Herzog-Kautzer', NULL, 'Halvorsonton', '60247.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'senior', '[\"Vue\",\"React\",\"JavaScript\"]', '[\"Remote Work\",\"Health Insurance\"]', '2026-02-06', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(47, 'Printing Machine Operator', 'printing-machine-operator', 1, NULL, 'Non at eos aspernatur repellendus odio. Dolor reprehenderit saepe illum molestias omnis sit iure. Tenetur deleniti accusamus est animi alias rem.', 'Reichel, Bradtke and Deckow', NULL, 'Jacobsonchester', '35522.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'senior', '[\"PHP\",\"Vue\",\"JavaScript\"]', '[\"Health Insurance\",\"Remote Work\"]', '2026-01-11', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(48, 'Psychology Teacher', 'psychology-teacher', 1, NULL, 'Ratione est possimus vel adipisci. Maiores perferendis nostrum est et. Sapiente ut eveniet fuga voluptas reiciendis minima ut sint.', 'Rau-Wilkinson', NULL, 'Aureliaburgh', '46002.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"Laravel\",\"Vue\",\"React\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-02-01', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(49, 'Agricultural Product Grader Sorter', 'agricultural-product-grader-sorter', 1, NULL, 'Ut enim ad nostrum eius ea fugiat consequatur doloremque. Praesentium deserunt sed quia dicta praesentium cum qui aut. Repellat voluptas nam qui non ea possimus maxime. Et et eligendi illo minus quidem. Qui nisi aut voluptatem.', 'Barrows LLC', NULL, 'Gloverton', '24389.00', 0, NULL, NULL, NULL, 'USD', 'contract', 'junior', '[\"JavaScript\",\"Vue\",\"React\"]', '[\"Health Insurance\",\"Bonus\"]', '2026-01-14', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(50, 'Machinist', 'machinist', 1, NULL, 'Ut eius repudiandae voluptas dolore. Voluptatibus qui officia quod veniam earum. Labore aliquid veritatis ducimus aut quia aut laboriosam.', 'Langosh Inc', NULL, 'South Yolandabury', '26586.00', 0, NULL, NULL, NULL, 'USD', 'full-time', 'mid', '[\"React\",\"Vue\",\"JavaScript\"]', '[\"Bonus\",\"Remote Work\"]', '2026-01-19', 1, 'approved', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(51, 'Sketch Artist', 'sketch-artist', 1, NULL, 'Aut explicabo et quos est aut. Facere in molestiae vero expedita. Assumenda vel distinctio error magni. Incidunt et amet voluptas aliquid ut eum.', 'Dare-Wilkinson', NULL, 'South Lavernshire', '36514.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'senior', '[\"React\",\"Laravel\",\"Vue\"]', '[\"Health Insurance\",\"Paid Leave\"]', '2026-01-28', 1, 'pending', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:57', NULL),
+(52, 'Music Arranger and Orchestrator', 'music-arranger-and-orchestrator', 1, NULL, 'Non omnis amet vel beatae architecto omnis et iure. Blanditiis quis alias aut natus excepturi facilis. Vel nobis dignissimos ut aut. Libero voluptatibus similique sit accusamus repudiandae.', 'Bednar, Zieme and Purdy', NULL, 'Port Deondreburgh', '79814.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'senior', '[\"PHP\",\"Laravel\",\"JavaScript\"]', '[\"Bonus\",\"Health Insurance\"]', '2026-01-16', 1, 'pending', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:58', NULL),
+(53, 'Directory Assistance Operator', 'directory-assistance-operator', 1, NULL, 'Ut itaque soluta sit quia et fugiat. Deserunt laboriosam provident dolorem sit. Occaecati id non doloremque qui neque. Autem ut aut voluptate assumenda maiores sed.', 'Lebsack, Tillman and Zulauf', NULL, 'Schmidtland', '37302.00', 0, NULL, NULL, NULL, 'USD', 'remote', 'junior', '[\"React\",\"Laravel\",\"PHP\"]', '[\"Paid Leave\",\"Bonus\"]', '2026-01-25', 1, 'pending', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:58', NULL),
+(54, 'Radiologic Technologist and Technician', 'radiologic-technologist-and-technician', 1, NULL, 'Eaque esse minus quae dolorem. Maiores qui eaque est distinctio iusto impedit. Provident facilis quas architecto non quis.', 'Ferry Group', NULL, 'East Karelle', '48046.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'senior', '[\"JavaScript\",\"Vue\",\"PHP\"]', '[\"Health Insurance\",\"Remote Work\"]', '2026-01-23', 1, 'pending', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:58', NULL),
+(55, 'Professional Photographer', 'professional-photographer', 1, NULL, 'Vel pariatur est minima quia omnis qui eum. Autem adipisci qui ut fuga labore esse odit. Laboriosam dolor vero accusamus quis. Ratione iure est hic vitae.', 'Bailey, O\'Conner and Kunde', NULL, 'Marleestad', '76514.00', 0, NULL, NULL, NULL, 'USD', 'part-time', 'junior', '[\"JavaScript\",\"Vue\",\"PHP\"]', '[\"Remote Work\",\"Bonus\"]', '2026-01-17', 1, 'pending', 0, '2026-01-08 05:58:53', '2026-01-22 06:56:58', NULL),
+(56, 'DevOps', 'devops', 1, 1, 'Lorem ipsum', 'Demo Company', 'company-logos/75wDIqSOiIORuR7IpGUppjfUp7JOvBQNXs6CnBNV.jpg', 'Dhaka', 'USD 20,000 - USD 30,000 per month', 0, 20000.00, 30000.00, NULL, 'USD', 'full-time', 'junior', '[\"Java\",\"php\"]', '[\"Fastival bonus\"]', '2026-01-13', 1, 'approved', 7, '2026-01-09 22:31:29', '2026-01-22 06:56:58', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('moynulislamshimanto24@gmail.com', '$2y$12$rNb5PQ5Ib/PS0Nu54O4pt.pz0xmYLjcR86jxiEtNTokhXEIi376uG', '2026-01-18 05:58:31');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` text NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personal_information`
+--
+
+CREATE TABLE `personal_information` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `zip_code` varchar(255) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `gender` varchar(255) DEFAULT NULL,
+  `marital_status` enum('single','married','divorced','widowed','separated','other') DEFAULT NULL,
+  `bio` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `personal_information`
+--
+
+INSERT INTO `personal_information` (`id`, `user_id`, `first_name`, `last_name`, `phone`, `address`, `city`, `state`, `country`, `zip_code`, `date_of_birth`, `gender`, `marital_status`, `bio`, `created_at`, `updated_at`) VALUES
+(1, 12, 'Moynul Islam', 'Shimanto1', '01949854504', 'Dhaka', 'Dhaka', 'Dhaka', 'BD', '1421', '2025-11-17', 'male', 'single', NULL, '2026-01-10 05:25:19', '2026-01-21 06:36:18'),
+(2, 13, 'Tonmoy', 'Khan Mirza', '+8801900000000', 'Dhaka-1204', 'Dhaka', NULL, 'Bangladesh', NULL, '2025-12-30', NULL, NULL, NULL, '2026-01-10 22:39:17', '2026-01-10 23:51:44'),
+(3, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2025-12-29', NULL, NULL, NULL, '2026-01-18 07:37:45', '2026-01-18 07:37:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profile_views`
+--
+
+CREATE TABLE `profile_views` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `ip_address` varchar(255) DEFAULT NULL,
+  `user_agent` varchar(255) DEFAULT NULL,
+  `viewed_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `viewed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profile_visibility_settings`
+--
+
+CREATE TABLE `profile_visibility_settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `make_profile_public` tinyint(1) NOT NULL DEFAULT 1,
+  `show_education` tinyint(1) NOT NULL DEFAULT 1,
+  `show_experience` tinyint(1) NOT NULL DEFAULT 1,
+  `show_projects` tinyint(1) NOT NULL DEFAULT 1,
+  `show_certifications` tinyint(1) NOT NULL DEFAULT 1,
+  `show_skills` tinyint(1) NOT NULL DEFAULT 1,
+  `show_social_links` tinyint(1) NOT NULL DEFAULT 1,
+  `show_contact_info` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `profile_visibility_settings`
+--
+
+INSERT INTO `profile_visibility_settings` (`id`, `user_id`, `make_profile_public`, `show_education`, `show_experience`, `show_projects`, `show_certifications`, `show_skills`, `show_social_links`, `show_contact_info`, `created_at`, `updated_at`) VALUES
+(1, 12, 1, 1, 1, 1, 1, 1, 1, 1, '2026-01-21 05:52:12', '2026-01-21 05:52:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projects`
+--
+
+CREATE TABLE `projects` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `role` varchar(255) DEFAULT NULL,
+  `technologies_used` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`technologies_used`)),
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL,
+  `is_ongoing` tinyint(1) NOT NULL DEFAULT 0,
+  `project_url` varchar(255) DEFAULT NULL,
+  `images` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`images`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`id`, `user_id`, `title`, `description`, `role`, `technologies_used`, `start_date`, `end_date`, `is_ongoing`, `project_url`, `images`, `created_at`, `updated_at`) VALUES
+(1, 12, 'Hospital Management System', 'Lorem ipsum', 'Admin', NULL, '2026-01-01', '2026-01-07', 0, 'https://shimzo.xyz', NULL, '2026-01-10 05:28:03', '2026-01-21 06:13:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('1M6f25YqBanoCZUSsZkPIzpyTAl59BbfqR7HFgiC', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoibm9veFJDckkxUEtVMHZrNERITGdHZUxVQWxkZTczM2pRUkZHQXphYyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjI6e3M6MzoidXJsIjtzOjQyOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbm90aWZpY2F0aW9ucy91bnJlYWQiO3M6NToicm91dGUiO3M6MjA6Im5vdGlmaWNhdGlvbnMudW5yZWFkIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1769077303),
+('2g7jIl4NHDKMZFJevpOgGoH0bGy1PAobKl5rK6hC', 12, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:147.0) Gecko/20100101 Firefox/147.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoid251dlpTSTM1aHZkZWwyWVFpWlZCdlY2WGFFTFBMWmxwR003WENociI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6Mjp7czozOiJ1cmwiO3M6NTM6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9qb2Itc2Vla2VyL3Byb2Zlc3Npb25hbC1wcm9maWxlIjtzOjU6InJvdXRlIjtzOjM2OiJqb2Itc2Vla2VyLnByb2Zlc3Npb25hbC1wcm9maWxlLmVkaXQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMjtzOjE4OiJhY3RpdmVfcHJvZmlsZV90YWIiO3M6MTQ6ImNlcnRpZmljYXRpb25zIjt9', 1769077314);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_settings`
+--
+
+CREATE TABLE `site_settings` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `value` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `site_settings`
+--
+
+INSERT INTO `site_settings` (`id`, `key`, `logo`, `value`, `created_at`, `updated_at`) VALUES
+(1, 'site_name', NULL, 'Job Portal', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(2, 'contact_email', NULL, 'contact@jobportal.com', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(3, 'contact_phone', NULL, '019XXXXXX11', '2026-01-08 05:58:53', '2026-01-10 22:05:24'),
+(4, 'contact_address', NULL, 'XYZ, City, Country', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(5, 'about_us', NULL, 'We are a leading job portal connecting talented professionals with great opportunities.', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(6, 'site_logo', NULL, 'site-logos/RJvFiSBwX9P2HOBr4aRi4UUSKlsgTYIN3tJAW3mz.webp', '2026-01-10 21:52:33', '2026-01-15 08:51:52'),
+(7, 'privacy_policy', NULL, 'Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet', '2026-01-10 22:19:30', '2026-01-10 23:42:44'),
+(8, 'terms_conditions', NULL, 'Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet Lorem ipsum dollar sit amet', '2026-01-10 22:19:31', '2026-01-10 23:42:44'),
+(9, 'favicon', NULL, 'favicons/M2ThoP8KTjFyem0AgKKT17p6u5eEDWigWiZf2juH.png', '2026-01-22 04:41:02', '2026-01-22 05:06:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skills`
+--
+
+CREATE TABLE `skills` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `level` varchar(255) DEFAULT NULL,
+  `years_of_experience` int(11) DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `skills`
+--
+
+INSERT INTO `skills` (`id`, `user_id`, `name`, `level`, `years_of_experience`, `category`, `created_at`, `updated_at`) VALUES
+(2, 12, 'Demo Skill', 'intermediate', NULL, NULL, '2026-01-11 11:34:05', '2026-01-13 11:02:29'),
+(3, 12, 'PHP', 'beginner', NULL, NULL, '2026-01-21 06:02:21', '2026-01-21 06:02:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `social_links`
+--
+
+CREATE TABLE `social_links` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `platform` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `is_public` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `social_links`
+--
+
+INSERT INTO `social_links` (`id`, `user_id`, `platform`, `url`, `username`, `is_public`, `created_at`, `updated_at`) VALUES
+(1, 12, 'github', 'https://shimzo.xyz', 'shimanto', 1, '2026-01-10 05:29:13', '2026-01-10 05:29:13'),
+(2, 12, 'facebook', 'https://rl.codeperth.online/', 'riponhossain', 1, '2026-01-11 11:34:46', '2026-01-17 10:30:14'),
+(3, 12, 'instagram', 'https://r.shimzo.xyz/', 'shimanto', 1, '2026-01-13 10:07:56', '2026-01-13 10:07:56');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','job_seeker') NOT NULL DEFAULT 'job_seeker',
+  `is_super_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `phone` varchar(255) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `profile_photo` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `is_super_admin`, `phone`, `address`, `profile_photo`, `is_active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin@gmail.com', '2025-12-02 06:46:04', '$2y$12$53DV4qIhIHHQ3zkpUCLnMODip2vDSh8FkrebqeiBtKhN4x1LvGUOy', 'admin', 1, '+1234567890', '123 Admin Street, City', NULL, 1, NULL, '2026-01-08 05:58:52', '2026-01-20 04:21:59'),
+(2, 'Garfield Ward', 'kory45@example.org', '2026-01-08 05:58:52', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'cmxhTpgQ9D', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(3, 'Fay Roob', 'tlowe@example.net', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'mtqEqLBtTx', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(4, 'Mr. Toby Gottlieb MD', 'ldeckow@example.net', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'o0uvK3s6xj', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(5, 'Hallie Lesch', 'ronny36@example.org', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'OUg4pY0osW', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(6, 'Una D\'Amore', 'sarah12@example.net', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'Ehw4vQNXs8', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(7, 'Ray Zboncak', 'addison16@example.com', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'lDVIfs8gQH', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(8, 'Maverick Hartmann', 'lelah.reilly@example.com', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'bDwe9X8z0g', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(9, 'Tiana Prosacco', 'medhurst.ethelyn@example.net', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, '9er85uUisW', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(10, 'Rafael Dare', 'rolson@example.com', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, 'PtPPkybCuP', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(11, 'Ollie Morar', 'elangworth@example.com', '2026-01-08 05:58:53', '$2y$12$V7Z4uNU7NsJsgauLjG1x0uZGqRJkLJYc.evhe8yQREcmJMwMPWiNu', 'job_seeker', 0, NULL, NULL, NULL, 1, '9FwyENCZxh', '2026-01-08 05:58:53', '2026-01-08 05:58:53'),
+(12, 'Moynul Islam Shimanto', 'moynulislamshimanto24@gmail.com', '2026-01-18 06:48:45', '$2y$12$dTl/bsjikL21NSoTbsXN4eApOAV5tWsKkFG95kfTHKn56DURVr3kS', 'job_seeker', 0, '01949854504', 'Dhaka', 'profile-photos/Tz5ZJpemFs2GECiVmAgQ81EbG072QeIzBDNKmAw9.jpg', 1, 'Oa0TmFP5eQvLcBOIeecm94CnYMO1AJqmnhQ9I0gKJByhKP1a7QT0tyOUgvy4', '2026-01-10 05:00:06', '2026-01-22 10:20:28'),
+(13, 'Tonmoy Mirza', 'john@gmail.com', '2026-01-20 10:35:45', '$2y$12$Z5Q9a0c1hJNdyhihtXu/MeQFmOItJNiUqqiFO71mx9fMvYuZo0JvC', 'job_seeker', 0, '01949854504', 'Dhaka-1204', 'profile-photos/nD8eP3iTcYlbaRHhMrE4CxqR0pzvWOC63QzRUubh.png', 1, NULL, '2026-01-10 22:38:16', '2026-01-20 10:35:45'),
+(14, 'Tonmoy Mirza Khan', 'moynulislamshimanto11@gmail.com', '2026-01-18 07:21:10', '$2y$12$pF1RDw5Kgiwp3dNA4yLXhuCDsx0qIgW6DDTs8agco/k1oACFC7h5S', 'job_seeker', 0, NULL, NULL, NULL, 1, NULL, '2026-01-18 06:34:40', '2026-01-18 07:21:10'),
+(15, 'Shovon', 'moynulislamshimanto27@gmail.com', '2026-01-22 07:10:52', '$2y$12$BaLyfiO6zcGRfZTEbi4qcu5YyXHM9UZBKBXgDof8lullIpz/IWT6S', 'job_seeker', 0, NULL, NULL, NULL, 1, NULL, '2026-01-18 07:14:23', '2026-01-22 07:10:52'),
+(17, 'Admin1', 'admin1@gmail.com', '2026-01-20 04:50:33', '$2y$12$omyEYFWBEv19iH/Mb0RHqOeyN6uqyFBRLlFCZvInl13HnPfyCsTNC', 'admin', 0, NULL, NULL, NULL, 1, NULL, '2026-01-20 04:47:24', '2026-01-20 10:59:07'),
+(19, 'Sahadat Hossain', 'sahadat@gmail.com', '2026-01-22 08:28:01', '$2y$12$oR7Ovu97A3dcUDRgaMsfieWO5IxQtC5.0lpOJ4d/GzlM8QCwO18q.', 'job_seeker', 0, NULL, NULL, NULL, 1, NULL, '2026-01-22 05:27:33', '2026-01-22 08:28:01');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `application_emails`
+--
+ALTER TABLE `application_emails`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `application_emails_job_application_id_index` (`job_application_id`),
+  ADD KEY `application_emails_sent_by_index` (`sent_by`),
+  ADD KEY `application_emails_type_index` (`type`);
+
+--
+-- Indexes for table `blogs`
+--
+ALTER TABLE `blogs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `blogs_slug_unique` (`slug`),
+  ADD KEY `blogs_author_id_foreign` (`author_id`),
+  ADD KEY `blogs_is_published_published_at_index` (`is_published`,`published_at`),
+  ADD KEY `blogs_is_featured_published_at_index` (`is_featured`,`published_at`),
+  ADD KEY `blogs_category_index` (`category`);
+
+--
+-- Indexes for table `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `categories_slug_unique` (`slug`);
+
+--
+-- Indexes for table `certifications`
+--
+ALTER TABLE `certifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `certifications_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `companies`
+--
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `educations`
+--
+ALTER TABLE `educations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `educations_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `experiences`
+--
+ALTER TABLE `experiences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `experiences_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Indexes for table `job_applications`
+--
+ALTER TABLE `job_applications`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `job_applications_job_id_user_id_unique` (`job_id`,`user_id`),
+  ADD KEY `job_applications_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `job_seeker_profiles`
+--
+ALTER TABLE `job_seeker_profiles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `job_seeker_profiles_user_id_foreign` (`user_id`),
+  ADD KEY `job_seeker_profiles_personal_info_id_foreign` (`personal_info_id`);
+
+--
+-- Indexes for table `job_views`
+--
+ALTER TABLE `job_views`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `job_views_job_id_ip_address_index` (`job_id`,`ip_address`);
+
+--
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notifications_notifiable_type_notifiable_id_index` (`notifiable_type`,`notifiable_id`);
+
+--
+-- Indexes for table `open_jobs`
+--
+ALTER TABLE `open_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `open_jobs_slug_unique` (`slug`),
+  ADD KEY `open_jobs_user_id_foreign` (`user_id`),
+  ADD KEY `open_jobs_category_id_foreign` (`category_id`),
+  ADD KEY `open_jobs_company_id_foreign` (`company_id`);
+
+--
+-- Indexes for table `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indexes for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`),
+  ADD KEY `personal_access_tokens_expires_at_index` (`expires_at`);
+
+--
+-- Indexes for table `personal_information`
+--
+ALTER TABLE `personal_information`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `personal_information_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `profile_views`
+--
+ALTER TABLE `profile_views`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `profile_views_user_id_foreign` (`user_id`),
+  ADD KEY `profile_views_viewed_by_foreign` (`viewed_by`);
+
+--
+-- Indexes for table `profile_visibility_settings`
+--
+ALTER TABLE `profile_visibility_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `profile_visibility_settings_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projects_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Indexes for table `site_settings`
+--
+ALTER TABLE `site_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `site_settings_key_unique` (`key`);
+
+--
+-- Indexes for table `skills`
+--
+ALTER TABLE `skills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `skills_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `social_links`
+--
+ALTER TABLE `social_links`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `social_links_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `application_emails`
+--
+ALTER TABLE `application_emails`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `blogs`
+--
+ALTER TABLE `blogs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `certifications`
+--
+ALTER TABLE `certifications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `companies`
+--
+ALTER TABLE `companies`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `contact_messages`
+--
+ALTER TABLE `contact_messages`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `educations`
+--
+ALTER TABLE `educations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `experiences`
+--
+ALTER TABLE `experiences`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `job_applications`
+--
+ALTER TABLE `job_applications`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `job_seeker_profiles`
+--
+ALTER TABLE `job_seeker_profiles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `job_views`
+--
+ALTER TABLE `job_views`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `open_jobs`
+--
+ALTER TABLE `open_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT for table `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `personal_information`
+--
+ALTER TABLE `personal_information`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `profile_views`
+--
+ALTER TABLE `profile_views`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `profile_visibility_settings`
+--
+ALTER TABLE `profile_visibility_settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `site_settings`
+--
+ALTER TABLE `site_settings`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `skills`
+--
+ALTER TABLE `skills`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `social_links`
+--
+ALTER TABLE `social_links`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `application_emails`
+--
+ALTER TABLE `application_emails`
+  ADD CONSTRAINT `application_emails_job_application_id_foreign` FOREIGN KEY (`job_application_id`) REFERENCES `job_applications` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `application_emails_sent_by_foreign` FOREIGN KEY (`sent_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `blogs`
+--
+ALTER TABLE `blogs`
+  ADD CONSTRAINT `blogs_author_id_foreign` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `certifications`
+--
+ALTER TABLE `certifications`
+  ADD CONSTRAINT `certifications_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `educations`
+--
+ALTER TABLE `educations`
+  ADD CONSTRAINT `educations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `experiences`
+--
+ALTER TABLE `experiences`
+  ADD CONSTRAINT `experiences_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `job_applications`
+--
+ALTER TABLE `job_applications`
+  ADD CONSTRAINT `job_applications_job_id_foreign` FOREIGN KEY (`job_id`) REFERENCES `open_jobs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `job_applications_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `job_seeker_profiles`
+--
+ALTER TABLE `job_seeker_profiles`
+  ADD CONSTRAINT `job_seeker_profiles_personal_info_id_foreign` FOREIGN KEY (`personal_info_id`) REFERENCES `personal_information` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `job_seeker_profiles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `job_views`
+--
+ALTER TABLE `job_views`
+  ADD CONSTRAINT `job_views_job_id_foreign` FOREIGN KEY (`job_id`) REFERENCES `open_jobs` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `open_jobs`
+--
+ALTER TABLE `open_jobs`
+  ADD CONSTRAINT `open_jobs_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `open_jobs_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `open_jobs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `personal_information`
+--
+ALTER TABLE `personal_information`
+  ADD CONSTRAINT `personal_information_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `profile_views`
+--
+ALTER TABLE `profile_views`
+  ADD CONSTRAINT `profile_views_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `profile_views_viewed_by_foreign` FOREIGN KEY (`viewed_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `profile_visibility_settings`
+--
+ALTER TABLE `profile_visibility_settings`
+  ADD CONSTRAINT `profile_visibility_settings_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `projects`
+--
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `skills`
+--
+ALTER TABLE `skills`
+  ADD CONSTRAINT `skills_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `social_links`
+--
+ALTER TABLE `social_links`
+  ADD CONSTRAINT `social_links_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
