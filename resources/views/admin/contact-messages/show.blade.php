@@ -2,23 +2,29 @@
 
 @section('title', 'View Message - Admin Panel')
 
+@section('page-title', 'Messages')
+@section('page-subtitle', 'Show Messages')
+
 @section('content')
 <div class="container-fluid px-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="flex justify-between items-center mb-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Message Details</h1>
-            <p class="text-gray-600">From: {{ $message->name }}</p>
+            <!-- <h1 class="text-2xl font-bold text-gray-800">Message Details</h1> -->
+            <p class="text-gray-700 text-xl">From: <span class="font-bold">{{ $message->name }}</span></p>
         </div>
-        <div class="flex space-x-2">
+
+        <div>
             <a href="{{ route('admin.contact.messages') }}" 
-               class="flex items-center text-gray-600 hover:text-gray-900 bg-white px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-400 transition duration-200">
+            class="flex items-center text-gray-600 hover:text-gray-900 bg-white px-4 py-2 rounded-lg border border-gray-300 hover:border-gray-400 transition duration-200">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
                 Back to Messages
             </a>
         </div>
     </div>
+
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Message Details -->
@@ -30,12 +36,12 @@
                         <div>
                             <h2 class="text-xl font-bold text-gray-800">{{ $message->subject }}</h2>
                             <div class="flex flex-wrap items-center mt-2 gap-3">
-                                <span class="inline-flex items-center text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                                <!-- <span class="inline-flex items-center text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                     </svg>
                                     {{ $message->name }}
-                                </span>
+                                </span> -->
                                 <span class="inline-flex items-center text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -204,7 +210,7 @@
                     </form>                   
 
                     <!-- Status Update Form -->
-                    <form id="statusForm"
+                    <!-- <form id="statusForm"
                         action="{{ route('admin.contact.update', $message->id) }}"
                         method="POST"
                         class="mt-4 inline-block">
@@ -219,7 +225,7 @@
                             <option value="replied" {{ $message->status == 'replied' ? 'selected' : '' }}>Replied</option>
                             <option value="closed" {{ $message->status == 'closed' ? 'selected' : '' }}>Closed</option>
                         </select>
-                    </form>
+                    </form> -->
 
                 </div>
             </div>
@@ -264,7 +270,8 @@
                 </div>
                 <div class="space-y-2">
                     <form action="{{ route('admin.contact.delete', $message->id) }}" method="POST"
-                          onsubmit="return confirm('Are you sure you want to delete this message?');">
+                          onsubmit="return confirmMessage(event)"
+                          class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" 
@@ -286,13 +293,13 @@
                         </div>
                     </a>
                     
-                    <button onclick="window.print()" 
+                    <!-- <button onclick="printMessage()" 
                             class="w-full text-left flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition duration-200 border border-transparent hover:border-gray-200">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
                         </svg>
                         <span class="font-medium">Print Details</span>
-                    </button>
+                    </button> -->
 
                     <a href="{{ route('admin.contact.messages') }}" 
                        class="block px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition duration-200 border border-transparent hover:border-gray-200">
@@ -412,13 +419,45 @@
             });
             autoExpand(textarea); // Initial call
         }
+    });
 
-        // Print functionality with confirmation
-        document.querySelector('button[onclick="window.print()"]').addEventListener('click', function(e) {
-            if(!confirm('Print message details?')) {
-                e.preventDefault();
+    // SweetAlert for delete confirmation
+    function confirmMessage(event) {
+        event.preventDefault();
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
             }
         });
-    });
+        
+        return false;
+    }
+
+    // SweetAlert for print confirmation
+    function printMessage() {
+        Swal.fire({
+            title: 'Print Message Details?',
+            text: "Are you sure you want to print this message?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, print it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.print();
+            }
+        });
+    }
 </script>
 @endpush

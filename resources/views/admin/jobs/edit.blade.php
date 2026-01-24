@@ -40,7 +40,7 @@
 @section('content')
 <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Job Status Badges -->
-    <div class="mt-6 flex flex-wrap gap-3 mb-8">
+    <div class="my-6 flex flex-wrap gap-3">
         <div class="flex items-center">
             <div class="px-3 py-1.5 rounded-full text-xs font-semibold 
                 {{ $job->status == 'approved' ? 'bg-green-100 text-green-800' : 
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="flex items-center">
-            <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800">
+            <div class="px-3 py-1.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
                 {{ $job->experience_level }}
             </div>
         </div>
@@ -88,7 +88,7 @@
                     
                     <div class="space-y-8">
                         <!-- Grid Row 1 -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Job Title -->
                             <div>
                                 <div class="flex items-center mb-2">
@@ -120,7 +120,7 @@
                             </div>
 
                             <!-- Company -->
-                            <div>
+                            <!-- <div>
                                 <div class="flex items-center mb-2">
                                     <label for="company_id" class="block text-sm font-semibold text-gray-800">
                                         Company
@@ -155,20 +155,24 @@
                                     {{ $message }}
                                 </p>
                                 @enderror
-                            </div>
+                            </div> -->
 
                             <!-- Category -->
                             <div>
-                                <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Category
-                                </label>
+                                <div class="flex items-center mb-2">
+                                    <label for="category_id" class="block text-sm font-semibold text-gray-800">
+                                        Category
+                                    </label>
+                                    <span class="ml-1 text-red-500">*</span>
+                                </div>
+                                
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                         </svg>
                                     </div>
-                                    <select name="category_id" id="category_id" 
+                                    <select name="category_id" id="category_id" required 
                                             class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
@@ -340,16 +344,19 @@
                             
                             <!-- Application Deadline -->
                             <div>
-                                <label for="application_deadline" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Application Deadline
-                                </label>
+                                <div class="flex items-center mb-2">
+                                    <label for="application_deadline" class="block text-sm font-semibold text-gray-800">
+                                        Application Deadline
+                                    </label>
+                                    <span class="ml-1 text-red-500">*</span>
+                                </div>
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
                                     </div>
-                                    <input type="date" name="application_deadline" id="application_deadline" 
+                                    <input type="date" name="application_deadline" id="application_deadline" required
                                            value="{{ old('application_deadline', $job->application_deadline ? $job->application_deadline->format('Y-m-d') : '') }}"
                                            min="{{ date('Y-m-d') }}"
                                            class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
@@ -640,7 +647,7 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="px-8 py-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+            <div class="px-8 py-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-blue-50">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('admin.jobs.index') }}" 
@@ -648,10 +655,10 @@
                             Cancel
                         </a>
                         <button type="submit" 
-                                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
-                            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                class="inline-flex items-center px-6 py-3 border border-gray-500 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 hover:border-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
+                            <!-- <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
+                            </svg> -->
                             Update Job Posting
                         </button>
                     </div>

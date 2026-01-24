@@ -6,59 +6,6 @@
 
 @section('content')
 <div class="space-y-6">
-    <!-- Filters -->
-    <!-- <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Filter Applications
-            </h3>
-        </div>
-        <div class="px-4 py-5 sm:p-6">
-            <form method="GET" action="{{ route('admin.applications.index') }}" class="flex flex-wrap items-end gap-4">             
-                <div class="flex-1 min-w-[150px]">
-                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                    <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option value="">All Status</option>
-                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="reviewed" {{ request('status') == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
-                        <option value="shortlisted" {{ request('status') == 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                        <option value="hired" {{ request('status') == 'hired' ? 'selected' : '' }}>Hired</option>
-                    </select>
-                </div>
-            
-                <div class="flex-1 min-w-[150px]">
-                    <label for="job" class="block text-sm font-medium text-gray-700">Job</label>
-                    <select name="job_id" id="job" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <option value="">All Jobs</option>
-                        @foreach($jobs as $job)
-                        <option value="{{ $job->id }}" {{ request('job_id') == $job->id ? 'selected' : '' }}>
-                            {{ $job->title }} - {{ $job->company_name }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="flex-1 min-w-[150px]">
-                    <label for="date" class="block text-sm font-medium text-gray-700">Date Range</label>
-                    <input type="date" name="date" id="date" value="{{ request('date') }}" 
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                </div>
-
-                <div class="flex gap-3">
-                    <a href="{{ route('admin.applications.index') }}" 
-                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Reset
-                    </a>
-                    <button type="submit" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Apply Filters
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div> -->
-
     <!-- Applications List -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
@@ -153,11 +100,17 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
-                                        <span class="text-white font-bold text-sm">
-                                            {{ strtoupper(substr($application->user->name, 0, 1)) }}
-                                        </span>
-                                    </div>
+                                    @if($application->user && $application->user->profile_photo)
+                                        <img class="h-10 w-10 rounded-full object-cover border border-gray-200" 
+                                            src="{{ Storage::url($application->user->profile_photo) }}" 
+                                            alt="{{ $application->user->name }}">
+                                    @else
+                                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
+                                            <span class="text-white font-bold text-sm">
+                                                {{ strtoupper(substr($application->user->name, 0, 1)) }}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="ml-4">
                                     <div class="text-sm font-medium text-gray-900">
@@ -263,12 +216,22 @@
 @push('scripts')
 <script>
 function updateStatus(applicationId, status) {
-    if (confirm('Are you sure you want to update this application status?')) {
-        const form = document.getElementById('status-form');
-        form.action = `/admin/applications/${applicationId}/status`;
-        document.getElementById('status-input').value = status;
-        form.submit();
-    }
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you want to ${status} this application?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, update it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.getElementById('status-form');
+            form.action = `/admin/applications/${applicationId}/status`;
+            document.getElementById('status-input').value = status;
+            form.submit();
+        }
+    });
 }
 </script>
 @endpush
