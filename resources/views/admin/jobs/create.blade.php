@@ -143,7 +143,7 @@
                     
                     <div class="space-y-8">
                         <!-- Grid Row 1 -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Job Title -->
                             <div>
                                 <div class="flex items-center mb-2">
@@ -175,7 +175,7 @@
                             </div>
 
                             <!-- Company -->
-                            <div>
+                            <!-- <div>
                                 <div class="flex items-center mb-2">
                                     <label for="company_id" class="block text-sm font-semibold text-gray-800">
                                         Company
@@ -198,11 +198,11 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <!-- <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 @error('company_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -212,20 +212,23 @@
                                     {{ $message }}
                                 </p>
                                 @enderror
-                            </div>
+                            </div> -->
 
                             <!-- Category -->
                             <div>
-                                <label for="category_id" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Category
-                                </label>
+                                <div class="flex items-center mb-2">
+                                    <label for="category_id" class="block text-sm font-semibold text-gray-800">
+                                        Category
+                                    </label>
+                                    <span class="ml-1 text-red-500">*</span>
+                                </div>
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                                         </svg>
                                     </div>
-                                    <select name="category_id" id="category_id" 
+                                    <select name="category_id" id="category_id" required
                                             class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 appearance-none group-hover:border-gray-300">
                                         <option value="">Select Category</option>
                                         @foreach($categories as $category)
@@ -416,17 +419,21 @@
                             </div>
                             
                             <!-- Application Deadline -->
-                            <div>
-                                <label for="application_deadline" class="block text-sm font-semibold text-gray-800 mb-2">
-                                    Application Deadline
-                                </label>
+                            <div>                  
+
+                                <div class="flex items-center mb-2">
+                                    <label for="application_deadline" class="block text-sm font-semibold text-gray-800">
+                                        Application Deadline
+                                    </label>
+                                    <span class="ml-1 text-red-500">*</span>
+                                </div>
                                 <div class="relative group">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                         </svg>
                                     </div>
-                                    <input type="date" name="application_deadline" id="application_deadline" 
+                                    <input type="date" name="application_deadline" id="application_deadline" required
                                            value="{{ old('application_deadline') }}"
                                            min="{{ date('Y-m-d') }}"
                                            class="pl-10 block w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:bg-white transition-all duration-200 group-hover:border-gray-300">
@@ -753,10 +760,10 @@
                             Save Draft
                         </button> -->
                         <button type="submit" 
-                                class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
-                            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                class="inline-flex items-center px-6 py-3 border border-gray-500 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 hover:border-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm">
+                            <!-- <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                            </svg>
+                            </svg> -->
                             Create Job Posting
                         </button>
                     </div>
@@ -768,7 +775,7 @@
     <!-- Tips Sidebar -->
     <div class="">
         <div class="lg:w-2/3"></div>
-        <div class="lg:w-1/3">
+        <div class="">
             <div class="bg-gradient-to-b from-blue-50 to-white rounded-2xl border border-blue-100 p-6 mb-6">
                 <div class="flex items-center mb-4">
                     <!-- <div class="p-2 bg-blue-100 rounded-lg mr-3">
@@ -812,10 +819,16 @@
 @push('scripts')
 <script>
 // Character count for description
-document.getElementById('description').addEventListener('input', function(e) {
-    const charCount = this.value.length;
-    document.getElementById('char-count').textContent = charCount + ' characters';
-});
+const descriptionElement = document.getElementById('description');
+if (descriptionElement) {
+    descriptionElement.addEventListener('input', function(e) {
+        const charCount = this.value.length;
+        const charCountElement = document.getElementById('char-count');
+        if (charCountElement) {
+            charCountElement.textContent = charCount + ' characters';
+        }
+    });
+}
 
 // Handle negotiable checkbox
 const negotiableCheckbox = document.getElementById('is_negotiable');
@@ -826,111 +839,135 @@ const salaryContainer = document.getElementById('salary-range-container');
 const currencyContainer = document.getElementById('currency-container');
 
 function toggleSalaryFields() {
-    if (negotiableCheckbox.checked) {
-        salaryMin.disabled = true;
-        salaryMax.disabled = true;
-        salaryCurrency.disabled = true;
-        salaryMin.value = '';
-        salaryMax.value = '';
-        salaryContainer.style.opacity = '0.5';
-        salaryContainer.style.pointerEvents = 'none';
-        currencyContainer.style.opacity = '0.5';
-        currencyContainer.style.pointerEvents = 'none';
+    if (negotiableCheckbox && negotiableCheckbox.checked) {
+        if (salaryMin) salaryMin.disabled = true;
+        if (salaryMax) salaryMax.disabled = true;
+        if (salaryCurrency) salaryCurrency.disabled = true;
+        if (salaryMin) salaryMin.value = '';
+        if (salaryMax) salaryMax.value = '';
+        if (salaryContainer) {
+            salaryContainer.style.opacity = '0.5';
+            salaryContainer.style.pointerEvents = 'none';
+        }
+        if (currencyContainer) {
+            currencyContainer.style.opacity = '0.5';
+            currencyContainer.style.pointerEvents = 'none';
+        }
     } else {
-        salaryMin.disabled = false;
-        salaryMax.disabled = false;
-        salaryCurrency.disabled = false;
-        salaryContainer.style.opacity = '1';
-        salaryContainer.style.pointerEvents = 'auto';
-        currencyContainer.style.opacity = '1';
-        currencyContainer.style.pointerEvents = 'auto';
+        if (salaryMin) salaryMin.disabled = false;
+        if (salaryMax) salaryMax.disabled = false;
+        if (salaryCurrency) salaryCurrency.disabled = false;
+        if (salaryContainer) {
+            salaryContainer.style.opacity = '1';
+            salaryContainer.style.pointerEvents = 'auto';
+        }
+        if (currencyContainer) {
+            currencyContainer.style.opacity = '1';
+            currencyContainer.style.pointerEvents = 'auto';
+        }
     }
 }
 
-negotiableCheckbox.addEventListener('change', toggleSalaryFields);
+if (negotiableCheckbox) {
+    negotiableCheckbox.addEventListener('change', toggleSalaryFields);
+}
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     toggleSalaryFields();
     
     // Set minimum date for deadline to today
-    document.getElementById('application_deadline').min = new Date().toISOString().split('T')[0];
-    
-    // Form progress calculation
-    function updateFormProgress() {
-        const requiredFields = document.querySelectorAll('input[required], textarea[required], select[required]');
-        let filledCount = 0;
-        
-        requiredFields.forEach(field => {
-            if (field.type === 'checkbox' || field.type === 'radio') {
-                if (field.checked) filledCount++;
-            } else if (field.value.trim() !== '') {
-                filledCount++;
-            }
-        });
-        
-        const progress = Math.round((filledCount / requiredFields.length) * 100);
-        document.getElementById('form-progress').textContent = progress + '% complete';
-        
-        // Update progress steps
-        const steps = document.querySelectorAll('.relative.z-10 .w-10.h-10');
-        if (progress >= 25) steps[1].classList.add('bg-blue-600');
-        if (progress >= 50) steps[2].classList.add('bg-blue-600');
-        if (progress >= 75) steps[3].classList.add('bg-blue-600');
+    const deadlineElement = document.getElementById('application_deadline');
+    if (deadlineElement) {
+        deadlineElement.min = new Date().toISOString().split('T')[0];
     }
     
-    // Attach progress updates to all inputs
-    document.querySelectorAll('input, textarea, select').forEach(field => {
-        field.addEventListener('input', updateFormProgress);
-        field.addEventListener('change', updateFormProgress);
-    });
+    // Form progress calculation (removed as not needed - elements don't exist)
+    // function updateFormProgress() {
+    //     const requiredFields = document.querySelectorAll('input[required], textarea[required], select[required]');
+    //     let filledCount = 0;
+        
+    //     requiredFields.forEach(field => {
+    //         if (field.type === 'checkbox' || field.type === 'radio') {
+    //             if (field.checked) filledCount++;
+    //         } else if (field.value.trim() !== '') {
+    //             filledCount++;
+    //         }
+    //     });
+        
+    //     const progress = Math.round((filledCount / requiredFields.length) * 100);
+    //     const progressElement = document.getElementById('form-progress');
+    //     if (progressElement) {
+    //         progressElement.textContent = progress + '% complete';
+    //     }
+    // }
     
-    updateFormProgress();
+    // // Attach progress updates to all inputs
+    // document.querySelectorAll('input, textarea, select').forEach(field => {
+    //     field.addEventListener('input', updateFormProgress);
+    //     field.addEventListener('change', updateFormProgress);
+    // });
+    
+    // updateFormProgress();
 });
 
 // Auto-format skills input
-document.getElementById('skills_required').addEventListener('blur', function(e) {
-    const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
-    this.value = skills.join(', ');
-});
+const skillsElement = document.getElementById('skills_required');
+if (skillsElement) {
+    skillsElement.addEventListener('blur', function(e) {
+        const skills = this.value.split(',').map(skill => skill.trim()).filter(skill => skill);
+        this.value = skills.join(', ');
+    });
+}
 
 // Auto-format benefits input
-document.getElementById('benefits').addEventListener('blur', function(e) {
-    const benefits = this.value.split('\n').map(benefit => benefit.trim()).filter(benefit => benefit);
-    this.value = benefits.join('\n');
-});
+const benefitsElement = document.getElementById('benefits');
+if (benefitsElement) {
+    benefitsElement.addEventListener('blur', function(e) {
+        const benefits = this.value.split('\n').map(benefit => benefit.trim()).filter(benefit => benefit);
+        this.value = benefits.join('\n');
+    });
+}
 
 // Logo preview functionality
-document.getElementById('company_logo').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const preview = document.getElementById('preview-image');
-            const logoPreview = document.getElementById('logo-preview');
-            
-            preview.src = e.target.result;
-            logoPreview.classList.remove('hidden');
+const logoInput = document.getElementById('company_logo');
+if (logoInput) {
+    logoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('preview-image');
+                const logoPreview = document.getElementById('logo-preview');
+                
+                if (preview) preview.src = e.target.result;
+                if (logoPreview) logoPreview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
         }
-        reader.readAsDataURL(file);
-    }
-});
+    });
+}
 
 function removeLogoPreview() {
     const input = document.getElementById('company_logo');
     const logoPreview = document.getElementById('logo-preview');
     
-    input.value = '';
-    logoPreview.classList.add('hidden');
+    if (input) input.value = '';
+    if (logoPreview) logoPreview.classList.add('hidden');
 }
 
 // Save draft button
-document.getElementById('save-draft-btn').addEventListener('click', function() {
-    // Change status to draft
-    document.getElementById('status').value = 'draft';
-    // Submit the form
-    document.querySelector('form').submit();
-});
+const saveDraftBtn = document.getElementById('save-draft-btn');
+if (saveDraftBtn) {
+    saveDraftBtn.addEventListener('click', function() {
+        const statusElement = document.getElementById('status');
+        if (statusElement) {
+            statusElement.value = 'draft';
+        }
+        // Submit the form
+        document.querySelector('form').submit();
+    });
+}
 </script>
 @endpush
 @endsection

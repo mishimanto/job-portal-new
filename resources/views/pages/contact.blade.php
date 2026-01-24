@@ -166,7 +166,7 @@
                                 <a href="tel:{{ $contact['phone'] }}" class="text-blue-600 hover:text-blue-800">
                                     {{ $contact['phone'] }}
                                 </a>
-                                <p class="text-sm text-gray-500 mt-1">Mon-Fri from 9am to 6pm</p>
+                                <p class="text-sm text-gray-500 mt-1">From 9am to 6pm</p>
                             </div>
                         </div>
 
@@ -193,15 +193,14 @@
                     <div class="space-y-4">
                         @php
                             $hours = [
-                                ['day' => 'Saturday - Friday', 'time' => '9:00 AM - 6:00 PM', 'status' => 'open'],
-                                
+                                ['day' => 'Saturday - Friday', 'time' => '9:00 AM - 6:00 PM', 'status' => 'open'],                                
                             ];
                         @endphp
                         
                         @foreach($hours as $hour)
                         <div class="flex justify-between items-center p-3 rounded-lg {{ $hour['status'] == 'closed' ? 'bg-red-50' : 'bg-gray-50' }}">
                             <span class="text-gray-700 font-medium">{{ $hour['day'] }}</span>
-                            <span class="font-semibold {{ $hour['status'] == 'closed' ? 'text-red-600' : 'text-green-600' }}">
+                            <span class="ml-2 font-semibold {{ $hour['status'] == 'closed' ? 'text-red-600' : 'text-green-600' }}">
                                 {{ $hour['time'] }}
                             </span>
                         </div>
@@ -225,52 +224,87 @@
         </div>
 
         <!-- FAQ Section -->
-        <div class="mt-12">
-            <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-                <!-- <p class="text-gray-600 max-w-2xl mx-auto">
-                    Quick answers to common questions about our job portal
-                </p> -->
-            </div>
+        <!-- FAQ Section -->
+<div class="mt-12">
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">
+            Frequently Asked Questions
+        </h2>
+    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @php
-                    $faqs = [
-                        [
-                            'question' => 'How do I post a job?',
-                            'answer' => 'Register as an employer, complete your company profile, and post jobs from your dashboard.'
-                        ],
-                        [
-                            'question' => 'Is there a fee for job seekers?',
-                            'answer' => 'No, our platform is completely free for job seekers to apply and search for jobs.'
-                        ],
-                        [
-                            'question' => 'How do I update my profile?',
-                            'answer' => 'Log in, go to "My Profile" and edit your information anytime.'
-                        ],
-                        [
-                            'question' => 'Can I delete my account?',
-                            'answer' => 'Yes, you can delete your account from account settings anytime.'
-                        ],
-                        [
-                            'question' => 'How long do job postings stay active?',
-                            'answer' => 'Job postings typically stay active for 30 days or until filled.'
-                        ],
-                        [
-                            'question' => 'Is my personal information safe?',
-                            'answer' => 'Yes, we use encryption and follow strict privacy policies to protect your data.'
-                        ],
-                    ];
-                @endphp
-                
-                @foreach($faqs as $faq)
-                <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ $faq['question'] }}</h3>
-                    <p class="text-gray-600">{{ $faq['answer'] }}</p>
-                </div>
-                @endforeach
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @php
+            $faqs = [
+                [
+                    'question' => 'How do I apply for a job?',
+                    'answer' => 'Register as an applicant, complete your company profile, and apply for jobs from your dashboard.'
+                ],
+                [
+                    'question' => 'Is there a fee for job seekers?',
+                    'answer' => 'No, our platform is completely free for job seekers to apply and search for jobs.'
+                ],
+                [
+                    'question' => 'How do I update my profile?',
+                    'answer' => 'Log in, go to "My Profile" and edit your information anytime.'
+                ],
+                [
+                    'question' => 'Can I delete my account?',
+                    'answer' => 'Yes, you can delete your account from account settings anytime.'
+                ],
+                [
+                    'question' => 'How long do job postings stay active?',
+                    'answer' => 'Job postings typically stay active for 30 days or until filled.'
+                ],
+                [
+                    'question' => 'Is my personal information safe?',
+                    'answer' => 'Yes, we use encryption and follow strict privacy policies to protect your data.'
+                ],
+            ];
+        @endphp
+        
+        @foreach($faqs as $faq)
+        <div 
+            x-data="{ open:false }"
+            class="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition duration-300"
+        >
+            <!-- Question -->
+            <button 
+                @click="open = !open"
+                class="w-full flex justify-between items-center text-left"
+            >
+                <h3 class="text-lg font-semibold text-gray-900">
+                    {{ $faq['question'] }}
+                </h3>
+
+                <!-- Arrow Icon -->
+                <svg class="w-5 h-5 text-gray-500 transition-transform duration-300"
+                     :class="open && 'rotate-180'"
+                     fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+
+            <!-- Answer -->
+            <div 
+                x-show="open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 max-h-0"
+                x-transition:enter-end="opacity-100 max-h-40"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="opacity-100 max-h-40"
+                x-transition:leave-end="opacity-0 max-h-0"
+                class="overflow-hidden"
+            >
+                <p class="text-gray-600 mt-4">
+                    {{ $faq['answer'] }}
+                </p>
             </div>
         </div>
+        @endforeach
+    </div>
+</div>
+
     </div>
 </div>
 @endsection

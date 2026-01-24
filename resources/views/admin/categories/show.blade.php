@@ -25,9 +25,9 @@
                                 @else bg-gray-100 text-gray-800 @endif">
                                 {{ $category->is_active ? 'Active' : 'Inactive' }}
                             </span>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            <!-- <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                 Order: {{ $category->order }}
-                            </span>
+                            </span> -->
                         </div>
                         <p class="text-sm text-gray-500 mt-1">{{ $category->slug }}</p>
                     </div>
@@ -43,6 +43,19 @@
                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                         Edit Category
                     </a>
+                    <form action="{{ route('admin.categories.destroy', $category) }}" 
+                      method="POST" 
+                      onsubmit="return confirm('Are you sure you want to delete this category? This action cannot be undone.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Delete Category
+                    </button>
+                </form>
                 </div>
             </div>
         </div>
@@ -61,11 +74,11 @@
         <div class="px-6 py-5 border-b border-gray-200">
             <div class="flex items-center justify-between">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Jobs in this Category
+                    Jobs in this Category ({{ $jobs->total() }})
                 </h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <!-- <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     {{ $jobs->total() }} total
-                </span>
+                </span> -->
             </div>
         </div>
         
@@ -75,7 +88,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
                 <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs found</h3>
-                <p class="mt-1 text-sm text-gray-500">There are no jobs posted in this category yet.</p>
+                <!-- <p class="mt-1 text-sm text-gray-500">There are no jobs posted in this category yet.</p> -->
             </div>
         @else
             <div class="overflow-x-auto">
@@ -85,15 +98,15 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Job Title
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Company
-                            </th>
+                            </th> -->
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Type
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status
-                            </th>
+                            </th> -->
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Applications
                             </th>
@@ -112,13 +125,13 @@
                                     <div class="text-sm font-medium text-gray-900">
                                         {{ $job->title }}
                                     </div>
-                                    <div class="text-sm text-gray-500">
+                                    <!-- <div class="text-sm text-gray-500">
                                         {{ $job->location }}
-                                    </div>
+                                    </div> -->
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <!-- <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">{{ $job->company_name }}</div>
-                                </td>
+                                </td> -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                         @if($job->job_type == 'full_time') bg-green-100 text-green-800
@@ -129,7 +142,7 @@
                                         {{ ucfirst(str_replace('_', ' ', $job->job_type)) }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <!-- <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                         @if($job->status == 'approved') bg-green-100 text-green-800
                                         @elseif($job->status == 'pending') bg-yellow-100 text-yellow-800
@@ -137,7 +150,7 @@
                                         @else bg-gray-100 text-gray-800 @endif">
                                         {{ ucfirst($job->status) }}
                                     </span>
-                                </td>
+                                </td> -->
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {{ $job->applications_count ?? 0 }}
                                 </td>
@@ -179,129 +192,10 @@
     </div>
 
     <!-- Category Companies -->
-    <div class="bg-white shadow rounded-lg overflow-hidden">
-        <div class="px-6 py-5 border-b border-gray-200">
-            <div class="flex items-center justify-between">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    Companies in this Category
-                </h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {{ $companies->total() }} total
-                </span>
-            </div>
-        </div>
-        
-        @if($companies->isEmpty())
-            <div class="px-6 py-8 text-center">
-                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                </svg>
-                <h3 class="mt-2 text-sm font-medium text-gray-900">No companies found</h3>
-                <p class="mt-1 text-sm text-gray-500">There are no companies in this category yet.</p>
-            </div>
-        @else
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Company
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Location
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Size
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Jobs
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($companies as $company)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            @if($company->logo)
-                                                <img class="h-10 w-10 rounded-lg object-cover" 
-                                                     src="{{ Storage::url($company->logo) }}" 
-                                                     alt="{{ $company->name }}">
-                                            @else
-                                                <div class="h-10 w-10 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center">
-                                                    <span class="text-white text-sm font-bold">{{ substr($company->name, 0, 1) }}</span>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                {{ $company->name }}
-                                            </div>
-                                            <div class="text-sm text-gray-500">
-                                                {{ $company->email ?? 'No email' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $company->location ?? 'Not specified' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $company->size ? $company->size . ' employees' : 'Not specified' }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                        {{ $company->jobs_count ?? 0 }} jobs
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $company->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                        {{ $company->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <div class="flex items-center space-x-2">
-                                        <a href="{{ route('admin.companies.show', $company) }}" 
-                                           class="text-indigo-600 hover:text-indigo-900" 
-                                           title="View Details">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
-                                        </a>
-                                        <a href="{{ route('admin.companies.edit', $company) }}" 
-                                           class="text-blue-600 hover:text-blue-900" 
-                                           title="Edit">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- Pagination -->
-            @if($companies->hasPages())
-                <div class="px-6 py-4 border-t border-gray-200">
-                    {{ $companies->links() }}
-                </div>
-            @endif
-        @endif
-    </div>
+   
 
     <!-- Quick Actions -->
-    <div class="bg-white shadow rounded-lg overflow-hidden">
+    <!-- <div class="bg-white shadow rounded-lg overflow-hidden">
         <div class="px-6 py-5 border-b border-gray-200">
             <h3 class="text-lg leading-6 font-medium text-gray-900">
                 Quick Actions
@@ -348,7 +242,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 @endsection
 

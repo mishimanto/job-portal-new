@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ContactMessage;
 use App\Models\Company;
 use App\Models\JobApplication;
@@ -63,9 +64,27 @@ class AppServiceProvider extends ServiceProvider
         }
     });
 
-    // Blade directive
+    // Blade directive for profile picture
+    Blade::directive('profilePicture', function ($expression) {
+        return "<?php echo \\App\\Providers\\AppServiceProvider::getProfilePictureHtml($expression); ?>";
+    });
+
+    // Blade directive for removeFilter
     Blade::directive('removeFilter', function ($expression) {
         return "<?php echo \\App\\Helpers\\FilterHelper::removeFilter($expression); ?>";
+    });
+
+    // Share profile picture helper with all views
+    View::share('profilePictureHelper', new class {
+        public function get($user, $size = 8, $name = null)
+        {
+            return AppServiceProvider::getProfilePictureHtml($user, $size, $name);
+        }
+        
+        public function forMessage($message, $size = 8)
+        {
+            return AppServiceProvider::getMessageProfilePictureHtml($message, $size);
+        }
     });
 
     // Footer info
@@ -92,4 +111,59 @@ class AppServiceProvider extends ServiceProvider
     } catch (\Throwable $e) {}
 }
 
+    /**
+     * Get profile picture HTML
+     */
+    public static function getProfilePictureHtml($user, $size = 8, $name = null)
+    {
+        $name = $name ?? ($user->name ?? '');
+        $initial = $name ? strtoupper(substr($name, 0, 1)) : '?';
+        
+        if ($user && !empty($user->profile_photo)) {
+            $photoUrl = Storage::url($user->profile_photo);
+            return <<<HTML
+                <img class="h-{$size} w-{$size} rounded-full object-cover border border-gray-200" 
+                     src="{$photoUrl}" 
+                     alt="{$name}"
+                     onerror="this.onerror=null; this.src=''; this.outerHTML='<div class=\'h-{$size} w-{$size} bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center border border-gray-200\'><span class=\'text-white font-semibold text-sm\'>{$initial}</span></div>'">
+            HTML;
+        }
+        
+        return <<<HTML
+            <div class="h-{$size} w-{$size} bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center border border-gray-200">
+                <span class="text-white font-semibold text-sm">
+                    {$initial}
+                </span>
+            </div>
+        HTML;
+    }
+
+    /**
+     * Get profile picture for message (without user relation)
+     */
+    public static function getMessageProfilePictureHtml($message, $size = 8)
+    {
+        $name = $message->name ?? '';
+        $initial = $name ? strtoupper(substr($name, 0, 1)) : '?';
+        
+        // Check if message has user relation
+        if (isset($message->user) && $message->user && !empty($message->user->profile_photo)) {
+            $photoUrl = Storage::url($message->user->profile_photo);
+            return <<<HTML
+                <img class="h-{$size} w-{$size} rounded-full object-cover border border-gray-200" 
+                     src="{$photoUrl}" 
+                     alt="{$name}"
+                     onerror="this.onerror=null; this.src=''; this.outerHTML='<div class=\'h-{$size} w-{$size} bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center border border-gray-200\'><span class=\'text-white font-semibold text-sm\'>{$initial}</span></div>'">
+            HTML;
+        }
+        
+        // Fallback to initial
+        return <<<HTML
+            <div class="h-{$size} w-{$size} bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center border border-gray-200">
+                <span class="text-white font-semibold text-sm">
+                    {$initial}
+                </span>
+            </div>
+        HTML;
+    }
 }
