@@ -125,33 +125,33 @@
                                     {{ $category->description ?? 'No description' }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     {{ $category->jobs_count ?? 0 }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                 {{ $category->order }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <form action="{{ route('admin.categories.update-status', $category) }}" 
                                       method="POST" 
                                       class="inline"
-                                      onsubmit="return confirm('Are you sure you want to change the status?')">
+                                      onsubmit="event.preventDefault(); updateCategoryStatus(event, this);">
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="is_active" value="{{ $category->is_active ? 0 : 1 }}">
                                     <button type="submit" 
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full cursor-pointer 
-                                                   {{ $category->is_active ? ' text-green-500 hover:bg-green-100' : ' text-red-500 hover:bg-red-100' }}">
+                                                   {{ $category->is_active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}">
                                         {{ $category->is_active ? 'Active' : 'Inactive' }}
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                <div class="flex items-center justify-start space-x-3">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center space-x-2 justify-center">
                                     <a href="{{ route('admin.categories.show', $category) }}" 
-                                       class="text-indigo-600 hover:text-indigo-900" 
+                                       class="text-indigo-600 hover:text-indigo-900 p-1 rounded hover:bg-indigo-50" 
                                        title="View Details">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -159,7 +159,7 @@
                                         </svg>
                                     </a>
                                     <a href="{{ route('admin.categories.edit', $category) }}" 
-                                       class="text-blue-600 hover:text-blue-900" 
+                                       class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50" 
                                        title="Edit">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -168,11 +168,11 @@
                                     <form action="{{ route('admin.categories.destroy', $category) }}" 
                                           method="POST" 
                                           class="inline"
-                                          onsubmit="return confirm('Are you sure you want to delete this category?')">
+                                          onsubmit="event.preventDefault(); deleteCategory(event, this);">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" 
-                                                class="text-red-600 hover:text-red-900" 
+                                                class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50" 
                                                 title="Delete">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
@@ -193,4 +193,85 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+// Function to update category status with SweetAlert
+function updateCategoryStatus(event, formElement) {
+    event.preventDefault();
+    
+    Swal.fire({
+        title: 'Change Status?',
+        text: 'Are you sure you want to change the status of this category?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, change it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading state
+            const button = formElement.querySelector('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = 'Changing...';
+            button.disabled = true;
+            
+            // Submit the form
+            formElement.submit();
+        }
+    });
+}
+
+// Function to delete category with SweetAlert
+function deleteCategory(event, formElement) {
+    event.preventDefault();
+    
+    Swal.fire({
+        title: 'Delete Category?',
+        text: 'Are you sure you want to delete this category? This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading state
+            const button = formElement.querySelector('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = 'Deleting...';
+            button.disabled = true;
+            
+            // Submit the form
+            formElement.submit();
+        }
+    });
+}
+
+// Show SweetAlert for success message
+@if(session('success'))
+Swal.fire({
+    title: 'Success!',
+    text: '{{ session("success") }}',
+    icon: 'success',
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'OK'
+});
+@endif
+
+// Show SweetAlert for error message
+@if(session('error'))
+Swal.fire({
+    title: 'Error!',
+    text: '{{ session("error") }}',
+    icon: 'error',
+    confirmButtonColor: '#d33',
+    confirmButtonText: 'OK'
+});
+@endif
+</script>
+@endpush
 @endsection

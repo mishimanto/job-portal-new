@@ -78,7 +78,7 @@ class JobController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'nullable|exists:companies,id',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'salary_min' => 'nullable|numeric|min:0',
@@ -93,12 +93,12 @@ class JobController extends Controller
             'company_logo' => 'nullable|image|max:2048',
             'is_active' => 'boolean',
             'status' => 'required|string|in:pending,approved,rejected',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         // Get company name from selected company
-        $company = Company::findOrFail($validated['company_id']);
-        $validated['company_name'] = $company->name;
+        // $company = Company::findOrFail($validated['company_id']);
+        // $validated['company_name'] = $company->name;
 
         // Generate unique slug
         $validated['slug'] = $this->generateUniqueSlug($validated['title']);
@@ -194,7 +194,7 @@ class JobController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'nullable|exists:companies,id',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'salary_min' => 'nullable|numeric|min:0',
@@ -209,12 +209,12 @@ class JobController extends Controller
             'company_logo' => 'nullable|image|max:2048',
             'is_active' => 'boolean',
             'status' => 'required|string|in:pending,approved,rejected',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         // Get company name from selected company
-        $company = Company::findOrFail($validated['company_id']);
-        $validated['company_name'] = $company->name;
+        // $company = Company::findOrFail($validated['company_id']);
+        // $validated['company_name'] = $company->name;
 
         // Generate new slug if title changed
         if ($job->title !== $validated['title']) {
