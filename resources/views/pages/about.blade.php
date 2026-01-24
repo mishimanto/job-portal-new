@@ -5,15 +5,18 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">About JobPortal</h1>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">About Us</h1>
+        <!-- <p class="text-xl text-gray-600 max-w-3xl mx-auto">
             We are dedicated to connecting talented professionals with great career opportunities.
-        </p>
+        </p> -->
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
         <div>
-            <h2 class="text-3xl font-bold text-gray-900 mb-6">Our Mission</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center md:text-left">
+                Our Mission
+            </h2>
+
             <p class="text-gray-600 mb-4">
                 To create a seamless and efficient platform that bridges the gap between employers 
                 and job seekers, making the hiring process faster, simpler, and more effective for everyone involved.
